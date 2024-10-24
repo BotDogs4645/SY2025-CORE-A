@@ -21,8 +21,6 @@ public class Robot extends LoggedRobot {
 
   private RobotContainer m_robotContainer;
   public final PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev); //Required for AKit current logging
-  
-  private final PDHTelemetry currentLogger = new PDHTelemetry();
 
   @Override
   public void robotInit() {
@@ -61,8 +59,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
-    currentLogger.telemeterize();
+    CommandScheduler.getInstance().run();
   }
 
   @Override
