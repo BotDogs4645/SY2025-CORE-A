@@ -20,8 +20,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -270,6 +275,8 @@ public AutoFactory createAutoFactory() {
 
 
 public AutoFactory createAutoFactory(TrajectoryLogger<SwerveSample> trajLogger) {
+    Pose2d resetPose = new Pose2d(0, 0, new Rotation2d(0));
+    resetPose(resetPose);
     return new AutoFactory(
         () -> getState().Pose,
         this::resetPose,
@@ -289,6 +296,8 @@ public void followTrajectory(SwerveSample sample) {
     // Get the current pose of the robot
     Pose2d pose = getState().Pose;
     System.out.println("following trajectory");
+    SmartDashboard.putNumber("Next X", sample.x);
+    SmartDashboard.putNumber("Next Y", sample.y);
 
     // Generate the next speeds for the robot
     ChassisSpeeds speeds = new ChassisSpeeds(

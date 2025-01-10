@@ -11,18 +11,21 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.BuildConstants;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
 
-  public Robot() {    
+  public Robot() {
     Logger.recordMetadata("ProjectName", "SY2025-Core-A");
 
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
@@ -30,46 +33,56 @@ public class Robot extends LoggedRobot {
     Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     switch (BuildConstants.DIRTY) {
-        case 0:
-            Logger.recordMetadata("GitDirty", "Clean");
-            break;
-        case 1:
-            Logger.recordMetadata("GitDirty", "Dirty");
-            break;
-        default:
-            Logger.recordMetadata("GitDirty", "Error");
-            break;
+      case 0:
+        Logger.recordMetadata("GitDirty", "Clean");
+        break;
+      case 1:
+        Logger.recordMetadata("GitDirty", "Dirty");
+        break;
+      default:
+        Logger.recordMetadata("GitDirty", "Error");
+        break;
     }
 
     if (isReal()) {
-        Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-        new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+      Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+      Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+      new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else {
-        setUseTiming(false); // Run as fast as possible
-        String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-        Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+      setUseTiming(false); // Run as fast as possible
+      String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+      Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+      Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
     }
 
-Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
+                    // be added.
 
     m_robotContainer = new RobotContainer();
   }
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run(); 
+    CommandSwerveDrivetrain drivetrain = m_robotContainer.getDrivetrain();
+    Pose2d pose = drivetrain.getState().Pose;
+    SmartDashboard.putNumber("Curr X", pose.getX());
+    SmartDashboard.putNumber("Curr Y", pose.getY());
+    SmartDashboard.putNumber("Next X", 0);
+    SmartDashboard.putNumber("Next Y", 0);
+    CommandScheduler.getInstance().run();
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+  }
 
   @Override
   public void autonomousInit() {
@@ -81,10 +94,12 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   @Override
   public void teleopInit() {
@@ -94,10 +109,12 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   @Override
   public void testInit() {
@@ -105,11 +122,14 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }
