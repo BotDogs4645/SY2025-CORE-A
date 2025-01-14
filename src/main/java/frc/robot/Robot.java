@@ -67,8 +67,6 @@ public class Robot extends LoggedRobot {
     Pose2d pose = drivetrain.getState().Pose;
     SmartDashboard.putNumber("Curr X", pose.getX());
     SmartDashboard.putNumber("Curr Y", pose.getY());
-    SmartDashboard.putNumber("Next X", 0);
-    SmartDashboard.putNumber("Next Y", 0);
     CommandScheduler.getInstance().run();
   }
 
