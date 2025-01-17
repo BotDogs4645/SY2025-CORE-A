@@ -50,7 +50,9 @@ public class RobotContainer {
 
     public RobotContainer() {
         autoFactory = drivetrain.createAutoFactory();
-        // trajectoryCommand = autoFactory.trajectoryCmd("firstpath");
+        
+        autoChooser.addCmd("First Path", this::firstPath);
+        autoChooser.addCmd("Second Path", this::secondPath);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -94,12 +96,23 @@ public class RobotContainer {
         drivetrain.registerTelemetry(Telemetry::telemeterize);
     }
 
-    public Command getAutonomousCommand() {
+    public Command firstPath() {
         return Commands.sequence(
             new InstantCommand(()->drivetrain.resetPose(Choreo.loadTrajectory("firstpath").get().getInitialPose(false).orElse(null))),
             autoFactory.trajectoryCmd("firstpath")
         );
         
+    }
+
+    public Command secondPath() {
+        return Commands.sequence(
+            new InstantCommand(()->drivetrain.resetPose(Choreo.loadTrajectory("secondpath").get().getInitialPose(false).orElse(null))),
+            autoFactory.trajectoryCmd("secondpath")
+        );
+    }
+
+    public Command getAutonomousCommand() {
+        return autoChooser.selectedCommandScheduler();
     }
 
     public CommandSwerveDrivetrain getDrivetrain() {
