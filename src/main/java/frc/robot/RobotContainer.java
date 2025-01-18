@@ -16,6 +16,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -50,7 +52,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         autoFactory = drivetrain.createAutoFactory();
-        
+
         autoChooser.addCmd("First Path", this::firstPath);
         autoChooser.addCmd("Second Path", this::secondPath);
 
@@ -63,25 +65,26 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+                // Drivetrain will execute this command periodically
+                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+                                                                                                   // negative Y
+                                                                                                   // (forward)
+                        .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
+                                                                                    // negative X (left)
+                ));
 
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        joystick.b().whileTrue(drivetrain.applyRequest(
+                () -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
         joystick.x().onTrue(
-            Commands.runOnce(() -> {
-                Pose2d resetPose = new Pose2d(0, 0, new Rotation2d(0));
-                drivetrain.resetPose(resetPose);
-                System.out.println("Resetting position");
-            })
-        );
+                Commands.runOnce(() -> {
+                    Pose2d resetPose = new Pose2d(0, 0, new Rotation2d(0));
+                    drivetrain.resetPose(resetPose);
+                    System.out.println("Resetting position");
+                }));
+
+       
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -94,21 +97,22 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(Telemetry::telemeterize);
+        
     }
 
     public Command firstPath() {
         return Commands.sequence(
-            new InstantCommand(()->drivetrain.resetPose(Choreo.loadTrajectory("firstpath").get().getInitialPose(false).orElse(null))),
-            autoFactory.trajectoryCmd("firstpath")
-        );
-        
+                new InstantCommand(() -> drivetrain
+                        .resetPose(Choreo.loadTrajectory("firstpath").get().getInitialPose(false).orElse(null))),
+                autoFactory.trajectoryCmd("firstpath"));
+
     }
 
     public Command secondPath() {
         return Commands.sequence(
-            new InstantCommand(()->drivetrain.resetPose(Choreo.loadTrajectory("secondpath").get().getInitialPose(false).orElse(null))),
-            autoFactory.trajectoryCmd("secondpath")
-        );
+                new InstantCommand(() -> drivetrain
+                        .resetPose(Choreo.loadTrajectory("secondpath").get().getInitialPose(false).orElse(null))),
+                autoFactory.trajectoryCmd("secondpath"));
     }
 
     public Command getAutonomousCommand() {
