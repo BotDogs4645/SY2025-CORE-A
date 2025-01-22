@@ -55,6 +55,7 @@ public class RobotContainer {
 
         autoChooser.addCmd("First Path", this::firstPath);
         autoChooser.addCmd("Second Path", this::secondPath);
+        autoChooser.addCmd("Dath", this::dathPath);
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -113,6 +114,12 @@ public class RobotContainer {
                 new InstantCommand(() -> drivetrain
                         .resetPose(Choreo.loadTrajectory("secondpath").get().getInitialPose(false).orElse(null))),
                 autoFactory.trajectoryCmd("secondpath"));
+    }
+    public Command dathPath() {
+        return Commands.sequence(
+                new InstantCommand(() -> drivetrain
+                        .resetPose(Choreo.loadTrajectory("dath").get().getInitialPose(false).orElse(null))),
+                autoFactory.trajectoryCmd("dath"));
     }
 
     public Command getAutonomousCommand() {
