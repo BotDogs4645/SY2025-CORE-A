@@ -41,20 +41,15 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
     public final Localization visionSubsustem = new Localization(
         drivetrain::addVisionMeasurement,
         drivetrain::getState
     );
+    public final AutoFactory autoFactory = drivetrain.createAutoFactory(Telemetry::telemeterizeTrajectory);
 
-    private final AutoFactory autoFactory;
     private final AutoChooser autoChooser = new AutoChooser();
 
-    // public final Command trajectoryCommand;
-
     public RobotContainer() {
-        autoFactory = drivetrain.createAutoFactory();
-
         autoChooser.addCmd("First Path", this::firstPath);
         autoChooser.addCmd("Second Path", this::secondPath);
         autoChooser.addCmd("Dath", this::dathPath);
@@ -99,8 +94,7 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        drivetrain.registerTelemetry(Telemetry::telemeterize);
-        
+        drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
     }
 
     public Command firstPath() {
@@ -117,6 +111,7 @@ public class RobotContainer {
                         .resetPose(Choreo.loadTrajectory("secondpath").get().getInitialPose(false).orElse(null))),
                 autoFactory.trajectoryCmd("secondpath"));
     }
+
     public Command dathPath() {
         return Commands.sequence(
                 new InstantCommand(() -> drivetrain
@@ -127,9 +122,4 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.selectedCommandScheduler();
     }
-
-    public CommandSwerveDrivetrain getDrivetrain() {
-        return drivetrain;
-    }
-
 }

@@ -2,8 +2,15 @@ package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.controller.PIDController;
 
 public class Constants {
+    public class ChoreoConstants {
+        public static PIDController xController = new PIDController(10.0, 0.0, 0.0);
+        public static PIDController yController = new PIDController(10.0, 0.0, 0.0);
+        public static PIDController headingController = new PIDController(7.5, 0.0, 0.0);
+    }
+
     public class VisionConstants {
         public static String[] limelightNames = {"limelight"};
 
