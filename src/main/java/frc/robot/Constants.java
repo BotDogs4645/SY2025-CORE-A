@@ -11,6 +11,12 @@ public class Constants {
         public static PIDController headingController = new PIDController(7.5, 0.0, 0.0);
     }
 
+    public class ElevatorConstants {
+        public static int leftMotorCANId = 1;
+        public static int rightMotorCANId = 2;
+        public static int lowerLimitSwitchDIOPort = 0;
+    }
+
     public class VisionConstants {
         public static String[] limelightNames = {"limelight"};
 
