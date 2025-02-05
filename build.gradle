@@ -121,3 +121,14 @@ wpi.java.configureTestTasks(test)
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
 }
+
+spotless {
+    java{
+        importOrder()
+        removeUnusedImports()
+        indentWithTabs()
+        eclipse()
+        // fix formatting of type annotations
+        formatAnnotations()
+    }
+}
