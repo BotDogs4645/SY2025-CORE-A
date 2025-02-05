@@ -15,6 +15,14 @@ public class Constants {
         public static int leftMotorCANId = 1;
         public static int rightMotorCANId = 2;
         public static int lowerLimitSwitchDIOPort = 0;
+        public static double elevatorSpeed = 0.5;
+
+        public class Heights {
+            public static double level1 = 0.3;
+            public static double level2 = 0.6;
+            public static double level3 = 0.9;
+            public static double level4 = 1.5;
+        }
     }
 
     public class VisionConstants {

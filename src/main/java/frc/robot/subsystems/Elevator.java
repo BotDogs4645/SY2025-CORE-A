@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -20,7 +24,12 @@ public class Elevator extends SubsystemBase{
         lowerLimitSwitch = new DigitalInput(Constants.ElevatorConstants.lowerLimitSwitchDIOPort);
         reachedBottom = false;
 
-        rightMotor.setInverted(true);
+        var currentConfigs = new MotorOutputConfigs();
+        currentConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
+        leftMotor.getConfigurator().apply(currentConfigs);
+
+        currentConfigs.Inverted = InvertedValue.Clockwise_Positive;
+        rightMotor.getConfigurator().apply(currentConfigs);
     }
 
     public void setSpeed(double val) {
@@ -41,6 +50,15 @@ public class Elevator extends SubsystemBase{
     public void periodic() {
         reachedBottom = getLimitSwitch();
     } 
+
+    public void resetEncoders() {
+        leftMotor.setPosition(0);
+        rightMotor.setPosition(0);
+    }
+
+    public void setControl(ControlRequest control) {
+        leftMotor.setControl(control);
+    }
 
 
 }
