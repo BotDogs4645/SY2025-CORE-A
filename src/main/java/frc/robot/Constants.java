@@ -12,10 +12,10 @@ public class Constants {
     }
 
     public class ElevatorConstants {
-        public static int leftMotorCANId = 1;
-        public static int rightMotorCANId = 2;
+        public static int leftMotorCANId = 14;
+        public static int rightMotorCANId = 3;
         public static int lowerLimitSwitchDIOPort = 0;
-        public static double elevatorSpeed = 0.5;
+        public static double elevatorSpeed = 0.05;
 
         public class Heights {
             public static double level1 = 0.3;
