@@ -3,10 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -49,6 +53,8 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic() {
         reachedBottom = getLimitSwitch();
+        SmartDashboard.putBoolean("limitswitch", reachedBottom);
+        SmartDashboard.putNumber("encoder", leftMotor.getPosition().getValueAsDouble());
     } 
 
     public void resetEncoders() {
@@ -59,6 +65,16 @@ public class Elevator extends SubsystemBase{
     public void setControl(ControlRequest control) {
         leftMotor.setControl(control);
     }
+
+    public void enableBrakemode() {
+        leftMotor.setNeutralMode(NeutralModeValue.Brake);
+        rightMotor.setNeutralMode(NeutralModeValue.Brake);
+    }
+    public void enableCoastMode() {
+        leftMotor.setNeutralMode(NeutralModeValue.Coast);
+        rightMotor.setNeutralMode(NeutralModeValue.Coast);
+    }
+
 
 
 }
