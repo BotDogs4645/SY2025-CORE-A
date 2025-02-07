@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2025.2.1"
     id "com.peterabeles.gversion" version "1.10"
+    id "com.diffplug.spotless" version "7.0.2"
 }
 
 java {
@@ -120,4 +121,15 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
+}
+
+spotless {
+    java{
+        importOrder()
+        removeUnusedImports()
+        indentWithTabs()
+        eclipse()
+        // fix formatting of type annotations
+        formatAnnotations()
+    }
 }
