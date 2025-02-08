@@ -1,13 +1,13 @@
-package frc.robot.commands;
+package frc.robot.commands.components;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DeepClimb;
 
-public class ClimbDeepCage extends Command{
+public class Climb extends Command{
     private DeepClimb deepClimb;
 
-    public ClimbDeepCage(DeepClimb deepClimb, double climbSpeed){
+    public Climb(DeepClimb deepClimb, double climbSpeed){
         this.deepClimb = deepClimb;
 
         addRequirements(deepClimb);
@@ -19,11 +19,7 @@ public class ClimbDeepCage extends Command{
     @ Override
 
     public void execute(){
-        if (deepClimb.getClimbAngle() < 225.0){
-            deepClimb.setClimbSpeed(Constants.ClimbConstants.climbSpeed);
-        }else{
-            deepClimb.setClimbSpeed(0);
-        }
+        deepClimb.setClimbSpeed(Constants.ClimbConstants.climbSpeed);
     }
     @ Override
 

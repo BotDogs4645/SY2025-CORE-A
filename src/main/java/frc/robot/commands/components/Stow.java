@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.components;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -19,11 +19,7 @@ public class Stow extends Command{
     @ Override
 
     public void execute(){
-        if (deepClimb.getChuteAngle() < 103.0){
-            deepClimb.setStowSpeed(Constants.ClimbConstants.chuteSpeed);
-        }else{
-            deepClimb.setStowSpeed(0);
-        }
+        deepClimb.setStowSpeed(Constants.ClimbConstants.chuteSpeed);
     }
     @ Override
 
