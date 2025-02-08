@@ -4,7 +4,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class DeepClimb extends SubsystemBase {
     private final TalonFX climbMotor;
@@ -23,11 +22,25 @@ public class DeepClimb extends SubsystemBase {
     public double getChuteAngle() {
         return chuteMotor.getPosition().getValueAsDouble();
     }
+    public boolean isStowed() {
+        if (chuteMotor.getPosition().getValueAsDouble() == 103){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public void setStowSpeed (double chuteSpeed){
         chuteMotor.set(chuteSpeed);
     }
     public double getClimbAngle() {
         return climbEncoder.get()*360.0;
+    }
+    public boolean hasClimbed() {
+        if (climbEncoder.get()*360 == 225){
+            return true;
+        }else{
+            return false;
+        }
     }
     public void setClimbSpeed (double climbSpeed){
         climbMotor.set(climbSpeed);
