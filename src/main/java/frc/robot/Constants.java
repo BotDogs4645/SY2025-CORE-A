@@ -38,4 +38,8 @@ public class Constants {
         // (Adjust to trust some cameras more than others)
         public static double[] limelightStdDevFactors = {1.0};
     }
+    public class ClimbConstants{
+        public static double climbSpeed = 0.5;
+        public static double chuteSpeed = 0.5;
+    }
 }
