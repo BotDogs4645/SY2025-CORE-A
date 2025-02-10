@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.Queue;
 
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -33,7 +34,11 @@ public class Endeffector extends SubsystemBase{
 
         // should be abs rotation on startup
         Rotation2d rotationInitial = new Rotation2d(pivotEncoder.get());
-        talonConfig = new TalonFXConfiguration();
+        talonConfig = new TalonFXConfiguration().withFeedback(
+            new FeedbackConfigs().withSensorToMechanismRatio(Constants.blah);
+        );
+        pivotMotor.getConfigurator().apply(talonConfig);
+        pivotMotor.setPosition(rotationInitial.getRotations());
     }
 
     // False for coral
