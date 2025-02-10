@@ -76,7 +76,7 @@ public class CommandBuilder {
     public Command driveToTag(String limelightName, CommandSwerveDrivetrain drivetrain) {
       return Commands.sequence(
           // Step 1: Face the target
-          faceTarget(limelightName, drivetrain),
+          aimAtTarget(limelightName, drivetrain),
 
           // Step 2: Calculate the distance to the target and drive to it
           Commands.runOnce(
@@ -147,65 +147,6 @@ public class CommandBuilder {
               // Require the swerve subsystem
               swerveSubsystem)
           .withTimeout(5); // Add a timeout to prevent the command from running indefinitel
-    }
-
-    public static Command faceTarget(
-        String limelightName, CommandSwerveDrivetrain swerveSubsystem) {
-      // Access the Limelight's network table
-      NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable(limelightName);
-
-      // Create a PID controller for rotation (adjust gains as needed)
-      PIDController rotationController = new PIDController(0.05, 0, 0); // Example gains
-
-      // Define the command
-      return new FunctionalCommand(
-              // Initialize: Reset the PID controller
-              () -> {
-                rotationController.reset();
-                rotationController.setSetpoint(0); // Aim for tx = 0 (centered on target)
-                rotationController.setTolerance(1); // Allowable error in degrees
-              },
-              // Execute: Read Limelight data and drive the swerve drivetrain
-              () -> {
-                double tx = limelightTable.getEntry("tx").getDouble(0); // Horizontal offset
-                double tv = limelightTable.getEntry("tv").getDouble(0); // Target detected
-
-                if (tv == 1) {
-                  // Calculate rotation speed using the PID controller
-                  double rotationSpeed = rotationController.calculate(tx);
-
-                  // Drive the swerve drivetrain (rotate only, no translation)
-                  swerveSubsystem.applyRequest(
-                      () ->
-                          new SwerveRequest.FieldCentric()
-                              .withVelocityX(0) // No X movement
-                              .withVelocityY(0) // No Y movement
-                              .withRotationalRate(rotationSpeed) // Rotate to align with target
-                      );
-                } else {
-                  // Stop the drivetrain if no target is detected
-                  swerveSubsystem.applyRequest(
-                      () ->
-                          new SwerveRequest.FieldCentric()
-                              .withVelocityX(0)
-                              .withVelocityY(0)
-                              .withRotationalRate(0));
-                }
-              },
-              // End: Stop the drivetrain
-              (interrupted) -> {
-                swerveSubsystem.applyRequest(
-                    () ->
-                        new SwerveRequest.FieldCentric()
-                            .withVelocityX(0)
-                            .withVelocityY(0)
-                            .withRotationalRate(0));
-              },
-              // IsFinished: End the command when the target is aligned
-              () -> rotationController.atSetpoint(),
-              // Require the swerve subsystem
-              swerveSubsystem)
-          .withTimeout(5); // Add a timeout to prevent the command from running indefinitely
     }
   }
 }
