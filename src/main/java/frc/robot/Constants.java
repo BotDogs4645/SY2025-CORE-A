@@ -37,5 +37,7 @@ public class Constants {
         // Standard deviation multipliers for each camera
         // (Adjust to trust some cameras more than others)
         public static double[] limelightStdDevFactors = {1.0};
+
+        public static double distanceOffset = 1;
     }
 }
