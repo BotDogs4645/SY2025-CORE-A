@@ -40,7 +40,7 @@ public class Constants {
         public static double[] limelightStdDevFactors = {1.0};
     }
 
-    public class endEffectorConstants {
+    public class EndEffectorConstants {
         public static final int pivotGearRatio = 10; // wrong prolly
         public static final Rotation2d level1Degrees = Rotation2d.fromDegrees(0);
         public static final Rotation2d level2Degrees = Rotation2d.fromDegrees(0);
@@ -49,9 +49,13 @@ public class Constants {
 
     }
 
-    public class PIDconstants {
-        public static final double kP = 0.0;
+    public class MotionMagicConstants {
+        public static final double kS = 0.25;
+        public static final double kV = 0.12;
+        public static final double kA = 0.01;
+        public static final double kP = 4.8;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 0.1;
+
     }
 }

@@ -38,15 +38,15 @@ public class Endeffector extends SubsystemBase{
         // should be abs rotation on startup
         Rotation2d rotationInitial = new Rotation2d(pivotEncoder.get());
         talonConfig = new TalonFXConfiguration().withFeedback(
-            new FeedbackConfigs().withSensorToMechanismRatio(Constants.endEffectorConstants.pivotGearRatio)
+            new FeedbackConfigs().withSensorToMechanismRatio(Constants.EndEffectorConstants.pivotGearRatio)
         );
         var slot0Configs = talonConfig.Slot0;
-        slot0Configs.kS = 0.25; // Add 0.25 V output to overcome static friction
-        slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-        slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-        slot0Configs.kP = 4.8; // A position error of 2.5 rotations results in 12 V output
-        slot0Configs.kI = 0; // no output for integrated error
-        slot0Configs.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+        slot0Configs.kS = Constants.MotionMagicConstants.kS; // Add 0.25 V output to overcome static friction
+        slot0Configs.kV = Constants.MotionMagicConstants.kV; // A velocity target of 1 rps results in 0.12 V output
+        slot0Configs.kA = Constants.MotionMagicConstants.kA; // An acceleration of 1 rps/s requires 0.01 V output
+        slot0Configs.kP = Constants.MotionMagicConstants.kP; // A position error of 2.5 rotations results in 12 V output
+        slot0Configs.kI = Constants.MotionMagicConstants.kI; // no output for integrated error
+        slot0Configs.kD = Constants.MotionMagicConstants.kD; // A velocity error of 1 rps results in 0.1 V output
         pivotMotor.getConfigurator().apply(talonConfig);
         pivotMotor.setPosition(rotationInitial.getRotations());
     }
@@ -66,8 +66,8 @@ public class Endeffector extends SubsystemBase{
         
         switch(level) {
             case 1:
-                if(cur < Constants.endEffectorConstants.level1Degrees.getDegrees()) {
-                } else if(cur > Constants.endEffectorConstants.level1Degrees.getDegrees()) {
+                if(cur < Constants.EndEffectorConstants.level1Degrees.getDegrees()) {
+                } else if(cur > Constants.EndEffectorConstants.level1Degrees.getDegrees()) {
                     pivotMotor.set(-100000000);
                 }
             case 2:
