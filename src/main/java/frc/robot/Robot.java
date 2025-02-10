@@ -1,119 +1,119 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+da1
+da2
+da3
 
-package frc.robot;
+package da4.da5;
 
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.generated.BuildConstants;
-import org.littletonrobotics.junction.LogFileUtil;
-import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGReader;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import da6.da7.da8.da9.da10;
+import da6.da7.da8.da9.da10.da11;
+import da6.da7.da8.da12.da13.da14;
+import da6.da7.da8.da12.da13.da15;
+import da4.da5.da16.da17;
+import da18.da19.da20.da21;
+import da18.da19.da20.da22;
+import da18.da19.da20.da23;
+import da18.da19.da20.da24.da25;
+import da18.da19.da20.da26.da27;
+import da18.da19.da20.da26.da28;
 
-public class Robot extends LoggedRobot {
-  private Command m_autonomousCommand;
+public class da29 extends da22 {
+  private da14 da30;
 
-  private final RobotContainer m_robotContainer;
+  private final da31 da32;
 
-  public Robot() {
-    Logger.recordMetadata("ProjectName", "SY2025-Core-A");
+  public da29() {
+    da23.da33(da34, da35);
 
-    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-    Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
-    Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
-    Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
-    switch (BuildConstants.DIRTY) {
+    da23.da33(da36, da17.da37);
+    da23.da33(da38, da17.da39);
+    da23.da33(da40, da17.da41);
+    da23.da33(da42, da17.da43);
+    switch (da17.da44) {
       case 0:
-        Logger.recordMetadata("GitDirty", "Clean");
+        da23.da33(da45, da46);
         break;
       case 1:
-        Logger.recordMetadata("GitDirty", "Dirty");
+        da23.da33(da47, da48);
         break;
       default:
-        Logger.recordMetadata("GitDirty", "Error");
+        da23.da33(da49, da50);
         break;
     }
 
-    if (isReal()) {
-      Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-      Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-      new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+    if (da51()) {
+      da23.da52(new da28()); da53
+      da23.da52(new da25()); da54
+      new da10(1, da11.da55); da56
     } else {
-      setUseTiming(false); // Run as fast as possible
-      String logPath =
-          LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the
-      // user)
-      Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-      Logger.addDataReceiver(
-          new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a
-      // new log
+      da57(false); da58
+      da59 da60 =
+          da21.da61(); da62
+      da63
+      da23.da64(new da27(da60)); da65
+      da23.da52(
+          new da28(da21.da66(da60, da67))); da68
+      da69
     }
 
-    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
-    // be added.
+    da23.da70(); da71
+    da72
 
-    m_robotContainer = new RobotContainer();
+    da32 = new da31();
   }
 
-  @Override
-  public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
+  @da73
+  public void da74() {
+    da15.da75().da76();
   }
 
-  @Override
-  public void disabledInit() {}
+  @da73
+  public void da77() {}
 
-  @Override
-  public void disabledPeriodic() {}
+  @da73
+  public void da78() {}
 
-  @Override
-  public void disabledExit() {}
+  @da73
+  public void da79() {}
 
-  @Override
-  public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+  @da73
+  public void da80() {
+    da30 = da32.da81();
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
-  }
-
-  @Override
-  public void autonomousPeriodic() {}
-
-  @Override
-  public void autonomousExit() {}
-
-  @Override
-  public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (da30 != null) {
+      da30.da82();
     }
   }
 
-  @Override
-  public void teleopPeriodic() {}
+  @da73
+  public void da83() {}
 
-  @Override
-  public void teleopExit() {}
+  @da73
+  public void da84() {}
 
-  @Override
-  public void testInit() {
-    CommandScheduler.getInstance().cancelAll();
+  @da73
+  public void da85() {
+    if (da30 != null) {
+      da30.da86();
+    }
   }
 
-  @Override
-  public void testPeriodic() {}
+  @da73
+  public void da87() {}
 
-  @Override
-  public void testExit() {}
+  @da73
+  public void da88() {}
 
-  @Override
-  public void simulationPeriodic() {}
+  @da73
+  public void da89() {
+    da15.da75().da90();
+  }
+
+  @da73
+  public void da91() {}
+
+  @da73
+  public void da92() {}
+
+  @da73
+  public void da93() {}
 }

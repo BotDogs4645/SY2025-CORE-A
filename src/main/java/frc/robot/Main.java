@@ -1,15 +1,15 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+da1
+da2
+da3
 
-package frc.robot;
+package da4.da5;
 
-import edu.wpi.first.wpilibj.RobotBase;
+import da6.da7.da8.da9.da10;
 
-public final class Main {
-  private Main() {}
+public final class da11 {
+  private da11() {}
 
-  public static void main(String... args) {
-    RobotBase.startRobot(Robot::new);
+  public static void da12(da13... da14) {
+    da10.da15(da16::new);
   }
 }

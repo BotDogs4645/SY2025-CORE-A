@@ -1,41 +1,41 @@
-package frc.robot;
+package da1.da2;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
+import da3.da4.da5.da6.da7;
+import da3.da4.da5.da6.da8;
+import da3.da4.da5.da9.da10.da11;
 
-public class Constants {
-  public static class ChoreoConstants {
-    public static PIDController xController = new PIDController(10.0, 0.0, 0.0);
-    public static PIDController yController = new PIDController(10.0, 0.0, 0.0);
-    public static PIDController headingController = new PIDController(7.5, 0.0, 0.0);
+public class da12 {
+  public static class da13 {
+    public static da11 da14 = new da11(10.0, 0.0, 0.0);
+    public static da11 da15 = new da11(10.0, 0.0, 0.0);
+    public static da11 da16 = new da11(7.5, 0.0, 0.0);
   }
 
-  public static class VisionConstants {
-    public static String[] limelightNames = {"limelight"};
+  public static class da17 {
+    public static da18[] da19 = {da20};
 
-    // Basic filtering thresholds
-    public static double maxAmbiguity = 0.3;
-    public static double maxZError = 0.75;
+    da21
+    public static double da22 = 0.3;
+    public static double da23 = 0.75;
 
-    // Ignore MT2 readings when robot is rotationg too fast
-    public static double maxAngluarVelocity = 2 * Math.PI; // Rad/s
+    da24
+    public static double da25 = 2 * da26.da27; da28
 
-    public static AprilTagFieldLayout aprilTagLayout =
-        AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+    public static da7 da29 =
+        da7.da30(da8.da31);
 
-    // Standard deviation baselines, for 1 meter distance and 1 tag
-    // (Adjusted automatically based on distance and # of tags)
-    public static double linearStdDevBaseline = 0.02; // Meters
-    public static double angularStdDevBaseline = 0.06; // Radians
+    da32
+    da33
+    public static double da34 = 0.02; da35
+    public static double da36 = 0.06; da37
 
-    // Multipliers to apply for MegaTag 2 observations`
-    public static double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
-    public static double angularStdDevMegatag2Factor =
-        Double.POSITIVE_INFINITY; // No rotation data available
+    da38
+    public static double da39 = 0.5; da40
+    public static double da41 =
+        da42.da43; da44
 
-    // Standard deviation multipliers for each camera
-    // (Adjust to trust some cameras more than others)
-    public static double[] limelightStdDevFactors = {1.0};
+    da45
+    da46
+    public static double[] da47 = {1.0};
   }
 }

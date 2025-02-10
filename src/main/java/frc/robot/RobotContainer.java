@@ -1,144 +1,144 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+da1
+da2
+da3
 
-package frc.robot;
+package da4.da5;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static da6.da7.da8.da9.da10.da11;
+import static da6.da7.da8.da9.da10.da12;
+import static da6.da7.da8.da9.da10.da13;
 
-import choreo.Choreo;
-import choreo.auto.AutoChooser;
-import choreo.auto.AutoFactory;
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.vision.Localization;
+import da14.da15;
+import da14.da16.da17;
+import da14.da16.da18;
+import da19.da20.da21.da22.da23.da24;
+import da19.da20.da21.da22.da25;
+import da6.da7.da8.da26.da27.da28;
+import da6.da7.da8.da26.da27.da29;
+import da6.da7.da8.da30.da31.da32;
+import da6.da7.da8.da33.da34.da35;
+import da6.da7.da8.da33.da34.da36;
+import da6.da7.da8.da33.da34.da37;
+import da6.da7.da8.da33.da34.da38.da39;
+import da6.da7.da8.da33.da34.da40.da41.da42;
+import da4.da5.da43.da44;
+import da4.da5.da45.da46;
+import da4.da5.da45.da47.da48;
 
-public class RobotContainer {
-  private final double MaxSpeed =
-      TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  private final double MaxAngularRate =
-      RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
-  // max angular velocity
+public class da49 {
+  private final double da50 =
+      da44.da51.da52(da11); da53
+  private final double da54 =
+      da13.da55(0.75).da52(da12); da56
+  da57
 
-  /* Setting up bindings for necessary control of the swerve drive platform */
-  private final SwerveRequest.FieldCentric drive =
-      new SwerveRequest.FieldCentric()
-          .withDeadband(MaxSpeed * 0.1)
-          .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-          .withDriveRequestType(
-              DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+  da58
+  private final da25.da59 da60 =
+      new da25.da59()
+          .da61(da50 * 0.1)
+          .da62(da54 * 0.1) da63
+          .da64(
+              da24.da65); da66
+  private final da25.da67 da68 = new da25.da67();
+  private final da25.da69 da70 = new da25.da69();
 
-  private final CommandXboxController joystick = new CommandXboxController(0);
+  private final da39 da71 = new da39(0);
 
-  public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-  public final Localization visionSubsystem =
-      new Localization(drivetrain::addVisionMeasurement, drivetrain::getState);
-  public final AutoFactory autoFactory =
-      drivetrain.createAutoFactory(Telemetry::telemeterizeTrajectory);
+  public final da46 da72 = da44.da73();
+  public final da48 da74 =
+      new da48(da72::da75, da72::da76);
+  public final da18 da77 =
+      da72.da78(da79::da80);
 
-  private final AutoChooser autoChooser = new AutoChooser();
+  private final da17 da81 = new da17();
 
-  public RobotContainer() {
-    autoChooser.addCmd("First Path", this::firstPath);
-    autoChooser.addCmd("Second Path", this::secondPath);
-    autoChooser.addCmd("Dath", this::dathPath);
+  public da49() {
+    da81.da82(da83, this::da84);
+    da81.da82(da85, this::da86);
+    da81.da82(da87, this::da88);
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    da32.da89(da90, da81);
 
-    configureBindings();
+    da91();
   }
 
-  private void configureBindings() {
-    // Note that X is defined as forward according to WPILib convention,
-    // and Y is defined as to the left according to WPILib convention.
-    drivetrain.setDefaultCommand(
-        // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(
+  private void da91() {
+    da92
+    da93
+    da72.da94(
+        da95
+        da72.da96(
             () ->
-                drive
-                    .withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
-                    // negative Y
-                    // (forward)
-                    .withVelocityY(
-                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(
-                        -joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
-            // negative X (left)
+                da60
+                    .da97(-da71.da98() * da50) da99
+                    da100
+                    da101
+                    .da102(
+                        -da71.da103() * da50) da104
+                    .da105(
+                        -da71.da106() * da54) da107
+            da108
             ));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    joystick
-        .b()
-        .whileTrue(
-            drivetrain.applyRequest(
+    da71.da109().da110(da72.da96(() -> da68));
+    da71
+        .da111()
+        .da110(
+            da72.da96(
                 () ->
-                    point.withModuleDirection(
-                        new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-    joystick
-        .x()
-        .onTrue(
-            Commands.runOnce(
+                    da70.da112(
+                        new da29(-da71.da98(), -da71.da103()))));
+    da71
+        .da113()
+        .da114(
+            da36.da115(
                 () -> {
-                  Pose2d resetPose = new Pose2d(0, 0, new Rotation2d(0));
-                  drivetrain.resetPose(resetPose);
-                  System.out.println("Resetting position");
+                  da28 da116 = new da28(0, 0, new da29(0));
+                  da72.da116(da116);
+                  da117.da118.da119(da120);
                 }));
 
-    // Run SysId routines when holding back/start and X/Y.
-    // Note that each routine should be run exactly once in a single log.
-    joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    da121
+    da122
+    da71.da123().da124(da71.da125()).da110(da72.da126(da42.da127));
+    da71.da123().da124(da71.da113()).da110(da72.da126(da42.da128));
+    da71.da129().da124(da71.da125()).da110(da72.da130(da42.da127));
+    da71.da129().da124(da71.da113()).da110(da72.da130(da42.da128));
 
-    // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+    da131
+    da71.da132().da114(da72.da115(da72::da133));
 
-    drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
+    da72.da134(da79::da135);
   }
 
-  public Command firstPath() {
-    return Commands.sequence(
-        new InstantCommand(
+  public da35 da84() {
+    return da36.da136(
+        new da37(
             () ->
-                drivetrain.resetPose(
-                    Choreo.loadTrajectory("firstpath").get().getInitialPose(false).orElse(null))),
-        autoFactory.trajectoryCmd("firstpath"));
+                da72.da116(
+                    da15.da137(da138).da139(da140 -> da140.da141(false)).da142(null))),
+        da77.da143(da144));
   }
 
-  public Command secondPath() {
-    return Commands.sequence(
-        new InstantCommand(
+  public da35 da86() {
+    return da36.da136(
+        new da37(
             () ->
-                drivetrain.resetPose(
-                    Choreo.loadTrajectory("secondpath").get().getInitialPose(false).orElse(null))),
-        autoFactory.trajectoryCmd("secondpath"));
+                da72.da116(
+                    da15.da137(da145).da139(da146 -> da146.da141(false)).da142(null))),
+        da77.da143(da147));
   }
 
-  public Command dathPath() {
-    return Commands.sequence(
-        new InstantCommand(
+  public da35 da88() {
+    return da36.da136(
+        new da37(
             () ->
-                drivetrain.resetPose(
-                    Choreo.loadTrajectory("dath").get().getInitialPose(false).orElse(null))),
-        autoFactory.trajectoryCmd("dath"));
+                da72.da116(
+                    da15.da137(da148).da139(da149 -> da149.da141(false)).da142(null))),
+        da77.da143(da150));
   }
 
-  public Command getAutonomousCommand() {
-    return autoChooser.selectedCommandScheduler();
+  public da35 da151() {
+    return da81.da152();
   }
 }
