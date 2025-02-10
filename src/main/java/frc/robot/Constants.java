@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class Constants {
     public class ChoreoConstants {
@@ -37,5 +38,20 @@ public class Constants {
         // Standard deviation multipliers for each camera
         // (Adjust to trust some cameras more than others)
         public static double[] limelightStdDevFactors = {1.0};
+    }
+
+    public class endEffectorConstants {
+        public static final int pivotGearRatio = 10; // wrong prolly
+        public static final Rotation2d level1Degrees = Rotation2d.fromDegrees(0);
+        public static final Rotation2d level2Degrees = Rotation2d.fromDegrees(0);
+        public static final Rotation2d level3Degrees = Rotation2d.fromDegrees(0);
+        public static final Rotation2d level4Degrees = Rotation2d.fromDegrees(0);
+
+    }
+
+    public class PIDconstants {
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
     }
 }

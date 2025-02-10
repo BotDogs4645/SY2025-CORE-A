@@ -7,12 +7,14 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import com.revrobotics.AbsoluteEncoder;
  
@@ -23,6 +25,7 @@ public class Endeffector extends SubsystemBase{
     private AbsoluteEncoder pivotEncoder;
     private DigitalInput input;
     private TalonFXConfiguration talonConfig;
+    private final PIDController pidcontroller = new PIDController(Constants.PIDconstants.kP, Constants.PIDconstants.kI, Constants.PIDconstants.kD);
 
     // https://www.chiefdelphi.com/t/using-rev-through-bore-encoder-as-zeroing-encoder-on-swerve-drive/428855/2
 
@@ -35,8 +38,15 @@ public class Endeffector extends SubsystemBase{
         // should be abs rotation on startup
         Rotation2d rotationInitial = new Rotation2d(pivotEncoder.get());
         talonConfig = new TalonFXConfiguration().withFeedback(
-            new FeedbackConfigs().withSensorToMechanismRatio(Constants.blah);
+            new FeedbackConfigs().withSensorToMechanismRatio(Constants.endEffectorConstants.pivotGearRatio)
         );
+        var slot0Configs = talonConfig.Slot0;
+        slot0Configs.kS = 0.25; // Add 0.25 V output to overcome static friction
+        slot0Configs.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+        slot0Configs.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+        slot0Configs.kP = 4.8; // A position error of 2.5 rotations results in 12 V output
+        slot0Configs.kI = 0; // no output for integrated error
+        slot0Configs.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
         pivotMotor.getConfigurator().apply(talonConfig);
         pivotMotor.setPosition(rotationInitial.getRotations());
     }
@@ -49,21 +59,15 @@ public class Endeffector extends SubsystemBase{
     }
 
     public void setPivotPosition(int level){
-        double level1 = 123123;
-        double level2 = 123123;
-        double level3 = 123123;
-        double level4 = 123123;
 
-        double cur = pivotEncoder.getPosition();
+        double cur = pivotMotor.get();
+
         SmartDashboard.putNumber("pivotEncoderRotations", cur);
-
-        double allowedError = 12345678; // maybe put in constants
         
         switch(level) {
             case 1:
-                if(cur < level1) {
-                    pivotMotor
-                } else if(cur > level1) {
+                if(cur < Constants.endEffectorConstants.level1Degrees.getDegrees()) {
+                } else if(cur > Constants.endEffectorConstants.level1Degrees.getDegrees()) {
                     pivotMotor.set(-100000000);
                 }
             case 2:
