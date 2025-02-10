@@ -42,10 +42,10 @@ public class Constants {
 
     public class EndEffectorConstants {
         public static final int pivotGearRatio = 10; // wrong prolly
-        public static final Rotation2d level1Degrees = Rotation2d.fromDegrees(0);
-        public static final Rotation2d level2Degrees = Rotation2d.fromDegrees(0);
-        public static final Rotation2d level3Degrees = Rotation2d.fromDegrees(0);
-        public static final Rotation2d level4Degrees = Rotation2d.fromDegrees(0);
+        public static final Rotation2d level1 = Rotation2d.fromRotations(0);
+        public static final Rotation2d level2 = Rotation2d.fromRotations(0);
+        public static final Rotation2d level3 = Rotation2d.fromRotations(0);
+        public static final Rotation2d level4 = Rotation2d.fromRotations(0);
 
     }
 
@@ -56,6 +56,10 @@ public class Constants {
         public static final double kP = 4.8;
         public static final double kI = 0.0;
         public static final double kD = 0.1;
+        public static final double kG = 0.0;
 
+        public static final double cruiseVelocity = 80;
+        public static final double acceleration = 160;
+        public static final double jerk = 1600;
     }
 }

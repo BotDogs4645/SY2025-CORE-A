@@ -1,9 +1,8 @@
 package frc.robot.subsystems;
 
-import java.util.Queue;
-
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -25,7 +24,7 @@ public class Endeffector extends SubsystemBase{
     private AbsoluteEncoder pivotEncoder;
     private DigitalInput input;
     private TalonFXConfiguration talonConfig;
-    private final PIDController pidcontroller = new PIDController(Constants.PIDconstants.kP, Constants.PIDconstants.kI, Constants.PIDconstants.kD);
+    
 
     // https://www.chiefdelphi.com/t/using-rev-through-bore-encoder-as-zeroing-encoder-on-swerve-drive/428855/2
 
@@ -47,6 +46,14 @@ public class Endeffector extends SubsystemBase{
         slot0Configs.kP = Constants.MotionMagicConstants.kP; // A position error of 2.5 rotations results in 12 V output
         slot0Configs.kI = Constants.MotionMagicConstants.kI; // no output for integrated error
         slot0Configs.kD = Constants.MotionMagicConstants.kD; // A velocity error of 1 rps results in 0.1 V output
+        slot0Configs.kG = Constants.MotionMagicConstants.kG; // output to overcome gravity (output)
+
+        // set Motion Magic settings
+        var motionMagicConfigs = talonConfig.MotionMagic;
+        motionMagicConfigs.MotionMagicCruiseVelocity = Constants.MotionMagicConstants.cruiseVelocity; // Target cruise velocity of 80 rps
+        motionMagicConfigs.MotionMagicAcceleration = Constants.MotionMagicConstants.acceleration; // Target acceleration of 160 rps/s (0.5 seconds)
+        motionMagicConfigs.MotionMagicJerk = Constants.MotionMagicConstants.jerk; // Target jerk of 1600 rps/s/s (0.1 seconds)
+
         pivotMotor.getConfigurator().apply(talonConfig);
         pivotMotor.setPosition(rotationInitial.getRotations());
     }
@@ -60,34 +67,15 @@ public class Endeffector extends SubsystemBase{
 
     public void setPivotPosition(int level){
 
-        double cur = pivotMotor.get();
-
-        SmartDashboard.putNumber("pivotEncoderRotations", cur);
         
         switch(level) {
             case 1:
-                if(cur < Constants.EndEffectorConstants.level1Degrees.getDegrees()) {
-                } else if(cur > Constants.EndEffectorConstants.level1Degrees.getDegrees()) {
-                    pivotMotor.set(-100000000);
-                }
+                
             case 2:
-                if(cur < level2) {
-                    pivotMotor.set(100000000);
-                } else if(cur > level2) {
-                    pivotMotor.set(-100000000);
-                }
+
             case 3:
-                if(cur < level3) {
-                    pivotMotor.set(100000000);
-                } else if(cur > level3) {
-                    pivotMotor.set(-100000000);
-                }
+
             case 4:
-                if(cur < level4) {
-                    pivotMotor.set(100000000);
-                } else if(cur > level4) {
-                    pivotMotor.set(-100000000);
-                }
         }
     }
 
