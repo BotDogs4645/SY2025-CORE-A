@@ -15,7 +15,7 @@ public class DeepClimb extends SubsystemBase {
     private final DutyCycleEncoder climbEncoder; 
     public DeepClimb(){
         climbMotor = new TalonFX(0);
-        chuteMotor = new TalonFX(0);
+        chuteMotor = new TalonFX(9);
         encoderInput = new DigitalInput(0);
         climbEncoder = new DutyCycleEncoder(encoderInput);
     }

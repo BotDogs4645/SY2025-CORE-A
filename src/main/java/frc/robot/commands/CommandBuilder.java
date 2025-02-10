@@ -9,6 +9,7 @@ import frc.robot.commands.components.Stow;
 public class CommandBuilder {
     public static Command StowChute(DeepClimb deepClimb){
         return new Stow(deepClimb, Constants.ClimbConstants.chuteSpeed)
+        .alongWith (new WaitCommand(0.5).andThen(() -> { System.out.println(deepClimb.getChuteAngle());}))
         .until(deepClimb::isStowed)
         .andThen(() -> {deepClimb.setStowSpeed(0.15);}, deepClimb)
         .andThen(new WaitCommand(0.15))

@@ -32,5 +32,9 @@ public class Stow extends Command{
     public boolean isFinished(){
         return true;
     }
+    public Command alongWith(Object println) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'alongWith'");
+    }
 
 }
