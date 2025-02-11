@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.StaticBrake;
@@ -21,6 +22,7 @@ public class Elevator extends SubsystemBase{
     // private final TalonFX rightMotor;
     private final DigitalInput lowerLimitSwitch;
     private boolean reachedBottom;
+    private boolean reachedTarget;
     // private final TalonFXConfiguration elevatorConfiguration;
 
     public Elevator() {
@@ -57,6 +59,7 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic() {
         reachedBottom = getLimitSwitch();
+        reachedTarget = hasReachedTarget();
         SmartDashboard.putBoolean("limitswitch", reachedBottom);
         SmartDashboard.putNumber("encoder", leftMotor.getPosition().getValueAsDouble());
     } 
@@ -70,13 +73,24 @@ public class Elevator extends SubsystemBase{
         leftMotor.setControl(control);
     }
 
-    public void enableBrakemode() {
-        leftMotor.setNeutralMode(NeutralModeValue.Brake);
-        // rightMotor.setNeutralMode(NeutralModeValue.Brake);
+    public void setNeutralMode(NeutralModeValue value) {
+        leftMotor.setNeutralMode(value);
+        // rightMotor.setNeutralMode(value);
     }
-    public void enableCoastMode() {
-        leftMotor.setNeutralMode(NeutralModeValue.Coast);
-        // rightMotor.setNeutralMode(NeutralModeValue.Coast);
+
+    public double getVelocity() {
+        return leftMotor.getVelocity().getValueAsDouble();
+    }
+
+    public boolean hasReachedTarget() {
+        return getVelocity() == 0;
+    }
+
+    public void setBrake() {
+        setControl(new StaticBrake());
+    }
+    public void setCoast() {
+        setControl(new CoastOut());
     }
 
 
