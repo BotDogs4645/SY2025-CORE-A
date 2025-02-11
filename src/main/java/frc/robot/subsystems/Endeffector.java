@@ -66,16 +66,19 @@ public class Endeffector extends SubsystemBase{
     }
 
     public void setPivotPosition(int level){
-
-        
         switch(level) {
             case 1:
-                
+                MotionMagicVoltage req1 = new MotionMagicVoltage(Constants.EndEffectorConstants.level1.getRotations());
+                pivotMotor.setControl(req1);
             case 2:
-
+                MotionMagicVoltage req2 = new MotionMagicVoltage(Constants.EndEffectorConstants.level2.getRotations());
+                pivotMotor.setControl(req2);
             case 3:
-
+                MotionMagicVoltage req3 = new MotionMagicVoltage(Constants.EndEffectorConstants.level3.getRotations());
+                pivotMotor.setControl(req3);
             case 4:
+                MotionMagicVoltage req4 = new MotionMagicVoltage(Constants.EndEffectorConstants.level4.getRotations());
+                pivotMotor.setControl(req4);
         }
     }
 
