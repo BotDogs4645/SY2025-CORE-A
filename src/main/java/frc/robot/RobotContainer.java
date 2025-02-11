@@ -91,9 +91,9 @@ public class RobotContainer {
 
         joystick.x().onTrue(CommandBuilder.HomeElevator(elevator));
         joystick.y().onTrue(Commands.runOnce(() -> {
-                elevator.enableCoastMode();
+                elevator.setCoast();
             }));
-        joystick.a().onTrue(CommandBuilder.ElevatorToHeight(elevator, 5));
+        joystick.a().onTrue(CommandBuilder.ElevatorToLevel(elevator, 2));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
