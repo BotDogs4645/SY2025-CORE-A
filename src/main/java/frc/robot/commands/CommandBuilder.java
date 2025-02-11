@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +28,8 @@ public class CommandBuilder {
 
     public static Command ElevatorToHeight(Elevator elevator, double height) {
         return new InstantCommand(() -> {
-            elevator.setControl(new PositionDutyCycle(50));
+            final PositionDutyCycle m_request = new PositionDutyCycle(5).withSlot(0);
+            elevator.setControl(m_request.withPosition(5));
         });
     }
 
