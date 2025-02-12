@@ -16,6 +16,7 @@ public class Constants {
         public static int rightMotorCANId = 3;
         public static int lowerLimitSwitchDIOPort = 0;
         public static double elevatorSpeed = 0.05;
+        public static double targetThreshold = 0.6;
 
         public class Heights {
             public static double level1 = 0.3;
