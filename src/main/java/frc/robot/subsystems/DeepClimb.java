@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,10 +21,10 @@ public class DeepClimb extends SubsystemBase {
         climbEncoder = new DutyCycleEncoder(encoderInput);
     }
     public double getChuteAngle() {
-        return chuteMotor.getPosition().getValueAsDouble();
+        return chuteMotor.getPosition().getValueAsDouble()/200;
     }
     public boolean isStowed() {
-        if (chuteMotor.getPosition().getValueAsDouble() == 103*200){
+        if (chuteMotor.getPosition().getValueAsDouble() == 103){
             return true;
         }else{
             return false;

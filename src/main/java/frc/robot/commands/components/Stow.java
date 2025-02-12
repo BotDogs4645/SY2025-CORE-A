@@ -1,5 +1,6 @@
 package frc.robot.commands.components;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DeepClimb;
@@ -32,9 +33,9 @@ public class Stow extends Command{
     public boolean isFinished(){
         return true;
     }
-    public Command alongWith(Object println) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'alongWith'");
-    }
+    // public Command alongWith(Object println) {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'alongWith'");
+    // }
 
 }
