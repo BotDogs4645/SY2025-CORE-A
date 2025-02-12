@@ -41,11 +41,11 @@ public class Constants {
     }
 
     public class EndEffectorConstants {
-        public static final int pivotGearRatio = 10; // wrong prolly
-        public static final Rotation2d level1 = Rotation2d.fromRotations(0);
-        public static final Rotation2d level2 = Rotation2d.fromRotations(0);
-        public static final Rotation2d level3 = Rotation2d.fromRotations(0);
-        public static final Rotation2d level4 = Rotation2d.fromRotations(0);
+        public static final int pivotGearRatio = 1; // not wrong prolly
+        public static final Rotation2d level1 = Rotation2d.fromRotations(0); // wrong
+        public static final Rotation2d level2 = Rotation2d.fromRotations(1); // wrong
+        public static final Rotation2d level3 = Rotation2d.fromRotations(2); // wrong
+        public static final Rotation2d level4 = Rotation2d.fromRotations(3); // wrong
 
     }
 

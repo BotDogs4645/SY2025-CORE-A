@@ -18,7 +18,7 @@ import frc.robot.Constants;
 import com.revrobotics.AbsoluteEncoder;
  
 
-public class Endeffector extends SubsystemBase{
+public class EndEffector extends SubsystemBase{
     private TalonFX mainMotor;
     private TalonFX pivotMotor;
     private AbsoluteEncoder pivotEncoder;
@@ -28,7 +28,7 @@ public class Endeffector extends SubsystemBase{
 
     // https://www.chiefdelphi.com/t/using-rev-through-bore-encoder-as-zeroing-encoder-on-swerve-drive/428855/2
 
-    public void endeffector() {
+    public EndEffector() {
         this.mainMotor = new TalonFX(0);
         this.pivotMotor = new TalonFX(0);
         DigitalInput input = new DigitalInput(1);
