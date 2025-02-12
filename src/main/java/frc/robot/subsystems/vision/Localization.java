@@ -5,14 +5,7 @@
 
 package frc.robot.subsystems.vision;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Supplier;
-
-import org.littletonrobotics.junction.Logger;
-
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,15 +17,19 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.vision.Limelight.PoseObservationType;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 public class Localization extends SubsystemBase {
-	
+
 	private final VisionConsumer visionConsumer;
 	private final Supplier<SwerveDriveState> stateSupplier;
 
 	private final Limelight[] limelights;
 	private final LimelightInputsAutoLogged[] inputs;
-  	private final Alert[] disconnectedAlerts;
+	private final Alert[] disconnectedAlerts;
 
 	public Localization(VisionConsumer visionConsumer, Supplier<SwerveDriveState> stateSupplier) {
 		this.visionConsumer = visionConsumer;
@@ -45,10 +42,8 @@ public class Localization extends SubsystemBase {
 		for (int i = 0; i < VisionConstants.limelightNames.length; i++) {
 			limelights[i] = new Limelight(VisionConstants.limelightNames[i]);
 			inputs[i] = new LimelightInputsAutoLogged();
-			disconnectedAlerts[i] = new Alert(
-				"Limelight '" + VisionConstants.limelightNames[i] + "' is disconnected.", 
-				AlertType.kWarning
-			);
+			disconnectedAlerts[i] = new Alert("Limelight '" + VisionConstants.limelightNames[i] + "' is disconnected.",
+					AlertType.kWarning);
 		}
 	}
 
@@ -85,19 +80,18 @@ public class Localization extends SubsystemBase {
 			// Loop over pose observations
 			for (var observation : inputs[i].poseObservations) {
 				// Reject poor pose data based on several criteria
-				boolean rejectPose = 
-					observation.tagCount() == 0 || 
-					// Ambiguity is only applicable to single tag MT1 observations.
-					observation.ambiguity() > VisionConstants.maxAmbiguity ||
-					Math.abs(observation.pose().getZ()) > VisionConstants.maxZError || 
-					// Pose must be within field.
-					observation.pose().getX() < 0.0 ||
-					observation.pose().getX() > VisionConstants.aprilTagLayout.getFieldLength() ||
-					observation.pose().getY() < 0.0 ||
-					observation.pose().getY() > VisionConstants.aprilTagLayout.getFieldWidth() ||
-					// MT2 is inaccurate when rotating quickly
-					(observation.type() == PoseObservationType.MEGATAG_2 &&
-						state.Speeds.omegaRadiansPerSecond > VisionConstants.maxAngluarVelocity);
+				boolean rejectPose = observation.tagCount() == 0 ||
+				// Ambiguity is only applicable to single tag MT1 observations.
+						observation.ambiguity() > VisionConstants.maxAmbiguity
+						|| Math.abs(observation.pose().getZ()) > VisionConstants.maxZError ||
+						// Pose must be within field.
+						observation.pose().getX() < 0.0
+						|| observation.pose().getX() > VisionConstants.aprilTagLayout.getFieldLength()
+						|| observation.pose().getY() < 0.0
+						|| observation.pose().getY() > VisionConstants.aprilTagLayout.getFieldWidth() ||
+						// MT2 is inaccurate when rotating quickly
+						(observation.type() == PoseObservationType.MEGATAG_2
+								&& state.Speeds.omegaRadiansPerSecond > VisionConstants.maxAngluarVelocity);
 
 				// Add pose to log
 				robotPoses.add(observation.pose());
@@ -128,30 +122,19 @@ public class Localization extends SubsystemBase {
 				}
 
 				// Send vision observation to the consumer
-				visionConsumer.accept(
-					observation.pose().toPose2d(),
-					observation.timestamp(),
-					VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev)
-				);
+				visionConsumer.accept(observation.pose().toPose2d(), observation.timestamp(),
+						VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
 			}
 
 			// Log camera data
-			Logger.recordOutput(
-				"Vision/" + VisionConstants.limelightNames[i] + "/TagPoses",
-				tagPoses.toArray(new Pose3d[0])
-			);
-			Logger.recordOutput(
-				"Vision/" + VisionConstants.limelightNames[i] + "/RobotPoses",
-				robotPoses.toArray(new Pose3d[0])
-			);
-			Logger.recordOutput(
-				"Vision/" + VisionConstants.limelightNames[i] + "/RobotPosesAccepted",
-				robotPosesAccepted.toArray(new Pose3d[0])
-			);
-			Logger.recordOutput(
-				"Vision/" + VisionConstants.limelightNames[i] + "/RobotPosesRejected",
-				robotPosesRejected.toArray(new Pose3d[0])
-			);
+			Logger.recordOutput("Vision/" + VisionConstants.limelightNames[i] + "/TagPoses",
+					tagPoses.toArray(new Pose3d[0]));
+			Logger.recordOutput("Vision/" + VisionConstants.limelightNames[i] + "/RobotPoses",
+					robotPoses.toArray(new Pose3d[0]));
+			Logger.recordOutput("Vision/" + VisionConstants.limelightNames[i] + "/RobotPosesAccepted",
+					robotPosesAccepted.toArray(new Pose3d[0]));
+			Logger.recordOutput("Vision/" + VisionConstants.limelightNames[i] + "/RobotPosesRejected",
+					robotPosesRejected.toArray(new Pose3d[0]));
 
 			// Aggregate data for final summary
 			allTagPoses.addAll(tagPoses);
@@ -161,22 +144,10 @@ public class Localization extends SubsystemBase {
 		}
 
 		// Log summary data
-		Logger.recordOutput(
-			"Vision/Summary/TagPoses",
-			allTagPoses.toArray(new Pose3d[0])
-		);
-		Logger.recordOutput(
-			"Vision/Summary/RobotPoses",
-			allRobotPoses.toArray(new Pose3d[0])
-		);
-		Logger.recordOutput(
-			"Vision/Summary/RobotPosesAccepted",
-			allRobotPosesAccepted.toArray(new Pose3d[0])
-		);
-		Logger.recordOutput(
-			"Vision/Summary/RobotPosesRejected",
-			allRobotPosesRejected.toArray(new Pose3d[0])
-		);
+		Logger.recordOutput("Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[0]));
+		Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[0]));
+		Logger.recordOutput("Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[0]));
+		Logger.recordOutput("Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[0]));
 	}
 
 	@Override
@@ -186,10 +157,6 @@ public class Localization extends SubsystemBase {
 
 	@FunctionalInterface
 	public interface VisionConsumer {
-		void accept(
-			Pose2d visionRobotPoseMeters,
-			double timestampSeconds,
-			Matrix<N3, N1> visionMeasurementStdDevs
-		);
+		void accept(Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs);
 	}
 }
