@@ -23,7 +23,7 @@ public class DeepClimb extends SubsystemBase {
         return chuteMotor.getPosition().getValueAsDouble();
     }
     public boolean isStowed() {
-        if (chuteMotor.getPosition().getValueAsDouble() == 103){
+        if (chuteMotor.getPosition().getValueAsDouble() == 103*200){
             return true;
         }else{
             return false;
