@@ -3,11 +3,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DeepClimb extends SubsystemBase {
+    DeepClimb deepClimb = new DeepClimb();
     private final TalonFX climbMotor;
     private final TalonFX chuteMotor;
+    public double ChuteAngle;
     //this is to use the absolute encoder mode on the through bore encoders.
     //We should be using the absolute mode since the climbing motor won't rotate more than once.
     //To use it as an Absolute Encoder however, we do have to connect it to the DIO poet in the RoboRIO. https://www.chiefdelphi.com/t/rev-encoder-absolute-mode-code-examples/425761
@@ -20,14 +23,19 @@ public class DeepClimb extends SubsystemBase {
         climbEncoder = new DutyCycleEncoder(encoderInput);
     }
     public double getChuteAngle() {
-        return chuteMotor.getPosition().getValueAsDouble();
+        ChuteAngle = chuteMotor.getPosition().getValueAsDouble()/200;
+        return ChuteAngle;
     }
     public boolean isStowed() {
-        if (chuteMotor.getPosition().getValueAsDouble() == 103){
+        if (ChuteAngle == 103){
             return true;
         }else{
             return false;
         }
+    }
+    public void resetChuteAngle(){
+        chuteMotor.set(0);
+        ChuteAngle = 0;
     }
     public void setStowSpeed (double chuteSpeed){
         chuteMotor.set(chuteSpeed);
@@ -45,4 +53,10 @@ public class DeepClimb extends SubsystemBase {
     public void setClimbSpeed (double climbSpeed){
         climbMotor.set(climbSpeed);
     }
+     @Override
+     public void periodic() {
+         SmartDashboard.putNumber("Chute Angle", ChuteAngle);
+         SmartDashboard.putBoolean("Chute Stowed", deepClimb.isStowed());
+     }
+
 }
