@@ -15,11 +15,14 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.CommandBuilder;
 import frc.robot.generated.TunerConstants;
@@ -54,7 +57,10 @@ public class RobotContainer {
 
     private final AutoChooser autoChooser = new AutoChooser();
 
-    public static final CommandXboxController testController = new CommandXboxController(1);
+    public static final Joystick testController = new Joystick(1);
+
+    JoystickButton stowButton = new JoystickButton(testController, 2);
+    JoystickButton climbButton = new JoystickButton(testController, 3);
     private final DeepClimb deepClimb = new DeepClimb();
 
   public RobotContainer() {
@@ -115,8 +121,10 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
 
-        testController.a().onTrue(CommandBuilder.StowChute(deepClimb));
-        testController.b().onTrue(CommandBuilder.ClimbDeepCage(deepClimb));
+        
+
+        stowButton.whileTrue( CommandBuilder.StowChute(deepClimb));
+        climbButton.whileTrue(CommandBuilder.ClimbDeepCage(deepClimb));
     }
 
   public Command firstPath() {
