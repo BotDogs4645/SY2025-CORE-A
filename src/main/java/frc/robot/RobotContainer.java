@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.lang.ModuleLayer.Controller;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -16,6 +18,7 @@ import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -24,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.CommandBuilder;
 import frc.robot.commands.components.ElevatorDown;
+import frc.robot.commands.components.ElevatorUp;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -89,11 +93,17 @@ public class RobotContainer {
         //         }));
 
 
-        joystick.x().onTrue(CommandBuilder.HomeElevator(elevator));
+        joystick.x().onTrue(CommandBuilder.ElevatorToLevel(elevator, 1));
         joystick.y().onTrue(Commands.runOnce(() -> {
                 elevator.setCoast();
             }));
         joystick.a().onTrue(CommandBuilder.ElevatorToLevel(elevator, 2));
+
+        joystick.povUp().whileTrue(new ElevatorUp(elevator, joystick));
+        joystick.povDown().whileTrue(new ElevatorDown(elevator, joystick));
+        joystick.b().onTrue(Commands.runOnce(() -> {
+            elevator.setPosition(0);
+        }));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.

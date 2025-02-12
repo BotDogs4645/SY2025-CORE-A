@@ -1,19 +1,20 @@
 package frc.robot.commands.components;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import java.util.ResourceBundle.Control;
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
 
-public class ElevatorDown extends Command {
+public class ElevatorUp extends Command {
 
     private Elevator elevator;
-        private CommandXboxController controller;
+    private CommandXboxController controller;
 
-
-    public ElevatorDown(Elevator elevator, CommandXboxController controller) {
+    public ElevatorUp(Elevator elevator, CommandXboxController controller) {
         this.elevator = elevator;
         addRequirements(elevator);
         this.controller = controller;
@@ -26,8 +27,9 @@ public class ElevatorDown extends Command {
 
     @Override
     public void execute() {
-        elevator.setSpeed(Constants.ElevatorConstants.elevatorDownSpeed);
-        controller.setRumble(RumbleType.kLeftRumble, 1);
+        elevator.setSpeed(Constants.ElevatorConstants.elevatorUpSpeed);
+        controller.setRumble(RumbleType.kRightRumble, 1);
+        
     }
 
     @Override

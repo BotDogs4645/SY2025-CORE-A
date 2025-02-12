@@ -32,19 +32,20 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         leftMotor = new TalonFX(Constants.ElevatorConstants.leftMotorCANId);
         var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 0.02;
-        slot0Configs.kI = 0.0015;
+        slot0Configs.kP = 0.005;
+        // slot0Configs.kI = 0.001;
+        slot0Configs.kD = 0.1;
         leftMotor.getConfigurator().apply(slot0Configs);
         rightMotor = new TalonFX(Constants.ElevatorConstants.rightMotorCANId);
         lowerLimitSwitch = new DigitalInput(Constants.ElevatorConstants.lowerLimitSwitchDIOPort);
         reachedBottom = false;
 
         var currentConfigs = new MotorOutputConfigs();
-        currentConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
+        currentConfigs.Inverted = InvertedValue.Clockwise_Positive;
         leftMotor.getConfigurator().apply(currentConfigs);
 
 
-        rightMotor.setControl(new Follower(ElevatorConstants.leftMotorCANId, true));
+        rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
     }
 
     public void setSpeed(double val) {
@@ -59,14 +60,23 @@ public class Elevator extends SubsystemBase {
         return !lowerLimitSwitch.get();
     }
 
+    public void setPosition(double position) {
+        leftMotor.setPosition(position);
+        rightMotor.setPosition(position);
+    }
+
     @Override
     public void periodic() {
         reachedBottom = getLimitSwitch();
-        SmartDashboard.putString("Control Mode", leftMotor.getAppliedControl().getName());
+        SmartDashboard.putString("Left Control Mode", leftMotor.getAppliedControl().getName());
+        SmartDashboard.putString("Right Control Mode", rightMotor.getAppliedControl().getName());
+        
+
         if (leftMotor.getAppliedControl().getName().equals("PositionDutyCycle")) {
             SmartDashboard.putString("Target Position", leftMotor.getAppliedControl().getControlInfo().get("Position"));
         }
-        SmartDashboard.putNumber("Current Position", leftMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Current Position Left", leftMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Current Position Right", rightMotor.getPosition().getValueAsDouble());
     }
 
     public void resetEncoders() {
