@@ -19,7 +19,7 @@ public class Climb extends Command{
     @ Override
 
     public void execute(){
-        deepClimb.setClimbSpeed(Constants.ClimbConstants.climbSpeed);
+        deepClimb.ClimbDeepCage();
     }
     @ Override
 
