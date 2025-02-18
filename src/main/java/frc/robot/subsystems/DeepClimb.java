@@ -51,10 +51,6 @@ public class DeepClimb extends SubsystemBase {
 
 
     }
-
-    public void StowChute (){
-         
-     }
  
      public void turnToAngle() {
          double targetRevolutions = (103 / 360.0) * 200;
@@ -70,9 +66,6 @@ public class DeepClimb extends SubsystemBase {
     }
     public double getClimbAngle(){
         return climbEncoder.get();
-    }
-    public void ClimbDeepCage(){
-        climbMotor.setPosition(225);
     }
     public void setClimbSpeed(double climbSpeed){
         chuteMotor.set(climbSpeed);
