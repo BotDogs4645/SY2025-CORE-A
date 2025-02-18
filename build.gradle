@@ -125,10 +125,12 @@ tasks.withType(JavaCompile) {
 
 spotless {
     java{
+        targetExclude 'src/main/java/frc/robot/generated/*.java'
         importOrder()
         removeUnusedImports()
-        indentWithTabs()
-        eclipse()
+        leadingSpacesToTabs()
+        toggleOffOn()
+        googleJavaFormat()
         // fix formatting of type annotations
         formatAnnotations()
     }

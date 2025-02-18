@@ -6,16 +6,27 @@ import frc.robot.subsystems.EndEffector;
 
 public class CommandBuilder {
 
-	EndEffector endEffector;
+  EndEffector endEffector;
 
-	public Command outputCoral(EndEffector endEffector, int level) {
-		// move elevator and stuff
+  public Command outputCoral(EndEffector endEffector, int level) {
+    // move elevator and stuff
 
-		this.endEffector = endEffector;
+    this.endEffector = endEffector;
 
-		return Commands.run(() -> {
-			endEffector.setPivotPosition(level);
-		});
-	}
+    return Commands.run(
+        () -> {
+          endEffector.setPivotLevel(level);
+        });
+  }
 
+  public Command alignToIntake(EndEffector endEffector) {
+    // move elevator and stuff
+
+    this.endEffector = endEffector;
+
+    return Commands.run(
+        () -> {
+          endEffector.alignToIntake();
+        });
+  }
 }
