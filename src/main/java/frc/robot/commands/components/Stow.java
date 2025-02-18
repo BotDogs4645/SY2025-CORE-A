@@ -18,7 +18,7 @@ public class Stow extends Command{
     @ Override
 
     public void execute(){
-        deepClimb.StowChute();
+        deepClimb.turnToAngle();
     }
     @ Override
 
