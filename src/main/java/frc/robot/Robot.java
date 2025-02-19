@@ -16,8 +16,17 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.CommandBuilder;
+import frc.robot.generated.BuildConstants;
+import frc.robot.subsystems.DeepClimb;
+
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
+  private DeepClimb deepClimb;
 
   private final RobotContainer m_robotContainer;
 
@@ -59,6 +68,7 @@ public class Robot extends LoggedRobot {
     // be added.
 
     m_robotContainer = new RobotContainer();
+    deepClimb = new DeepClimb();
   }
 
   @Override

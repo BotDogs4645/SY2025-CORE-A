@@ -68,6 +68,22 @@ public class DeepClimb extends SubsystemBase {
             return false;
         }
     }
+    public boolean isStowed(){
+        if (chuteMotor.get() == (103 / 360.0) * 200){
+         return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public boolean isStowed(){
+        if (chuteMotor.get() == (103 / 360.0) * 200){
+         return true;
+        }
+        else{
+            return false;
+        }
+    }
      public double getClimbAngle(){
         return climbEncoder.get()/360.0*200;
      }
