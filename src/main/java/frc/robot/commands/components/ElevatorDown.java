@@ -26,13 +26,20 @@ public class ElevatorDown extends Command {
 
     @Override
     public void execute() {
+      if(elevator.getPosition() > 7) {
         elevator.setSpeed(Constants.ElevatorConstants.elevatorDownSpeed);
         controller.setRumble(RumbleType.kLeftRumble, 1);
+      }
+      else {
+        elevator.setSpeed(0);
+        controller.setRumble(RumbleType.kLeftRumble, 0);
+      }
     }
 
     @Override
     public void end(boolean interrupted) {
-      elevator.setBrake();
+      // elevator.setBrake();
+      elevator.setSpeed(0);
       controller.setRumble(RumbleType.kBothRumble, 0);
     }
 

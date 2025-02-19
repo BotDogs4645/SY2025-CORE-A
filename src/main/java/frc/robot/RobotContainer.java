@@ -93,11 +93,13 @@ public class RobotContainer {
         //         }));
 
 
-        joystick.x().onTrue(CommandBuilder.ElevatorToLevel(elevator, 1));
+        joystick.x().onTrue(Commands.runOnce(() -> {
+            elevator.setBrake();
+        }));
         joystick.y().onTrue(Commands.runOnce(() -> {
                 elevator.setCoast();
             }));
-        joystick.a().onTrue(CommandBuilder.ElevatorToLevel(elevator, 2));
+        joystick.a().onTrue(CommandBuilder.ElevatorToLevel(elevator, 1));
 
         joystick.povUp().whileTrue(new ElevatorUp(elevator, joystick));
         joystick.povDown().whileTrue(new ElevatorDown(elevator, joystick));
