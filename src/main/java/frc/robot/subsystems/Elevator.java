@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,9 +33,9 @@ public class Elevator extends SubsystemBase {
     public Elevator() {
         leftMotor = new TalonFX(Constants.ElevatorConstants.leftMotorCANId);
         var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 0.005;
+        slot0Configs.kP = 0.02;
         // slot0Configs.kI = 0.001;
-        slot0Configs.kD = 0.1;
+        // slot0Configs.kD = 0.1;
         leftMotor.getConfigurator().apply(slot0Configs);
         rightMotor = new TalonFX(Constants.ElevatorConstants.rightMotorCANId);
         lowerLimitSwitch = new DigitalInput(Constants.ElevatorConstants.lowerLimitSwitchDIOPort);
@@ -44,16 +45,23 @@ public class Elevator extends SubsystemBase {
         currentConfigs.Inverted = InvertedValue.Clockwise_Positive;
         leftMotor.getConfigurator().apply(currentConfigs);
 
-
-        rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
+        var secondConfigs = new MotorOutputConfigs();
+        secondConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
+        rightMotor.getConfigurator().apply(secondConfigs);
     }
 
     public void setSpeed(double val) {
         leftMotor.set(val);
+        rightMotor.set(val);
+    }
+
+    public double getPosition() {
+        return leftMotor.getPosition().getValueAsDouble();
     }
 
     public void stop() {
         leftMotor.set(0);
+        rightMotor.set(0);
     }
 
     public boolean getLimitSwitch() {
@@ -77,6 +85,8 @@ public class Elevator extends SubsystemBase {
         }
         SmartDashboard.putNumber("Current Position Left", leftMotor.getPosition().getValueAsDouble());
         SmartDashboard.putNumber("Current Position Right", rightMotor.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("Current Velocity Left", leftMotor.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Current Velocity Right", rightMotor.getVelocity().getValueAsDouble());
     }
 
     public void resetEncoders() {
@@ -86,10 +96,12 @@ public class Elevator extends SubsystemBase {
 
     public void setControl(ControlRequest control) {
         leftMotor.setControl(control);
+        rightMotor.setControl(control);
     }
 
     public void setNeutralMode(NeutralModeValue value) {
         leftMotor.setNeutralMode(value);
+        rightMotor.setNeutralMode(value);
     }
 
     public double getVelocity() {

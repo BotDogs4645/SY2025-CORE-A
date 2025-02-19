@@ -1,6 +1,7 @@
 package frc.robot.commands.components;
 
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.PositionVoltage;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -19,12 +20,12 @@ public class ElevatorToPosition extends Command {
 
   @Override
   public void initialize() {
+    elevator.setControl(control);
 
   }
 
   @Override
   public void execute() {
-    elevator.setControl(control);
   }
 
   @Override
