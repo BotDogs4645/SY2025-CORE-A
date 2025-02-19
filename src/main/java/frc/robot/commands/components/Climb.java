@@ -19,7 +19,7 @@ public class Climb extends Command{
     @ Override
 
     public void execute(){
-        deepClimb.ClimbDeepCage();
+        deepClimb.turnToAngle();
     }
     @ Override
 
