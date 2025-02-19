@@ -116,9 +116,12 @@ public class RobotContainer {
     // reset the field-centric heading on left bumper press
     joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        // drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
+        drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
 
-        testController.a().onTrue(CommandBuilder.StowChute(deepClimb));
+        testController.a().onTrue(CommandBuilder.StowChute(deepClimb)
+        .andThen(() -> SmartDashboard.putBoolean("Button A Pressed", true))
+        .andThen(() -> new WaitCommand(0.5))
+        .andThen(()-> SmartDashboard.putBoolean("Button A Pressed", false)));
         testController.b().onTrue(CommandBuilder.ClimbDeepCage(deepClimb));
     }
 
