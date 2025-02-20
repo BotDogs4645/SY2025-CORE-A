@@ -6,17 +6,10 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 
 public class Constants {
-    public class ChoreoConstants {
-        public static PIDController xController = new PIDController(10.0, 0.0, 0.0);
-        public static PIDController yController = new PIDController(10.0, 0.0, 0.0);
-        public static PIDController headingController = new PIDController(7.5, 0.0, 0.0);
-    }
-
     public class ElevatorConstants {
         public static int leftMotorCANId = 15; //CANivore bus
         public static int rightMotorCANId = 16; //CANivore bus
