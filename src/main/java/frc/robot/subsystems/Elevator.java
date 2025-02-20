@@ -25,34 +25,22 @@ import frc.robot.Constants.ElevatorConstants;
 public class Elevator extends SubsystemBase {
     private final TalonFX leftMotor;
     private final TalonFX rightMotor;
-    private final DigitalInput lowerLimitSwitch;
-    private boolean reachedBottom;
-    private boolean reachedTarget;
-    // private final TalonFXConfiguration elevatorConfiguration;
 
     public Elevator() {
         leftMotor = new TalonFX(Constants.ElevatorConstants.leftMotorCANId);
-        var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 0.02;
-        // slot0Configs.kI = 0.001;
-        // slot0Configs.kD = 0.1;
-        leftMotor.getConfigurator().apply(slot0Configs);
         rightMotor = new TalonFX(Constants.ElevatorConstants.rightMotorCANId);
-        lowerLimitSwitch = new DigitalInput(Constants.ElevatorConstants.lowerLimitSwitchDIOPort);
-        reachedBottom = false;
 
-        var currentConfigs = new MotorOutputConfigs();
-        currentConfigs.Inverted = InvertedValue.Clockwise_Positive;
-        leftMotor.getConfigurator().apply(currentConfigs);
+        leftMotor.getConfigurator().apply(Constants.ElevatorConstants.pidConfigs);
 
-        var secondConfigs = new MotorOutputConfigs();
-        secondConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
-        rightMotor.getConfigurator().apply(secondConfigs);
+        MotorOutputConfigs leftConfigs = new MotorOutputConfigs();
+        leftConfigs.Inverted = InvertedValue.Clockwise_Positive;
+        leftMotor.getConfigurator().apply(leftConfigs);
+
+        rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
     }
 
     public void setSpeed(double val) {
         leftMotor.set(val);
-        rightMotor.set(val);
     }
 
     public double getPosition() {
@@ -61,11 +49,6 @@ public class Elevator extends SubsystemBase {
 
     public void stop() {
         leftMotor.set(0);
-        rightMotor.set(0);
-    }
-
-    public boolean getLimitSwitch() {
-        return !lowerLimitSwitch.get();
     }
 
     public void setPosition(double position) {
@@ -75,10 +58,8 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        reachedBottom = getLimitSwitch();
         SmartDashboard.putString("Left Control Mode", leftMotor.getAppliedControl().getName());
         SmartDashboard.putString("Right Control Mode", rightMotor.getAppliedControl().getName());
-        
 
         if (leftMotor.getAppliedControl().getName().equals("PositionDutyCycle")) {
             SmartDashboard.putString("Target Position", leftMotor.getAppliedControl().getControlInfo().get("Position"));
@@ -90,18 +71,15 @@ public class Elevator extends SubsystemBase {
     }
 
     public void resetEncoders() {
-        leftMotor.setPosition(0);
-        rightMotor.setPosition(0);
+        setPosition(0);
     }
 
     public void setControl(ControlRequest control) {
         leftMotor.setControl(control);
-        rightMotor.setControl(control);
     }
 
     public void setNeutralMode(NeutralModeValue value) {
         leftMotor.setNeutralMode(value);
-        rightMotor.setNeutralMode(value);
     }
 
     public double getVelocity() {

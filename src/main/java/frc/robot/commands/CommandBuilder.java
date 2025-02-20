@@ -47,8 +47,8 @@ public class CommandBuilder {
             default:
                 return Commands.none();
         }
-        return new ElevatorToPosition(elevator, position);
-                // .until(elevator::hasReachedTarget);
+        return new ElevatorToPosition(elevator, position)
+                .until(elevator::hasReachedTarget);
     }
 
 }

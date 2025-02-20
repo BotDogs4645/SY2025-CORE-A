@@ -30,7 +30,7 @@ public class ElevatorToPosition extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    elevator.setBrake();
+    elevator.setCoast();
   }
 
   @Override
