@@ -50,8 +50,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void resetEncoders() {
-        leftMotor.setPosition(0);
-        rightMotor.setPosition(0);
+        setPosition(0);
     }
 
     public double getPosition() {
