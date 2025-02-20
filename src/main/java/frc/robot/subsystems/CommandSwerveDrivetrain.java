@@ -10,6 +10,8 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -250,5 +253,34 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
+    }
+
+    public void createAutoBuilder() {
+        AutoBuilder.configure(
+            () -> this.getState().Pose,
+            this::resetPose,
+            () -> this.getState().Speeds,
+            (speeds, feedforwards) -> {
+                this.setControl(
+                    m_pathApplyFieldSpeeds
+                    .withSpeeds(speeds)
+                    .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesX())
+                    .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesY())
+                );
+            },
+            new PPHolonomicDriveController(
+                Constants.PathPlannerConstants.translationPID,
+                Constants.PathPlannerConstants.rotationPID
+            ), 
+            Constants.PathPlannerConstants.config, 
+            () -> {
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+            }, 
+            this
+        );
     }
 }
