@@ -1,5 +1,4 @@
 package frc.robot.subsystems;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
@@ -16,15 +15,15 @@ public class DeepClimb extends SubsystemBase {
     //this is to use the absolute encoder mode on the through bore encoders.
     //We should be using the absolute mode since the climbing motor won't rotate more than once.
     //To use it as an Absolute Encoder however, we do have to connect it to the DIO poet in the RoboRIO. https://www.chiefdelphi.com/t/rev-encoder-absolute-mode-code-examples/425761
-    //private final DigitalInput encoderInput;
-    //private final DutyCycleEncoder climbEncoder; 
+    private final DigitalInput encoderInput;
+    private final DutyCycleEncoder climbEncoder; 
 
     public DeepClimb(){
         climbMotor = new TalonFX(0);
         chuteMotor = new TalonFX(9);
         talonFXConfigs = new TalonFXConfiguration();
-        //encoderInput = new DigitalInput(1);
-        //climbEncoder = new DutyCycleEncoder(encoderInput);
+        encoderInput = new DigitalInput(0);
+        climbEncoder = new DutyCycleEncoder(encoderInput);
         // Set neutral mode
         chuteMotor.setNeutralMode(NeutralModeValue.Brake);
 
@@ -68,15 +67,6 @@ public class DeepClimb extends SubsystemBase {
             return false;
         }
     }
-    public boolean isStowed(){
-        if (chuteMotor.get() == (103 / 360.0) * 200){
-         return true;
-        }
-        else{
-            return false;
-        }
-    }
-
      public double getClimbAngle(){
         return climbEncoder.get()/360.0*200;
      }
