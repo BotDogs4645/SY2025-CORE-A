@@ -16,12 +16,10 @@ import choreo.auto.AutoChooser;
 import choreo.auto.AutoFactory;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.CommandBuilder;
@@ -106,10 +104,7 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
 
-        testController.a().onTrue(CommandBuilder.StowChute(deepClimb)
-        .andThen(() -> SmartDashboard.putBoolean("Button A Pressed", true))
-        .andThen(() -> new WaitCommand(0.5))
-        .andThen(()-> SmartDashboard.putBoolean("Button A Pressed", false)));
+        testController.a().onTrue(CommandBuilder.StowChute(deepClimb));
         testController.b().onTrue(CommandBuilder.ClimbDeepCage(deepClimb));
     }
 

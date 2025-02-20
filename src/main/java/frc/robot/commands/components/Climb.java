@@ -1,7 +1,9 @@
 package frc.robot.commands.components;
 
+import java.util.Set;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DeepClimb;
 
 public class Climb extends Command{
@@ -15,11 +17,12 @@ public class Climb extends Command{
     @ Override
 
     public void initialize(){
+        deepClimb.climbToAngle(0);
     }
     @ Override
 
     public void execute(){
-        deepClimb.turnToAngle();
+        deepClimb.climbToAngle(105);
     }
     @ Override
 
@@ -30,7 +33,15 @@ public class Climb extends Command{
     @ Override
 
     public boolean isFinished(){
-        return true;
+        if (deepClimb.hasClimbed() == true){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-
+    @Override
+    public Set<Subsystem> getRequirements() {
+        return Set.of(deepClimb);
+    }
 }
