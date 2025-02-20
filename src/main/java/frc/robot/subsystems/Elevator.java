@@ -1,92 +1,52 @@
 package frc.robot.subsystems;
 
-import java.util.OptionalDouble;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
-import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
     private final TalonFX leftMotor;
     private final TalonFX rightMotor;
-    private final DigitalInput lowerLimitSwitch;
-    private boolean reachedBottom;
-    private boolean reachedTarget;
-    // private final TalonFXConfiguration elevatorConfiguration;
+
+    private final PositionDutyCycle positionControl;
 
     public Elevator() {
-        leftMotor = new TalonFX(Constants.ElevatorConstants.leftMotorCANId);
-        var slot0Configs = new Slot0Configs();
-        slot0Configs.kP = 0.02;
-        // slot0Configs.kI = 0.001;
-        // slot0Configs.kD = 0.1;
-        leftMotor.getConfigurator().apply(slot0Configs);
-        rightMotor = new TalonFX(Constants.ElevatorConstants.rightMotorCANId);
-        lowerLimitSwitch = new DigitalInput(Constants.ElevatorConstants.lowerLimitSwitchDIOPort);
-        reachedBottom = false;
+        leftMotor = new TalonFX(ElevatorConstants.leftMotorCANId, "*");
+        rightMotor = new TalonFX(ElevatorConstants.rightMotorCANId, "*");
 
-        var currentConfigs = new MotorOutputConfigs();
-        currentConfigs.Inverted = InvertedValue.Clockwise_Positive;
-        leftMotor.getConfigurator().apply(currentConfigs);
+        var config = new TalonFXConfiguration()
+            .withSlot0(new Slot0Configs()
+                .withKP(ElevatorConstants.KP)
+                .withKI(ElevatorConstants.KI)
+                .withKD(ElevatorConstants.KD)
+            ).withMotorOutput(new MotorOutputConfigs()
+                .withInverted(InvertedValue.Clockwise_Positive)
+            );
 
-        var secondConfigs = new MotorOutputConfigs();
-        secondConfigs.Inverted = InvertedValue.CounterClockwise_Positive;
-        rightMotor.getConfigurator().apply(secondConfigs);
-    }
+        leftMotor.getConfigurator().apply(config);
+        rightMotor.getConfigurator().apply(config);
 
-    public void setSpeed(double val) {
-        leftMotor.set(val);
-        rightMotor.set(val);
-    }
-
-    public double getPosition() {
-        return leftMotor.getPosition().getValueAsDouble();
-    }
-
-    public void stop() {
-        leftMotor.set(0);
-        rightMotor.set(0);
-    }
-
-    public boolean getLimitSwitch() {
-        return !lowerLimitSwitch.get();
-    }
-
-    public void setPosition(double position) {
-        leftMotor.setPosition(position);
-        rightMotor.setPosition(position);
+        positionControl = new PositionDutyCycle(0);
+        rightMotor.setControl(new Follower(ElevatorConstants.leftMotorCANId, true));
+        leftMotor.setControl(positionControl);
     }
 
     @Override
     public void periodic() {
-        reachedBottom = getLimitSwitch();
-        SmartDashboard.putString("Left Control Mode", leftMotor.getAppliedControl().getName());
-        SmartDashboard.putString("Right Control Mode", rightMotor.getAppliedControl().getName());
-        
-
-        if (leftMotor.getAppliedControl().getName().equals("PositionDutyCycle")) {
-            SmartDashboard.putString("Target Position", leftMotor.getAppliedControl().getControlInfo().get("Position"));
-        }
-        SmartDashboard.putNumber("Current Position Left", leftMotor.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("Current Position Right", rightMotor.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("Current Velocity Left", leftMotor.getVelocity().getValueAsDouble());
-        SmartDashboard.putNumber("Current Velocity Right", rightMotor.getVelocity().getValueAsDouble());
     }
 
     public void resetEncoders() {
@@ -94,40 +54,36 @@ public class Elevator extends SubsystemBase {
         rightMotor.setPosition(0);
     }
 
-    public void setControl(ControlRequest control) {
-        leftMotor.setControl(control);
-        rightMotor.setControl(control);
+    public double getPosition() {
+        return leftMotor.getPosition().getValueAsDouble() * ElevatorConstants.metersPerRotation;
     }
 
-    public void setNeutralMode(NeutralModeValue value) {
-        leftMotor.setNeutralMode(value);
-        rightMotor.setNeutralMode(value);
-    }
-
+    
     public double getVelocity() {
-        return leftMotor.getVelocity().getValueAsDouble();
+        return leftMotor.getVelocity().getValueAsDouble() * ElevatorConstants.metersPerRotation;
     }
 
-    public OptionalDouble getTargetPosition() {
-        if(leftMotor.getAppliedControl().getName().equals("PositionDutyCycle")) {
-            return OptionalDouble.of(Double.parseDouble(leftMotor.getAppliedControl().getControlInfo().get("Position")));
-        }
-        return OptionalDouble.empty();
+    public double getTargetPosition() {
+        return positionControl.Position * ElevatorConstants.metersPerRotation;
     }
 
     public boolean hasReachedTarget() {
-        if (leftMotor.getAppliedControl().getName().equals("PositionDutyCycle")) {
-            return getVelocity() == 0 && Math.abs(leftMotor.getPosition().getValueAsDouble() - getTargetPosition().getAsDouble()) < Constants.ElevatorConstants.targetThreshold;
-        }
-        return false;
+        return leftMotor.getAppliedControl() == positionControl
+            && Math.abs(getTargetPosition() - getPosition()) <= ElevatorConstants.positionThreshold.in(Meters)
+            && Math.abs(getVelocity()) <= ElevatorConstants.velocityThreshold.in(MetersPerSecond);
     }
 
-    public void setBrake() {
-        setControl(new StaticBrake());
+    public void setBrake(Boolean brake) {
+        leftMotor.setControl(brake ? new StaticBrake() : new CoastOut());
     }
 
-    public void setCoast() {
-        setControl(new CoastOut());
+    public void setTarget(Distance distance) {
+        positionControl.Position = distance.in(Meters) / ElevatorConstants.metersPerRotation;
+        leftMotor.setControl(positionControl);
     }
 
+    // TODO: add manual teleop controls for operator 
+    public void setDutyCycle(double dutyCycle) {
+        leftMotor.setControl(new DutyCycleOut(dutyCycle));
+    }
 }

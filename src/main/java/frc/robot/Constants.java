@@ -1,8 +1,14 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 
 public class Constants {
     public class ChoreoConstants {
@@ -12,18 +18,27 @@ public class Constants {
     }
 
     public class ElevatorConstants {
-        public static int leftMotorCANId = 14;
-        public static int rightMotorCANId = 6;
-        public static int lowerLimitSwitchDIOPort = 0;
-        public static double elevatorUpSpeed = 0.6;
-        public static double elevatorDownSpeed = -1;
-        public static double targetThreshold = 1;
+        public static int leftMotorCANId = 15; //CANivore bus
+        public static int rightMotorCANId = 16; //CANivore bus
+        public static double UpSpeed = 0.6;
+        public static double DownSpeed = -1;
 
+        private static double gearRatio = 10; // Gearbox reduction (x:1)
+        private static Distance linearConversion = Inches.of(22 * 0.25); // 22t sprocket * 0.25" pitch
+        private static int numStages = 2;
+        public static double metersPerRotation = (numStages * linearConversion.in(Meters)) / gearRatio;
+
+        public static double KP = 0.02;
+        public static double KI = 0;
+        public static double KD = 0;
+        
+        public static Distance positionThreshold = Meters.of(0.05);
+        public static LinearVelocity velocityThreshold = MetersPerSecond.of(0.02);
         public class Heights {
-            public static double level1 = 114;
-            public static double level2 = 0.6;
-            public static double level3 = 0.9;
-            public static double level4 = 1.5;
+            public static Distance level1 = Meters.of(0.3);
+            public static Distance level2 = Meters.of(0.6);
+            public static Distance level3 = Meters.of(0.9);
+            public static Distance level4 = Meters.of(1.5);
         }
     }
 
