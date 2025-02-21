@@ -16,7 +16,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.DriverAssist;
+import frc.robot.commands.components.ElevatorToPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -35,6 +37,7 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController operatorPanel = new CommandXboxController(1); 
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Localization visionSubsustem = new Localization(
@@ -85,6 +88,12 @@ public class RobotContainer {
         joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
 
         drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
+
+        operatorPanel.leftBumper().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L1));
+        operatorPanel.povDown().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2));
+        operatorPanel.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3));
+        operatorPanel.rightBumper().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4));
+        
     }
 
     public Command getAutonomousCommand() {
