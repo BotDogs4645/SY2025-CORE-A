@@ -49,7 +49,7 @@ public class Constants {
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
-      public static double gearRatio = 10;
+      public static double gearRatio = 36;
       
       public static Distance coralThreshold = Millimeters.of(20);
       public static Distance algaeThreshold = Millimeters.of(50);
@@ -84,7 +84,7 @@ public class Constants {
         public static double UpSpeed = 0.6;
         public static double DownSpeed = -1;
 
-        private static double gearRatio = 10; // Gearbox reduction (x:1)
+        private static double gearRatio = 7; // Gearbox reduction (x:1)
         private static Distance linearConversion = Inches.of(22 * 0.25); // 22t sprocket * 0.25" pitch
         private static int numStages = 2;
         public static double metersPerRotation = (numStages * linearConversion.in(Meters)) / gearRatio;
