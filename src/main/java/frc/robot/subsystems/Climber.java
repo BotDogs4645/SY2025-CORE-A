@@ -60,6 +60,10 @@ public class Climber extends SubsystemBase {
         funnelMotor.setControl(funnelControl);
     }
 
+    public void setFunnelCoast() {
+        funnelMotor.setControl(new CoastOut());
+    }
+
     public double getFunnelPosition() {
         return funnelMotor.getPosition().getValueAsDouble();
     }
@@ -73,7 +77,8 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean funnelHasReachedTarget() {
-        return funnelMotor.getAppliedControl() == funnelControl
+        return funnelMotor.getAppliedControl().getName() == "CoastOut" ||
+            funnelMotor.getAppliedControl() == funnelControl
             && Math.abs(getFunnelTargetPosition() - getFunnelPosition()) <= ClimberConstants.rotationThreshold.getRotations()
             && Math.abs(getFunnelPosition()) <= ClimberConstants.velocityThreshold.in(RadiansPerSecond);
     }

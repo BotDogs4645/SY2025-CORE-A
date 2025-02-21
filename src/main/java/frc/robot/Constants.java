@@ -32,6 +32,9 @@ public class Constants {
       public static double climbGearRatio = 100; // Gearbox reduction (x:1)
       public static double funnelGearRatio = 50; // Gearbox reduction (x:1)
 
+      public static Rotation2d deployPosition = Rotation2d.fromDegrees(0);
+      public static Rotation2d climbPosition = Rotation2d.fromDegrees(0);
+
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
     }
@@ -134,6 +137,8 @@ public class Constants {
       DEALGAE_HIGH(0.25, 0.6),
       PROCESSOR(0.25, 0.3),
       INTAKE(0.25, 0),
+      REST(0.25, 0),
+      DEPLOY(0, 0),
       CLIMB(0.25, 0);
 
       public final Rotation2d pivotPosition;
