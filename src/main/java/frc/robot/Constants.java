@@ -32,6 +32,9 @@ public class Constants {
       public static double climbGearRatio = 100; // Gearbox reduction (x:1)
       public static double funnelGearRatio = 50; // Gearbox reduction (x:1)
 
+      public static Rotation2d deployPosition = Rotation2d.fromDegrees(0);
+      public static Rotation2d climbPosition = Rotation2d.fromDegrees(0);
+
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
     }
@@ -49,7 +52,11 @@ public class Constants {
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
-      public static double gearRatio = 10;
+      public static double KP = 0.02;
+      public static double KI = 0;
+      public static double KD = 0;
+
+      public static double gearRatio = 36;
       
       public static Distance coralThreshold = Millimeters.of(20);
       public static Distance algaeThreshold = Millimeters.of(50);
@@ -84,7 +91,7 @@ public class Constants {
         public static double UpSpeed = 0.6;
         public static double DownSpeed = -1;
 
-        private static double gearRatio = 10; // Gearbox reduction (x:1)
+        private static double gearRatio = 7; // Gearbox reduction (x:1)
         private static Distance linearConversion = Inches.of(22 * 0.25); // 22t sprocket * 0.25" pitch
         private static int numStages = 2;
         public static double metersPerRotation = (numStages * linearConversion.in(Meters)) / gearRatio;
@@ -134,6 +141,8 @@ public class Constants {
       DEALGAE_HIGH(0.25, 0.6),
       PROCESSOR(0.25, 0.3),
       INTAKE(0.25, 0),
+      REST(0.25, 0),
+      DEPLOY(0, 0),
       CLIMB(0.25, 0);
 
       public final Rotation2d pivotPosition;

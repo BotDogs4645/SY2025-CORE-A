@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
@@ -60,6 +62,10 @@ public class Climber extends SubsystemBase {
         funnelMotor.setControl(funnelControl);
     }
 
+    public void setFunnelCoast() {
+        funnelMotor.setControl(new CoastOut());
+    }
+
     public double getFunnelPosition() {
         return funnelMotor.getPosition().getValueAsDouble();
     }
@@ -73,8 +79,18 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean funnelHasReachedTarget() {
-        return funnelMotor.getAppliedControl() == funnelControl
+        return funnelMotor.getAppliedControl().getName() == "CoastOut" ||
+            funnelMotor.getAppliedControl() == funnelControl
             && Math.abs(getFunnelTargetPosition() - getFunnelPosition()) <= ClimberConstants.rotationThreshold.getRotations()
             && Math.abs(getFunnelPosition()) <= ClimberConstants.velocityThreshold.in(RadiansPerSecond);
+    }
+
+    @Override
+    public void periodic() {
+        Logger.recordOutput("Climber/funnelPosition", getFunnelPosition());
+        Logger.recordOutput("Climber/funnelSetpoint", getFunnelTargetPosition());
+        Logger.recordOutput("Climber/funnelVelocity", getFunnelVelocity());
+        Logger.recordOutput("Climber/funnelControl", funnelMotor.getAppliedControl().getName());
+        Logger.recordOutput("Climber/funnelDone", funnelHasReachedTarget());
     }
 }

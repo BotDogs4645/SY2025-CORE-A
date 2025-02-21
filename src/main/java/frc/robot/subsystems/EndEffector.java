@@ -3,8 +3,9 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Millimeters;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -44,14 +45,14 @@ public class EndEffector extends SubsystemBase {
                 //.withKS(0)
                 //.withKV(0)
                 //.withKA(0)
-                //.withKP(0)
-                //.withKI(0)
-                //.withKD(0)
-            ).withMotionMagic(new MotionMagicConfigs()
-                .withMotionMagicCruiseVelocity(80 / EndEffectorConstants.gearRatio)
-                .withMotionMagicAcceleration(160 / EndEffectorConstants.gearRatio)
-                .withMotionMagicJerk(1600 / EndEffectorConstants.gearRatio)
-            );
+                .withKP(EndEffectorConstants.KP)
+                .withKI(EndEffectorConstants.KI)
+                .withKD(EndEffectorConstants.KD)
+            );//.withMotionMagic(new MotionMagicConfigs()
+            //    .withMotionMagicCruiseVelocity(80 / EndEffectorConstants.gearRatio)
+            //    .withMotionMagicAcceleration(160 / EndEffectorConstants.gearRatio)
+            //    .withMotionMagicJerk(1600 / EndEffectorConstants.gearRatio)
+            //);
 
         pivotMotor.getConfigurator().apply(pivotConfig);
         
@@ -99,5 +100,15 @@ public class EndEffector extends SubsystemBase {
 
     public boolean algaeSensorTripped() {
         return algaeSensor.getMeasurement().distance_mm  <= EndEffectorConstants.algaeThreshold.in(Millimeters);
+    }
+
+    @Override
+    public void periodic() {
+        Logger.recordOutput("EndEffector/pivotPosition", getPivotPosition());
+        Logger.recordOutput("EndEffector/pivotSetpoint", getPivotTargetPosition());
+        Logger.recordOutput("EndEffector/pivotVelocity", getPivotVelocity());
+        Logger.recordOutput("EndEffector/pivotControl", pivotMotor.getAppliedControl().getName());
+        Logger.recordOutput("EndEffector/pivotDone", hasReachedTarget());
+        Logger.recordOutput("EndEffector/encoderPosition", pivotEncoder.get());
     }
 }
