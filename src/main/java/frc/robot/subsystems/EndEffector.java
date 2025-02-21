@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Millimeters;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -98,5 +100,15 @@ public class EndEffector extends SubsystemBase {
 
     public boolean algaeSensorTripped() {
         return algaeSensor.getMeasurement().distance_mm  <= EndEffectorConstants.algaeThreshold.in(Millimeters);
+    }
+
+    @Override
+    public void periodic() {
+        Logger.recordOutput("EndEffector/pivotPosition", getPivotPosition());
+        Logger.recordOutput("EndEffector/pivotSetpoint", getPivotTargetPosition());
+        Logger.recordOutput("EndEffector/pivotVelocity", getPivotVelocity());
+        Logger.recordOutput("EndEffector/pivotControl", pivotMotor.getAppliedControl().getName());
+        Logger.recordOutput("EndEffector/pivotDone", hasReachedTarget());
+        Logger.recordOutput("EndEffector/encoderPosition", pivotEncoder.get());
     }
 }

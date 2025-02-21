@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -45,10 +47,6 @@ public class Elevator extends SubsystemBase {
         leftMotor.setControl(positionControl);
     }
 
-    @Override
-    public void periodic() {
-    }
-
     public void resetEncoders() {
         leftMotor.setPosition(0);
         rightMotor.setPosition(0);
@@ -85,5 +83,14 @@ public class Elevator extends SubsystemBase {
     // TODO: add manual teleop controls for operator 
     public void setDutyCycle(double dutyCycle) {
         leftMotor.setControl(new DutyCycleOut(dutyCycle));
+    }
+
+    @Override
+    public void periodic() {
+        Logger.recordOutput("Elevator/position", getPosition());
+        Logger.recordOutput("Elevator/setpoint", getTargetPosition());
+        Logger.recordOutput("Elevator/velocity", getVelocity());
+        Logger.recordOutput("Elevator/control", leftMotor.getAppliedControl().getName());
+        Logger.recordOutput("Elevator/done", hasReachedTarget());
     }
 }
