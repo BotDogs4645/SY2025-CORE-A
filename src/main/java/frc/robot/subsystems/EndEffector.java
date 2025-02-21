@@ -44,14 +44,14 @@ public class EndEffector extends SubsystemBase {
                 //.withKS(0)
                 //.withKV(0)
                 //.withKA(0)
-                //.withKP(0)
-                //.withKI(0)
-                //.withKD(0)
-            ).withMotionMagic(new MotionMagicConfigs()
-                .withMotionMagicCruiseVelocity(80 / EndEffectorConstants.gearRatio)
-                .withMotionMagicAcceleration(160 / EndEffectorConstants.gearRatio)
-                .withMotionMagicJerk(1600 / EndEffectorConstants.gearRatio)
-            );
+                .withKP(EndEffectorConstants.KP)
+                .withKI(EndEffectorConstants.KI)
+                .withKD(EndEffectorConstants.KD)
+            );//.withMotionMagic(new MotionMagicConfigs()
+            //    .withMotionMagicCruiseVelocity(80 / EndEffectorConstants.gearRatio)
+            //    .withMotionMagicAcceleration(160 / EndEffectorConstants.gearRatio)
+            //    .withMotionMagicJerk(1600 / EndEffectorConstants.gearRatio)
+            //);
 
         pivotMotor.getConfigurator().apply(pivotConfig);
         
