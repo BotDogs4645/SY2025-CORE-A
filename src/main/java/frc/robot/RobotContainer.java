@@ -20,8 +20,10 @@ import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.DriverAssist;
 import frc.robot.commands.components.ElevatorToPosition;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.vision.Localization;
 
 public class RobotContainer {
@@ -46,6 +48,8 @@ public class RobotContainer {
     );
 
     public final Elevator elevator = new Elevator();
+    public final EndEffector endEffector = new EndEffector();
+    public final Climber climber = new Climber();
 
     public RobotContainer() {
         drivetrain.createAutoBuilder();
