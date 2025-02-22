@@ -52,13 +52,13 @@ public class Constants {
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
-      public static double KP = 0.02;
+      public static double KP = 50;
       public static double KI = 0;
       public static double KD = 0;
 
       public static double gearRatio = 36;
       
-      public static Distance coralThreshold = Millimeters.of(20);
+      public static Distance coralThreshold = Millimeters.of(50);
       public static Distance algaeThreshold = Millimeters.of(50);
     }
 
@@ -86,17 +86,20 @@ public class Constants {
       }    
 
     public class ElevatorConstants {
+
+        // max: 1.36m
+
         public static int leftMotorCANId = 15; //CANivore bus
         public static int rightMotorCANId = 16; //CANivore bus
         public static double UpSpeed = 0.6;
         public static double DownSpeed = -1;
 
-        private static double gearRatio = 7; // Gearbox reduction (x:1)
+        private static double gearRatio = 49; // Gearbox reduction (x:1)
         private static Distance linearConversion = Inches.of(22 * 0.25); // 22t sprocket * 0.25" pitch
         private static int numStages = 2;
         public static double metersPerRotation = (numStages * linearConversion.in(Meters)) / gearRatio;
 
-        public static double KP = 0.02;
+        public static double KP = 0.5;
         public static double KI = 0;
         public static double KD = 0;
         
@@ -134,13 +137,13 @@ public class Constants {
 
     public enum MechanismPosition {
       SCORE_L1(0.25, 0.3),
-      SCORE_L2(0.25, 0.6),
-      SCORE_L3(0.25, 0.9),
-      SCORE_L4(0.25, 1.2),
+      SCORE_L2(0.11113340277833507, 0.3802631995376275),
+      SCORE_L3(0.11113340277833507, 0.8088684570312499),
+      SCORE_L4(0.11113340277833507, 1.3719505560427294),
       DEALGAE_LOW(0.25, 0.3),
       DEALGAE_HIGH(0.25, 0.6),
       PROCESSOR(0.25, 0.3),
-      INTAKE(0.25, 0),
+      INTAKE(0.105, 0),
       REST(0.25, 0),
       DEPLOY(0, 0),
       CLIMB(0.25, 0);

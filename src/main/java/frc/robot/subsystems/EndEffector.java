@@ -6,12 +6,17 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import au.grapplerobotics.LaserCan;
+import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,7 +44,10 @@ public class EndEffector extends SubsystemBase {
 
         Rotation2d rotationInitial = Rotation2d.fromRotations(pivotEncoder.get());
         var pivotConfig = new TalonFXConfiguration()
-            .withFeedback(new FeedbackConfigs()
+            .withMotorOutput(new MotorOutputConfigs()
+                .withInverted(InvertedValue.Clockwise_Positive)
+                .withNeutralMode(NeutralModeValue.Brake)
+            ).withFeedback(new FeedbackConfigs()
                 .withSensorToMechanismRatio(EndEffectorConstants.gearRatio)
             ).withSlot0(new Slot0Configs()
                 //.withKS(0)
@@ -48,13 +56,18 @@ public class EndEffector extends SubsystemBase {
                 .withKP(EndEffectorConstants.KP)
                 .withKI(EndEffectorConstants.KI)
                 .withKD(EndEffectorConstants.KD)
-            );//.withMotionMagic(new MotionMagicConfigs()
-            //    .withMotionMagicCruiseVelocity(80 / EndEffectorConstants.gearRatio)
-            //    .withMotionMagicAcceleration(160 / EndEffectorConstants.gearRatio)
-            //    .withMotionMagicJerk(1600 / EndEffectorConstants.gearRatio)
-            //);
+            ).withMotionMagic(new MotionMagicConfigs()
+                .withMotionMagicCruiseVelocity(80 / EndEffectorConstants.gearRatio)
+                .withMotionMagicAcceleration(160 / EndEffectorConstants.gearRatio)
+                .withMotionMagicJerk(1600 / EndEffectorConstants.gearRatio)
+            );
 
         pivotMotor.getConfigurator().apply(pivotConfig);
+
+        manipulateMotor.getConfigurator().apply(new TalonFXConfiguration()
+            .withMotorOutput(new MotorOutputConfigs()
+                .withInverted(InvertedValue.Clockwise_Positive))
+        );
         
         Rotation2d offset = rotationInitial.minus(EndEffectorConstants.endoderOffset);
         pivotControl = new MotionMagicVoltage(offset.getRotations());
@@ -91,15 +104,27 @@ public class EndEffector extends SubsystemBase {
     }
 
     public boolean firstCoralSensorTripped() {
-        return firstCoralSensor.getMeasurement().distance_mm <= EndEffectorConstants.coralThreshold.in(Millimeters);
+        Measurement measurement = firstCoralSensor.getMeasurement();
+        if (measurement == null) {
+            return false;
+        }
+        return measurement.distance_mm <= EndEffectorConstants.coralThreshold.in(Millimeters);
     }
 
     public boolean secondCoralSensorTripped() {
-        return secondCoralSensor.getMeasurement().distance_mm  <= EndEffectorConstants.coralThreshold.in(Millimeters);
+        Measurement measurement = secondCoralSensor.getMeasurement();
+        if (measurement == null) {
+            return false;
+        }
+        return measurement.distance_mm <= EndEffectorConstants.coralThreshold.in(Millimeters);
     }
 
     public boolean algaeSensorTripped() {
-        return algaeSensor.getMeasurement().distance_mm  <= EndEffectorConstants.algaeThreshold.in(Millimeters);
+        Measurement measurement = algaeSensor.getMeasurement();
+        if (measurement == null) {
+            return false;
+        }
+        return measurement.distance_mm <= EndEffectorConstants.algaeThreshold.in(Millimeters);
     }
 
     @Override
@@ -107,8 +132,12 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/pivotPosition", getPivotPosition());
         Logger.recordOutput("EndEffector/pivotSetpoint", getPivotTargetPosition());
         Logger.recordOutput("EndEffector/pivotVelocity", getPivotVelocity());
+        Logger.recordOutput("EndEffector/voltageOut", pivotMotor.getMotorVoltage().getValueAsDouble());
         Logger.recordOutput("EndEffector/pivotControl", pivotMotor.getAppliedControl().getName());
         Logger.recordOutput("EndEffector/pivotDone", hasReachedTarget());
         Logger.recordOutput("EndEffector/encoderPosition", pivotEncoder.get());
+        Logger.recordOutput("EndEffector/frontSensor", firstCoralSensorTripped());
+        Logger.recordOutput("EndEffector/backSensor", secondCoralSensorTripped());
+        Logger.recordOutput("EndEffector/algaeSensor", algaeSensorTripped());
     }
 }

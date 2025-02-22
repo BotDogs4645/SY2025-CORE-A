@@ -36,7 +36,7 @@ public class Elevator extends SubsystemBase {
                 .withKI(ElevatorConstants.KI)
                 .withKD(ElevatorConstants.KD)
             ).withMotorOutput(new MotorOutputConfigs()
-                .withInverted(InvertedValue.Clockwise_Positive)
+                .withInverted(InvertedValue.CounterClockwise_Positive)
             );
 
         leftMotor.getConfigurator().apply(config);

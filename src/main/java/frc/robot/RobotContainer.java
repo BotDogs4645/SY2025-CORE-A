@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -15,10 +16,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
+import frc.robot.commands.CommandBuilder;
 import frc.robot.commands.DriverAssist;
 import frc.robot.commands.components.ElevatorToPosition;
+import frc.robot.commands.components.EndEffectorToPosition;
+import frc.robot.commands.components.FunnelToPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -69,15 +74,47 @@ public class RobotContainer {
                                                                                     // negative X (left)
                 ));
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(
-                () -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
-        joystick.x().onTrue(
-                Commands.runOnce(() -> {
-                    Pose2d resetPose = new Pose2d(0, 0, new Rotation2d(0));
-                    drivetrain.resetPose(resetPose);
-                    System.out.println("Resetting position");
-                }));
+        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        //joystick.b().whileTrue(drivetrain.applyRequest(
+        //        () -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+        //joystick.x().onTrue(
+        //        Commands.runOnce(() -> {
+        //            Pose2d resetPose = new Pose2d(0, 0, new Rotation2d(0));
+        //            drivetrain.resetPose(resetPose);
+        //            System.out.println("Resetting position");
+        //        }));
+
+        //joystick.y().onTrue(
+        //    new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
+        //);
+
+        //joystick.leftBumper().onTrue(
+        //    CommandBuilder.intake(endEffector)
+        //);
+
+        joystick.y().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L2)
+        ));
+
+        joystick.b().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L3)
+        ));
+
+        joystick.a().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L4)
+        ));
+
+        joystick.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
+        ));
+
+        joystick.leftBumper().onTrue(
+            CommandBuilder.intake(endEffector)
+        );
+
+        joystick.rightBumper().whileTrue(
+            CommandBuilder.spit(endEffector)
+        );
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -87,9 +124,9 @@ public class RobotContainer {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        //joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
+        //joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
 
         drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
 
