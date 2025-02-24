@@ -1,9 +1,6 @@
 package frc.robot.commands.components;
 
-import java.util.Set;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DeepClimb;
 
 public class Stow extends Command{
@@ -38,9 +35,5 @@ public class Stow extends Command{
         else{
             return false;
         }
-    }
-    @Override
-    public Set<Subsystem> getRequirements() {
-        return Set.of(deepClimb);
     }
 }

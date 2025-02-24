@@ -22,10 +22,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.CommandBuilder;
-import frc.robot.commands.CommandBuilder;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.DeepClimb;
 import frc.robot.subsystems.DeepClimb;
 import frc.robot.subsystems.vision.Localization;
 
@@ -118,8 +116,8 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
 
-        testController.a().onTrue(CommandBuilder.StowChute(deepClimb));
-        testController.b().onTrue(CommandBuilder.ClimbDeepCage(deepClimb));
+        testController.a().onTrue(CommandBuilder.stowChute(deepClimb));
+        testController.b().onTrue(CommandBuilder.climbDeepCage(deepClimb));
     }
 
   public Command firstPath() {
