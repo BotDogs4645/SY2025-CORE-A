@@ -116,8 +116,24 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
 
-        testController.a().onTrue(CommandBuilder.stowChute(deepClimb));
-        testController.b().onTrue(CommandBuilder.climbDeepCage(deepClimb));
+        testController.a().onTrue(
+            new InstantCommand(() -> {
+                if (deepClimb.isStowed()) {
+                    System.out.println("Chute is stowed");
+                } else {
+                    System.out.println("Chute is not stowed");
+                }
+            })
+            .andThen(CommandBuilder.stowChute(deepClimb)));
+        testController.b().onTrue(
+            new InstantCommand(() -> {
+            if (deepClimb.isStowed()) {
+                System.out.println("Chute is stowed");
+            } else {
+                System.out.println("Chute is not stowed");
+            }
+        })
+        .andThen(CommandBuilder.climbDeepCage(deepClimb)));
     }
 
   public Command firstPath() {

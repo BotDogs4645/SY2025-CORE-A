@@ -30,11 +30,6 @@ public class Climb extends Command{
     @ Override
 
     public boolean isFinished(){
-        if (deepClimb.hasClimbed() == true){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+        return deepClimb.hasClimbed();
+    }  
 }

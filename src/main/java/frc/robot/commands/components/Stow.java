@@ -18,7 +18,7 @@ public class Stow extends Command{
     @ Override
 
     public void execute(){
-        deepClimb.turnToAngle();
+        deepClimb.stowToAngle();
     }
     @ Override
 
@@ -29,11 +29,6 @@ public class Stow extends Command{
     @ Override
 
     public boolean isFinished(){
-        if (deepClimb.isStowed() == true){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+        return deepClimb.isStowed();
+    }  
 }
