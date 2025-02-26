@@ -118,22 +118,14 @@ public class RobotContainer {
 
         testController.a().onTrue(
             new InstantCommand(() -> {
-                if (deepClimb.isStowed()) {
-                    System.out.println("Chute is stowed");
-                } else {
-                    System.out.println("Chute is not stowed");
-                }
-            })
-            .andThen(CommandBuilder.stowChute(deepClimb)));
+                if (deepClimb.isStowed() == false) {
+                    CommandBuilder.stowChute(deepClimb);
+                }}));
         testController.b().onTrue(
             new InstantCommand(() -> {
-            if (deepClimb.isStowed()) {
-                System.out.println("Chute is stowed");
-            } else {
-                System.out.println("Chute is not stowed");
-            }
-        })
-        .andThen(CommandBuilder.climbDeepCage(deepClimb)));
+            if (deepClimb.isStowed() == false) {
+                CommandBuilder.climbDeepCage(deepClimb);
+        }}));
     }
 
   public Command firstPath() {

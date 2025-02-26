@@ -46,16 +46,16 @@ public class Constants {
     public static int chuteMotorID = 9;
     public static double climbSpeed = 0.5;
     public static double chuteSpeed = 0.5;
-    public static double angleToStow = 103;
-    public static double angleToClimb = 105;
+    public static double angleToStow = 103; //(103(90+13) is the angle of the chute stowed up)
+    public static double angleToClimb = 105; //(135 is an angle that we can play with during testing)
     public static int stowGearRatio = 200;
     public static int climbGearRatio = 200;
     public static double stowDeadband = 0.05;
     public static double climbDeadband = 0.05; 
-    public static double stowBottomEndStop = 13/360.0*stowGearRatio;
-    public static double stowTopPoint = 103/360.0*stowGearRatio;
-    public static double climbBottomEndStop = 0;
-    public static double climbTopPoint = 135/360.0*climbGearRatio;
+    public static double stowBottomEndStop = 13/360.0*stowGearRatio; // The minimum position of the chute in rotations (13 is the angle in degrees of the chute at rest)
+    public static double stowTopPoint = 103/360.0*stowGearRatio; // The maximum position of the chute in rotations (103(90+13) is the angle of the chute stowed up)
+    public static double climbBottomEndStop = 0; //The minimum position of the climber in rotations
+    public static double climbTopPoint = 135/360.0*climbGearRatio; // The maximum position of the climber in rotations (135 is an angle that would allow the climber to rotate fully away from the center)
 
 
     public static final TalonFXConfiguration talonFXConfigs;
