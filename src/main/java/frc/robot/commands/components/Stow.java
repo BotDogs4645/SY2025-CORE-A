@@ -12,22 +12,18 @@ public class Stow extends Command{
         addRequirements(deepClimb);
     }
     @ Override
-
     public void initialize(){
     }
     @ Override
-
     public void execute(){
         deepClimb.stowToAngle();
     }
     @ Override
-
     public void end(boolean interrupted){
         deepClimb.setStowSpeed(0);
     }
 
     @ Override
-
     public boolean isFinished(){
         return deepClimb.isStowed();
     }  

@@ -47,7 +47,7 @@ public class Constants {
     public static double climbSpeed = 0.5;
     public static double chuteSpeed = 0.5;
     public static double angleToStow = 103; //(103(90+13) is the angle of the chute stowed up)
-    public static double angleToClimb = 105; //(135 is an angle that we can play with during testing)
+    public static double angleToClimb = 135; //(135 is an angle that we can play with during testing)
     public static int stowGearRatio = 200;
     public static int climbGearRatio = 200;
     public static double stowDeadband = 0.05;

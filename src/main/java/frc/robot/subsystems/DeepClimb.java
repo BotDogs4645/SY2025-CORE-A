@@ -45,7 +45,8 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public boolean isStowed() {
-        if ((Math.abs((chuteMotor.get()) - (Constants.ClimbConstants.angleToStow/360.0*Constants.ClimbConstants.stowGearRatio)) <= Constants.ClimbConstants.stowDeadband) && (chuteMotor.getVelocity().getValueAsDouble() == 0)){
+        if (Math.abs(chuteMotor.get() - Constants.ClimbConstants.stowTopPoint) <= Constants.ClimbConstants.stowDeadband 
+        && chuteMotor.getVelocity().getValueAsDouble() == 0){
             return true;
         } else {
             return false;
@@ -71,7 +72,8 @@ public class DeepClimb extends SubsystemBase {
     }
 
     public boolean hasClimbed() {
-        if ((Math.abs((climbEncoder.get()) - (Constants.ClimbConstants.angleToClimb/360.0*Constants.ClimbConstants.climbGearRatio)) <= Constants.ClimbConstants.climbDeadband) && (climbMotor.getVelocity().getValueAsDouble() == 0)){
+        if (Math.abs(climbEncoder.get() - Constants.ClimbConstants.climbBottomEndStop) <= Constants.ClimbConstants.climbDeadband 
+        && climbMotor.getVelocity().getValueAsDouble() == 0){
             return true;
         } else {
             return false;
