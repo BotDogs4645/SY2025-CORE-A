@@ -18,7 +18,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.EndEffectorConstants;
 
@@ -33,10 +35,18 @@ public class EndEffector extends SubsystemBase {
 
     private final MotionMagicVoltage pivotControl;
 
+    private final Alert firstCoralSensorAlert;
+    private final Alert secondCoralSensorAlert;
+    private final Alert algaeSensorAlert;
+
     public EndEffector() {
         firstCoralSensor = new LaserCan(EndEffectorConstants.firstCoralSensorID);
         secondCoralSensor = new LaserCan(EndEffectorConstants.secondCoralSensorID);
         algaeSensor = new LaserCan(EndEffectorConstants.algaeSensorID);
+
+        firstCoralSensorAlert = new Alert("First Coral LaserCAN failed to read", AlertType.kWarning);
+        secondCoralSensorAlert = new Alert("Second Coral LaserCAN failed to read", AlertType.kWarning);
+        algaeSensorAlert = new Alert("Algae LaserCAN failed to read", AlertType.kWarning);
 
         manipulateMotor = new TalonFX(EndEffectorConstants.manipulateMotorID);
         pivotMotor = new TalonFX(EndEffectorConstants.pivotMotorID);
@@ -106,24 +116,30 @@ public class EndEffector extends SubsystemBase {
     public boolean firstCoralSensorTripped() {
         Measurement measurement = firstCoralSensor.getMeasurement();
         if (measurement == null) {
+            firstCoralSensorAlert.set(true);
             return false;
         }
+        firstCoralSensorAlert.set(false);
         return measurement.distance_mm <= EndEffectorConstants.coralThreshold.in(Millimeters);
     }
 
     public boolean secondCoralSensorTripped() {
         Measurement measurement = secondCoralSensor.getMeasurement();
         if (measurement == null) {
+            secondCoralSensorAlert.set(true);
             return false;
         }
+        secondCoralSensorAlert.set(false);
         return measurement.distance_mm <= EndEffectorConstants.coralThreshold.in(Millimeters);
     }
 
     public boolean algaeSensorTripped() {
         Measurement measurement = algaeSensor.getMeasurement();
         if (measurement == null) {
+            algaeSensorAlert.set(true);
             return false;
         }
+        algaeSensorAlert.set(false);
         return measurement.distance_mm <= EndEffectorConstants.algaeThreshold.in(Millimeters);
     }
 
