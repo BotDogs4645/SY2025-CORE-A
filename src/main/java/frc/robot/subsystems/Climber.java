@@ -79,9 +79,6 @@ public class Climber extends SubsystemBase {
     }
 
     public boolean funnelHasReachedTarget() {
-        // hello my name is john ratke and i dont know how to compare strings in java
-        // i am proud of my 4 on csa.
-        // Niech żyje Polska!!!!!
         return funnelMotor.getAppliedControl().getName().equals("CoastOut") ||
             funnelMotor.getAppliedControl() == funnelControl
             && Math.abs(getFunnelTargetPosition() - getFunnelPosition()) <= ClimberConstants.rotationThreshold.getRotations()
