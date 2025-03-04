@@ -11,11 +11,14 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import com.pathplanner.lib.pathfinding.Pathfinding;
+
 import au.grapplerobotics.CanBridge;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.lib.util.LocalADStarAK;
 import frc.robot.generated.BuildConstants;
 
 public class Robot extends LoggedRobot {
@@ -26,6 +29,7 @@ public class Robot extends LoggedRobot {
   public Robot() {
     
     CanBridge.runTCP();
+    Pathfinding.setPathfinder(new LocalADStarAK());
 
     Logger.recordMetadata("ProjectName", "SY2025-Core-A");
 
