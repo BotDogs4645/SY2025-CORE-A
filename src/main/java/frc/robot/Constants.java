@@ -47,7 +47,6 @@ public class Constants {
       public static int algaeSensorID = 24;
 
       public static int encoderDioPort = 0;
-      public static Rotation2d endoderOffset = Rotation2d.fromRotations(0);
 
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);

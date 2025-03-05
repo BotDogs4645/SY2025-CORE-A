@@ -10,6 +10,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -52,7 +53,6 @@ public class EndEffector extends SubsystemBase {
         pivotMotor = new TalonFX(EndEffectorConstants.pivotMotorID);
         pivotEncoder = new DutyCycleEncoder(EndEffectorConstants.encoderDioPort);
 
-        Rotation2d rotationInitial = Rotation2d.fromRotations(pivotEncoder.get());
         var pivotConfig = new TalonFXConfiguration()
             .withMotorOutput(new MotorOutputConfigs()
                 .withInverted(InvertedValue.Clockwise_Positive)
@@ -79,11 +79,10 @@ public class EndEffector extends SubsystemBase {
                 .withInverted(InvertedValue.Clockwise_Positive))
         );
         
-        Rotation2d offset = rotationInitial.minus(EndEffectorConstants.endoderOffset);
-        pivotControl = new MotionMagicVoltage(offset.getRotations());
-        pivotMotor.setPosition(offset.getRotations());
+        pivotControl = new MotionMagicVoltage(0);
+        pivotMotor.setPosition(pivotEncoder.get());
 
-        pivotMotor.setControl(pivotControl);
+        pivotMotor.setControl(new CoastOut());
     }
 
     public void setWheelDutyCycle(double speed) {
