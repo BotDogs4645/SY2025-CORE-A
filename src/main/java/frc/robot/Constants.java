@@ -136,17 +136,17 @@ public class Constants {
     }
 
     public enum MechanismPosition {
-      SCORE_L1(0.25, 0.3),
-      SCORE_L2(0.11113340277833507, 0.3802631995376275),
-      SCORE_L3(0.11113340277833507, 0.8088684570312499),
-      SCORE_L4(0.11113340277833507, 1.3719505560427294),
-      DEALGAE_LOW(0.25, 0.3),
-      DEALGAE_HIGH(0.25, 0.6),
-      PROCESSOR(0.25, 0.3),
-      INTAKE(0.105, 0),
-      REST(0.25, 0),
-      DEPLOY(0, 0),
-      CLIMB(0.25, 0);
+      SCORE_L1(0.48, 0.3),
+      SCORE_L2(0.47616563690414093, 0.3802631995376275),
+      SCORE_L3(0.47616563690414093, 0.8088684570312499),
+      SCORE_L4(0.46149188653729717, 1.4074546695631376),
+      DEALGAE_LOW(0.48, 0.3),
+      DEALGAE_HIGH(0.48, 0.6),
+      PROCESSOR(0.48, 0.3),
+      INTAKE(0.47616563690414093, 0),
+      REST(0.48, 0),
+      DEPLOY(0.48, 0),
+      CLIMB(0.48, 0);
 
       public final Rotation2d pivotPosition;
       public final Distance elevatorPosition;
