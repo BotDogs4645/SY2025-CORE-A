@@ -17,6 +17,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.CommandBuilder;
@@ -92,30 +94,24 @@ public class RobotContainer {
         //    CommandBuilder.intake(endEffector)
         //);
 
-        joystick.y().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L2)
-        ));
+        // joystick.y().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2).alongWith(
+        //     new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L2)
+        // ));
 
-        joystick.b().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L3)
-        ));
+        // joystick.b().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3).alongWith(
+        //     new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L3)
+        // ));
 
-        joystick.a().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L4)
-        ));
+        // joystick.a().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4).alongWith(
+        //     new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L4)
+        // ));
 
-        joystick.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
-        ));
+        // joystick.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
+        //     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
+        // ));
 
-        joystick.leftBumper().onTrue(
-            CommandBuilder.intake(endEffector)
-        );
 
-        joystick.rightBumper().whileTrue(
-            CommandBuilder.spit(endEffector)
-        );
-
+        
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
@@ -124,17 +120,61 @@ public class RobotContainer {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        //joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // joystick.rightBumper().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
+        //     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
+        // ));
 
-        //joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
+        // joystick.rightBumper().onTrue(new FunnelToPosition(climber, MechanismPosition.REST));
+
+        // joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
 
         drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
 
-        operatorPanel.leftBumper().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L1));
-        operatorPanel.povDown().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2));
-        operatorPanel.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3));
-        operatorPanel.rightBumper().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4));
+        operatorPanel.a().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L1).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L1)
+        ));
         
+        operatorPanel.b().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L2)
+        ));
+
+        operatorPanel.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L3)
+        ));
+
+        operatorPanel.y().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4).alongWith(
+            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L4)
+        ));
+
+        
+        // joystick.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
+        //     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
+        // ));
+
+            
+        operatorPanel.rightStick().whileTrue(CommandBuilder.spit(endEffector));
+        // operatorPanel.leftStick().onTrue(
+        //     new ElevatorToPosition(elevator, MechanismPosition.INTAKE)
+        // .alongWith(new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE))
+        // .andThen(new FunnelToPosition(climber, MechanismPosition.INTAKE))
+        // .alongWith(CommandBuilder.intake(endEffector)).andThen(new FunnelToPosition(climber, MechanismPosition.REST))
+        // );
+        operatorPanel.leftStick().onTrue(
+            new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                    new ElevatorToPosition(elevator, MechanismPosition.INTAKE),
+                    new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
+                ),
+                new ParallelCommandGroup(
+                    new FunnelToPosition(climber, MechanismPosition.INTAKE),
+                    CommandBuilder.intake(endEffector)
+                ),
+                new FunnelToPosition(climber, null)
+
+            )
+        );
+
     }
 
     public Command getAutonomousCommand() {

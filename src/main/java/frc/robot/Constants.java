@@ -142,7 +142,7 @@ public class Constants {
       DEALGAE_LOW(0.48, 0.3),
       DEALGAE_HIGH(0.48, 0.6),
       PROCESSOR(0.48, 0.3),
-      INTAKE(0.47616563690414093, 0),
+      INTAKE(0.41, 0),
       REST(0.48, 0),
       DEPLOY(0.48, 0),
       CLIMB(0.48, 0);

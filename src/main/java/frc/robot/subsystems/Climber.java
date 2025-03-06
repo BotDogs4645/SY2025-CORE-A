@@ -5,9 +5,11 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -39,6 +41,9 @@ public class Climber extends SubsystemBase {
                 .withSensorToMechanismRatio(ClimberConstants.climbGearRatio)
             );
         var funnelMotorConfig = new TalonFXConfiguration()
+            .withSlot0(new Slot0Configs()
+                .withKP(10)
+            )       
             .withFeedback(new FeedbackConfigs()
                 .withSensorToMechanismRatio(ClimberConstants.funnelGearRatio)
             );
