@@ -156,6 +156,7 @@ public class RobotContainer {
         // );
         operatorPanel.leftStick().onTrue(
             Commands.sequence(
+                Commands.parallel(
                     new ElevatorToPosition(elevator, MechanismPosition.INTAKE),
                     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
                 ),
