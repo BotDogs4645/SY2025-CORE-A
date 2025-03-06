@@ -32,8 +32,9 @@ public class Constants {
       public static double climbGearRatio = 100; // Gearbox reduction (x:1)
       public static double funnelGearRatio = 50; // Gearbox reduction (x:1)
 
-      public static Rotation2d deployPosition = Rotation2d.fromDegrees(0);
-      public static Rotation2d climbPosition = Rotation2d.fromDegrees(0);
+      public static Rotation2d deployPosition = Rotation2d.fromRotations(0);
+      public static Rotation2d restPosition = Rotation2d.fromRotations(0.32080078125);
+      public static Rotation2d climbPosition = Rotation2d.fromRotations(0);
 
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);

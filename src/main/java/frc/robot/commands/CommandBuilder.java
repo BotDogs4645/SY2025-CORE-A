@@ -1,9 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.components.FunnelToPosition;
+import frc.robot.commands.components.ElevatorToPosition;
+import frc.robot.commands.components.EndEffectorComponents;
 import frc.robot.commands.components.EndEffectorToPosition;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
@@ -16,53 +19,51 @@ public class CommandBuilder {
             .andThen(new FunnelToPosition(climber, MechanismPosition.REST));
     }
 
-    public static Command intake(EndEffector endEffector) {
-        return new Command() {
-            @Override
-            public void initialize() {
-                endEffector.setWheelDutyCycle(0.2);
-            }
+    public static Command toMechanismPosition(EndEffector endEffector, Elevator elevator, MechanismPosition position) {
+        return new ParallelCommandGroup(
+            new ElevatorToPosition(elevator, position),
+            new EndEffectorToPosition(endEffector, position)
+        );
+    }
 
-            @Override
-            public void execute() {
-                if (endEffector.firstCoralSensorTripped()) {
-                    endEffector.setWheelDutyCycle(0.05);
-                }
-            }
+    public static Command intakeSequence(Climber climber, EndEffector endEffector, Elevator elevator) {
+        return toMechanismPosition(endEffector, elevator, MechanismPosition.INTAKE)
+        .andThen(
+            new FunnelToPosition(climber, MechanismPosition.INTAKE)
+        ).andThen(
+            EndEffectorComponents.intakeCoral(endEffector)
+        ).andThen(
+            new FunnelToPosition(climber, MechanismPosition.REST)
+        );
+    }
 
-            @Override
-            public void end(boolean interrupted) {
-                endEffector.setWheelDutyCycle(0);
-            }
+    public static Command intakeAlgaeLow(EndEffector endEffector, Elevator elevator) {
+        return new ParallelCommandGroup(
+            new ElevatorToPosition(elevator, MechanismPosition.DEALGAE_LOW),
+            new EndEffectorToPosition(endEffector, MechanismPosition.DEALGAE_LOW)
+        ).andThen(
+            EndEffectorComponents.intakeAlgae(endEffector)
+        ).andThen(
+            toMechanismPosition(endEffector, elevator, MechanismPosition.REST)
+        );
+    }
 
-            @Override 
-            public boolean isFinished() {
-                return endEffector.secondCoralSensorTripped();
-            }
-        };
-    } 
+    public static Command intakeAlgaeHigh(EndEffector endEffector, Elevator elevator) {
+        return new ParallelCommandGroup(
+            new ElevatorToPosition(elevator, MechanismPosition.DEALGAE_HIGH),
+            new EndEffectorToPosition(endEffector, MechanismPosition.DEALGAE_HIGH)
+        ).andThen(
+            EndEffectorComponents.intakeAlgae(endEffector)
+        ).andThen(
+            toMechanismPosition(endEffector, elevator, MechanismPosition.REST)
+        );
+    }
 
-    public static Command spit(EndEffector endEffector) {
-        return new Command() {
-            @Override
-            public void initialize() {
-                endEffector.setWheelDutyCycle(0.2);
-            }
-
-            @Override
-            public void execute() {
-            }
-
-            @Override
-            public void end(boolean interrupted) {
-                endEffector.setWheelDutyCycle(0);
-            }
-
-            @Override 
-            public boolean isFinished() {
-                return false;
-            }
-        };
-    } 
-
+    public static Command score(EndEffector endEffector, Elevator elevator) {
+        return EndEffectorComponents.score(endEffector)
+        .andThen(new WaitCommand(0.5))
+        .andThen(
+            toMechanismPosition(endEffector, elevator, MechanismPosition.REST)
+        );
+    }
 }

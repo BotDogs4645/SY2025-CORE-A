@@ -15,9 +15,10 @@ public class FunnelToPosition extends Command {
     this.climber = climber;
     addRequirements(climber);
     switch (position) {
-        case INTAKE: targetPosition = ClimberConstants.deployPosition; break;
-        // case CLIMB: targetPosition = ClimberConstants.deployPosition; break;
-        case REST: targetPosition = Rotation2d.fromRotations(0.32080078125); break;
+        case INTAKE: targetPosition = Rotation2d.fromRotations(0); break;
+        case DEPLOY: targetPosition = ClimberConstants.deployPosition; break;
+        case CLIMB: targetPosition = ClimberConstants.climbPosition; break;
+        case REST: targetPosition = ClimberConstants.restPosition; break;
         default: targetPosition = null;
     }
   }

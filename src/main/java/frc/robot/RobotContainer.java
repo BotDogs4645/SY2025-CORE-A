@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -12,20 +11,11 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.CommandBuilder;
-import frc.robot.commands.DriverAssist;
-import frc.robot.commands.components.ElevatorToPosition;
-import frc.robot.commands.components.EndEffectorToPosition;
-import frc.robot.commands.components.FunnelToPosition;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -46,7 +36,7 @@ public class RobotContainer {
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     private final CommandXboxController joystick = new CommandXboxController(0);
-    private final CommandXboxController operatorPanel = new CommandXboxController(1); 
+    private final CommandJoystick operatorPanel = new CommandJoystick(1); 
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Localization visionSubsustem = new Localization(
@@ -64,6 +54,8 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -85,32 +77,6 @@ public class RobotContainer {
         //            drivetrain.resetPose(resetPose);
         //            System.out.println("Resetting position");
         //        }));
-
-        //joystick.y().onTrue(
-        //    new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
-        //);
-
-        //joystick.leftBumper().onTrue(
-        //    CommandBuilder.intake(endEffector)
-        //);
-
-        // joystick.y().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2).alongWith(
-        //     new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L2)
-        // ));
-
-        // joystick.b().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3).alongWith(
-        //     new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L3)
-        // ));
-
-        // joystick.a().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4).alongWith(
-        //     new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L4)
-        // ));
-
-        // joystick.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
-        //     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
-        // ));
-
-
         
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -120,55 +86,47 @@ public class RobotContainer {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        // joystick.rightBumper().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
-        //     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
-        // ));
 
-        // joystick.rightBumper().onTrue(new FunnelToPosition(climber, MechanismPosition.REST));
 
         // joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
 
-        drivetrain.registerTelemetry(Telemetry::telemeterizeSwerve);
+        joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        operatorPanel.a().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L1).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L1)
-        ));
-        
-        operatorPanel.b().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L2).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L2)
-        ));
-
-        operatorPanel.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L3).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L3)
-        ));
-
-        operatorPanel.y().onTrue(new ElevatorToPosition(elevator, MechanismPosition.SCORE_L4).alongWith(
-            new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L4)
-        ));
-
-        operatorPanel.rightStick().whileTrue(CommandBuilder.spit(endEffector));
-        // operatorPanel.leftStick().onTrue(
-        //     new ElevatorToPosition(elevator, MechanismPosition.INTAKE)
-        // .alongWith(new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE))
-        // .andThen(new FunnelToPosition(climber, MechanismPosition.INTAKE))
-        // .alongWith(CommandBuilder.intake(endEffector)).andThen(new FunnelToPosition(climber, MechanismPosition.REST))
-        // );
-        operatorPanel.leftStick().onTrue(
-            Commands.sequence(
-                Commands.parallel(
-                    new ElevatorToPosition(elevator, MechanismPosition.INTAKE),
-                    new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
-                ),
-                Commands.parallel(
-                    new FunnelToPosition(climber, MechanismPosition.INTAKE),
-                    CommandBuilder.intake(endEffector)
-                ),
-                new FunnelToPosition(climber, MechanismPosition.REST)
-
-            )
+        joystick.button(7).onTrue(
+            CommandBuilder.deploy(climber, endEffector, elevator)
         );
 
+        operatorPanel.button(0).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L1)
+        );
+        
+        operatorPanel.button(1).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L2)
+        );
+        
+        operatorPanel.button(2).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L3)
+        );
+        
+        operatorPanel.button(3).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L4)
+        );
+
+        operatorPanel.button(4).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_HIGH)
+        );
+
+        operatorPanel.button(5).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_LOW)
+        );
+        
+        operatorPanel.button(6).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.PROCESSOR)
+        );
+
+        operatorPanel.button(7).toggleOnTrue(
+            CommandBuilder.intakeSequence(climber, endEffector, elevator)
+        );
     }
 
     public Command getAutonomousCommand() {
