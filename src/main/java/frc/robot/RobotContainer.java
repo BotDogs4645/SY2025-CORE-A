@@ -96,35 +96,35 @@ public class RobotContainer {
             CommandBuilder.deploy(climber, endEffector, elevator)
         );
 
-        operatorPanel.button(0).onTrue(
+        operatorPanel.button(1).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L1)
         );
         
-        operatorPanel.button(1).onTrue(
+        operatorPanel.button(2).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L2)
         );
         
-        operatorPanel.button(2).onTrue(
+        operatorPanel.button(3).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L3)
         );
         
-        operatorPanel.button(3).onTrue(
+        operatorPanel.button(4).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L4)
         );
 
-        operatorPanel.button(4).onTrue(
+        operatorPanel.button(5).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_HIGH)
         );
 
-        operatorPanel.button(5).onTrue(
+        operatorPanel.button(6).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_LOW)
         );
         
-        operatorPanel.button(6).onTrue(
+        operatorPanel.button(7).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.PROCESSOR)
         );
 
-        operatorPanel.button(7).toggleOnTrue(
+        operatorPanel.button(8).toggleOnTrue(
             CommandBuilder.intakeSequence(climber, endEffector, elevator)
         );
     }
