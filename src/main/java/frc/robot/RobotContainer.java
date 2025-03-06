@@ -147,12 +147,6 @@ public class RobotContainer {
             new EndEffectorToPosition(endEffector, MechanismPosition.SCORE_L4)
         ));
 
-        
-        // joystick.x().onTrue(new ElevatorToPosition(elevator, MechanismPosition.INTAKE).alongWith(
-        //     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
-        // ));
-
-            
         operatorPanel.rightStick().whileTrue(CommandBuilder.spit(endEffector));
         // operatorPanel.leftStick().onTrue(
         //     new ElevatorToPosition(elevator, MechanismPosition.INTAKE)
@@ -170,7 +164,7 @@ public class RobotContainer {
                     new FunnelToPosition(climber, MechanismPosition.INTAKE),
                     CommandBuilder.intake(endEffector)
                 ),
-                new FunnelToPosition(climber, null)
+                new FunnelToPosition(climber, MechanismPosition.REST)
 
             )
         );

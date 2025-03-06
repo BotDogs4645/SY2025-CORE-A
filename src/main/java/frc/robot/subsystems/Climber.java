@@ -42,7 +42,9 @@ public class Climber extends SubsystemBase {
             );
         var funnelMotorConfig = new TalonFXConfiguration()
             .withSlot0(new Slot0Configs()
-                .withKP(10)
+                .withKP(ClimberConstants.FunnelConstants.KP)
+                .withKI(ClimberConstants.FunnelConstants.KI)
+                .withKD(ClimberConstants.FunnelConstants.KD)
             )       
             .withFeedback(new FeedbackConfigs()
                 .withSensorToMechanismRatio(ClimberConstants.funnelGearRatio)
