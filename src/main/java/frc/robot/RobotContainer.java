@@ -155,12 +155,11 @@ public class RobotContainer {
         // .alongWith(CommandBuilder.intake(endEffector)).andThen(new FunnelToPosition(climber, MechanismPosition.REST))
         // );
         operatorPanel.leftStick().onTrue(
-            new SequentialCommandGroup(
-                new ParallelCommandGroup(
+            Commands.sequence(
                     new ElevatorToPosition(elevator, MechanismPosition.INTAKE),
                     new EndEffectorToPosition(endEffector, MechanismPosition.INTAKE)
                 ),
-                new ParallelCommandGroup(
+                Commands.parallel(
                     new FunnelToPosition(climber, MechanismPosition.INTAKE),
                     CommandBuilder.intake(endEffector)
                 ),
