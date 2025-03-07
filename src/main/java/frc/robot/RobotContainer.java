@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.CommandBuilder;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
@@ -47,6 +48,7 @@ public class RobotContainer {
     public final Elevator elevator = new Elevator();
     public final EndEffector endEffector = new EndEffector();
     public final Climber climber = new Climber();
+    public final Chute chute = new Chute();
 
     public RobotContainer() {
         drivetrain.createAutoBuilder();
@@ -93,7 +95,7 @@ public class RobotContainer {
         joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         joystick.button(7).onTrue(
-            CommandBuilder.deploy(climber, endEffector, elevator)
+            CommandBuilder.deploy(chute, endEffector, elevator)
         );
 
         operatorPanel.button(1).onTrue(
@@ -125,7 +127,7 @@ public class RobotContainer {
         );
 
         operatorPanel.button(8).toggleOnTrue(
-            CommandBuilder.intakeSequence(climber, endEffector, elevator)
+            CommandBuilder.intakeSequence(chute, endEffector, elevator)
         );
     }
 

@@ -4,19 +4,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.MechanismPosition;
-import frc.robot.commands.components.FunnelToPosition;
+import frc.robot.commands.components.ChuteToPosition;
 import frc.robot.commands.components.ElevatorToPosition;
 import frc.robot.commands.components.EndEffectorComponents;
 import frc.robot.commands.components.EndEffectorToPosition;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 
 public class CommandBuilder {
-    public static Command deploy(Climber climber, EndEffector endEffector, Elevator elevator) {
-        return new FunnelToPosition(climber, MechanismPosition.DEPLOY)
+    public static Command deploy(Chute chute, EndEffector endEffector, Elevator elevator) {
+        return new ChuteToPosition(chute, MechanismPosition.DEPLOY)
             .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.DEPLOY))
-            .andThen(new FunnelToPosition(climber, MechanismPosition.REST));
+            .andThen(new ChuteToPosition(chute, MechanismPosition.REST));
     }
 
     public static Command toMechanismPosition(EndEffector endEffector, Elevator elevator, MechanismPosition position) {
@@ -26,14 +26,14 @@ public class CommandBuilder {
         );
     }
 
-    public static Command intakeSequence(Climber climber, EndEffector endEffector, Elevator elevator) {
+    public static Command intakeSequence(Chute chute, EndEffector endEffector, Elevator elevator) {
         return toMechanismPosition(endEffector, elevator, MechanismPosition.INTAKE)
         .andThen(
-            new FunnelToPosition(climber, MechanismPosition.INTAKE)
+            new ChuteToPosition(chute, MechanismPosition.INTAKE)
         ).andThen(
             EndEffectorComponents.intakeCoral(endEffector)
         ).andThen(
-            new FunnelToPosition(climber, MechanismPosition.REST)
+            new ChuteToPosition(chute, MechanismPosition.REST)
         );
     }
 

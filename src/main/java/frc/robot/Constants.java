@@ -23,14 +23,19 @@ import edu.wpi.first.units.measure.LinearVelocity;
 public class Constants {
 
     public static class ClimberConstants {
-      public static int climbMotorAID = 19;
-      public static int climbMotorBID = 20;
-      public static int funnelMotorID = 21;
+      public static int motorID = 19;
+
+      public static int encoderDioPort = 2;
+
+      public static double gearRatio = 100 * (70.0 / 30.0); // Gearbox reduction (x:1)
+    }
+
+    public static class ChuteConstants {
+      public static int motorID = 21;
 
       public static int encoderDioPort = 1;
 
-      public static double climbGearRatio = 100; // Gearbox reduction (x:1)
-      public static double funnelGearRatio = 50; // Gearbox reduction (x:1)
+      public static double gearRatio = 50; // Gearbox reduction (x:1)
 
       public static Rotation2d deployPosition = Rotation2d.fromRotations(0.32080078125);
       public static Rotation2d restPosition = Rotation2d.fromRotations(0.32080078125);
@@ -39,11 +44,9 @@ public class Constants {
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
-      public static class FunnelConstants {
-        public static double KP = 20;
-        public static double KI = 0;
-        public static double KD = 0;
-      }
+      public static double KP = 20;
+      public static double KI = 0;
+      public static double KD = 0;
     }
 
     public static class EndEffectorConstants {
