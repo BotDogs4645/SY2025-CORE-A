@@ -39,6 +39,7 @@ public class EndEffector extends SubsystemBase {
     private final Alert firstCoralSensorAlert;
     private final Alert secondCoralSensorAlert;
     private final Alert algaeSensorAlert;
+    private final Alert encoderAlert;
 
     public EndEffector() {
         firstCoralSensor = new LaserCan(EndEffectorConstants.firstCoralSensorID);
@@ -48,6 +49,7 @@ public class EndEffector extends SubsystemBase {
         firstCoralSensorAlert = new Alert("First Coral LaserCAN failed to read", AlertType.kWarning);
         secondCoralSensorAlert = new Alert("Second Coral LaserCAN failed to read", AlertType.kWarning);
         algaeSensorAlert = new Alert("Algae LaserCAN failed to read", AlertType.kWarning);
+        encoderAlert = new Alert("EndEffector pivot encoder disconnected", AlertType.kError);
 
         manipulateMotor = new TalonFX(EndEffectorConstants.manipulateMotorID);
         pivotMotor = new TalonFX(EndEffectorConstants.pivotMotorID);
@@ -151,8 +153,14 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/pivotControl", pivotMotor.getAppliedControl().getName());
         Logger.recordOutput("EndEffector/pivotDone", hasReachedTarget());
         Logger.recordOutput("EndEffector/encoderPosition", pivotEncoder.get());
-        Logger.recordOutput("EndEffector/frontSensor", firstCoralSensorTripped());
-        Logger.recordOutput("EndEffector/backSensor", secondCoralSensorTripped());
+        Logger.recordOutput("EndEffector/firstSensor", firstCoralSensorTripped());
+        Logger.recordOutput("EndEffector/secondSensor", secondCoralSensorTripped());
         Logger.recordOutput("EndEffector/algaeSensor", algaeSensorTripped());
+
+        if (getPivotVelocity() < EndEffectorConstants.rotationThreshold.getRotations() && pivotEncoder.isConnected()) {
+            pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
+        }
+
+        encoderAlert.set(!pivotEncoder.isConnected());
     }
 }
