@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -42,7 +43,8 @@ public class Chute extends SubsystemBase {
         chuteMotor.setPosition(chuteEncoder.get());
 
         chuteControl = new PositionVoltage(chuteMotor.getPosition().getValueAsDouble());
-        chuteMotor.setControl(chuteControl);
+        //chuteMotor.setControl(chuteControl);
+        chuteMotor.setControl(new CoastOut());
     }
 
     public void setPosition(Rotation2d position) {
@@ -71,6 +73,7 @@ public class Chute extends SubsystemBase {
     @Override
     public void periodic() {
         Logger.recordOutput("Chute/position", getPosition());
+        Logger.recordOutput("Chute/control", chuteMotor.getAppliedControl().getName());
         Logger.recordOutput("Chute/setpoint", getSetpoint());
         Logger.recordOutput("Chute/velocity", getVelocity());
         Logger.recordOutput("Chute/voltageOut", chuteMotor.getMotorVoltage().getValueAsDouble());

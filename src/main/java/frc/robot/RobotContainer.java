@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.CommandBuilder;
+import frc.robot.commands.components.EndEffectorComponents;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.Climber;
@@ -128,6 +129,9 @@ public class RobotContainer {
 
         operatorPanel.button(8).toggleOnTrue(
             CommandBuilder.intakeSequence(chute, endEffector, elevator)
+        );
+        operatorPanel.button(10).whileTrue(
+            EndEffectorComponents.spit(endEffector)
         );
     }
 

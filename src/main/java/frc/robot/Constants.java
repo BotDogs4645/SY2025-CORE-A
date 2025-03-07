@@ -61,7 +61,7 @@ public class Constants {
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
-      public static double KP = 50;
+      public static double KP = 100;
       public static double KI = 0;
       public static double KD = 0;
 

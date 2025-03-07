@@ -157,9 +157,9 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/secondSensor", secondCoralSensorTripped());
         Logger.recordOutput("EndEffector/algaeSensor", algaeSensorTripped());
 
-        if (getPivotVelocity() < EndEffectorConstants.rotationThreshold.getRotations() && pivotEncoder.isConnected()) {
-            pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
-        }
+        //if (getPivotVelocity() < EndEffectorConstants.rotationThreshold.getRotations() && pivotEncoder.isConnected()) {
+        //    pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
+        //}
 
         encoderAlert.set(!pivotEncoder.isConnected());
     }
