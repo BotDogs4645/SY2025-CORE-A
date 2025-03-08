@@ -12,6 +12,8 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChuteConstants;
@@ -21,13 +23,15 @@ public class Chute extends SubsystemBase {
     private final TalonFX chuteMotor;
 
     private final DutyCycleEncoder chuteEncoder;
+    private final Alert encoderAlert;
 
     private final PositionVoltage chuteControl;
-
+    
     public Chute() {
         chuteMotor = new TalonFX(ChuteConstants.motorID);
 
         chuteEncoder = new DutyCycleEncoder(ChuteConstants.encoderDioPort);
+        encoderAlert = new Alert("Chute encoder disconnected", AlertType.kError);
 
         var chuteMotorConfig = new TalonFXConfiguration()
             .withSlot0(new Slot0Configs()
@@ -42,7 +46,7 @@ public class Chute extends SubsystemBase {
         chuteMotor.getConfigurator().apply(chuteMotorConfig);
         chuteMotor.setPosition(chuteEncoder.get());
 
-        chuteControl = new PositionVoltage(chuteMotor.getPosition().getValueAsDouble());
+        chuteControl = new PositionVoltage(chuteEncoder.get());
         //chuteMotor.setControl(chuteControl);
         chuteMotor.setControl(new CoastOut());
     }
@@ -73,10 +77,13 @@ public class Chute extends SubsystemBase {
     @Override
     public void periodic() {
         Logger.recordOutput("Chute/position", getPosition());
+        Logger.recordOutput("Chute/encoder", chuteEncoder.get());
         Logger.recordOutput("Chute/control", chuteMotor.getAppliedControl().getName());
         Logger.recordOutput("Chute/setpoint", getSetpoint());
         Logger.recordOutput("Chute/velocity", getVelocity());
         Logger.recordOutput("Chute/voltageOut", chuteMotor.getMotorVoltage().getValueAsDouble());
         Logger.recordOutput("Chute/done", hasReachedTarget());
-    }
+        
+        encoderAlert.set(!chuteEncoder.isConnected());
+    }    
 }
