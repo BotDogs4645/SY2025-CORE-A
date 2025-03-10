@@ -30,7 +30,7 @@ public class Chute extends SubsystemBase {
     public Chute() {
         chuteMotor = new TalonFX(ChuteConstants.motorID);
 
-        chuteEncoder = new DutyCycleEncoder(ChuteConstants.encoderDioPort);
+        chuteEncoder = new DutyCycleEncoder(ChuteConstants.encoderDioPort, 1, 0.85);
         encoderAlert = new Alert("Chute encoder disconnected", AlertType.kError);
 
         var chuteMotorConfig = new TalonFXConfiguration()
@@ -38,7 +38,7 @@ public class Chute extends SubsystemBase {
                 .withKP(ChuteConstants.KP)
                 .withKI(ChuteConstants.KI)
                 .withKD(ChuteConstants.KD)
-            )       
+            )
             .withFeedback(new FeedbackConfigs()
                 .withSensorToMechanismRatio(ChuteConstants.gearRatio)
             );

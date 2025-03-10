@@ -22,7 +22,7 @@ public class EndEffectorComponents {
 
             @Override
             public void end(boolean interrupted) {
-                endEffector.setWheelDutyCycle(0);
+                endEffector.setWheelBrake();
             }
 
             @Override 
@@ -68,12 +68,35 @@ public class EndEffectorComponents {
 
             @Override
             public void end(boolean interrupted) {
-                endEffector.setWheelDutyCycle(0);
+                endEffector.setWheelCoast();
             }
 
             @Override 
             public boolean isFinished() {
                 return false;
+            }
+        };
+    }
+
+    public static Command reverseCoral(EndEffector endEffector) {
+        return new Command() {
+            @Override
+            public void initialize() {
+            }
+
+            @Override
+            public void execute() {
+               endEffector.setWheelDutyCycle(-0.08);
+            }
+
+            @Override
+            public void end(boolean interrupted) {
+                endEffector.setWheelBrake();
+            }
+
+            @Override 
+            public boolean isFinished() {
+                return endEffector.firstCoralSensorTripped() || !endEffector.secondCoralSensorTripped();
             }
         };
     }

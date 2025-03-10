@@ -25,7 +25,7 @@ public class Constants {
     public static class ClimberConstants {
       public static int motorID = 19;
 
-      public static int encoderDioPort = 2;
+      public static int encoderDioPort = 5;
 
       public static double gearRatio = 100 * (70.0 / 30.0); // Gearbox reduction (x:1)
     }
@@ -33,18 +33,19 @@ public class Constants {
     public static class ChuteConstants {
       public static int motorID = 21;
 
-      public static int encoderDioPort = 1;
+      public static int encoderDioPort = 2;
 
-      public static double gearRatio = 50; // Gearbox reduction (x:1)
+      public static double gearRatio = 48 * (60.0 / 24.0); // Gearbox reduction (x:1)
 
-      public static Rotation2d deployPosition = Rotation2d.fromRotations(0.32080078125);
-      public static Rotation2d restPosition = Rotation2d.fromRotations(0.32080078125);
-      public static Rotation2d climbPosition = Rotation2d.fromRotations(0);
+      public static Rotation2d intakePosition = Rotation2d.fromRotations(0.10);
+      public static Rotation2d deployPosition = Rotation2d.fromRotations(0.20);
+      public static Rotation2d restPosition = Rotation2d.fromRotations(0.16);
+      public static Rotation2d climbPosition = Rotation2d.fromRotations(0.42);
 
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
-      public static double KP = 20;
+      public static double KP = 30;
       public static double KI = 0;
       public static double KD = 0;
     }
@@ -61,7 +62,7 @@ public class Constants {
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
-      public static double KP = 100;
+      public static double KP = 50;
       public static double KI = 0;
       public static double KD = 0;
 
@@ -149,10 +150,10 @@ public class Constants {
       SCORE_L2(0.47616563690414093, 0.3802631995376275),
       SCORE_L3(0.47616563690414093, 0.8088684570312499),
       SCORE_L4(0.46149188653729717, 1.4074546695631376),
-      DEALGAE_LOW(0.48, 0.3),
-      DEALGAE_HIGH(0.48, 0.6),
+      DEALGAE_LOW(0.43318651082966275, 0.6242426120057397),
+      DEALGAE_HIGH(0.43318651082966275, 0.9883323959661989),
       PROCESSOR(0.48, 0.3),
-      INTAKE(0.41, 0),
+      INTAKE(0.422, 0),
       REST(0.48, 0),
       DEPLOY(0.48, 0),
       CLIMB(0.48, 0);

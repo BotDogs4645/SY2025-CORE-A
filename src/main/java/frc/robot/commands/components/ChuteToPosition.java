@@ -15,7 +15,7 @@ public class ChuteToPosition extends Command {
     this.chute = chute;
     addRequirements(chute);
     switch (position) {
-        case INTAKE: targetPosition = Rotation2d.fromRotations(0); break;
+        case INTAKE: targetPosition = ChuteConstants.intakePosition; break;
         case DEPLOY: targetPosition = ChuteConstants.deployPosition; break;
         case CLIMB: targetPosition = ChuteConstants.climbPosition; break;
         case REST: targetPosition = ChuteConstants.restPosition; break;

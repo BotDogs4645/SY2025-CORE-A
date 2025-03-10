@@ -12,6 +12,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -22,8 +23,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.EndEffectorConstants;
+import frc.robot.commands.components.EndEffectorComponents;
 
 public class EndEffector extends SubsystemBase {
     private final TalonFX manipulateMotor;
@@ -83,12 +86,23 @@ public class EndEffector extends SubsystemBase {
         
         pivotControl = new MotionMagicVoltage(0);
         pivotMotor.setPosition(pivotEncoder.get());
-
         pivotMotor.setControl(new CoastOut());
+        manipulateMotor.setControl(new StaticBrake());
     }
 
     public void setWheelDutyCycle(double speed) {
         manipulateMotor.set(speed);
+    }
+    public void setWheelBrake() {
+        manipulateMotor.setControl(new StaticBrake());
+    }
+
+    public void setWheelCoast() {
+        manipulateMotor.setControl(new CoastOut());
+    }
+
+    public String getWheelControl() {
+        return manipulateMotor.getAppliedControl().getName();
     }
 
     public void setPivotPosition(Rotation2d position) {
@@ -156,11 +170,17 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/firstSensor", firstCoralSensorTripped());
         Logger.recordOutput("EndEffector/secondSensor", secondCoralSensorTripped());
         Logger.recordOutput("EndEffector/algaeSensor", algaeSensorTripped());
+        Logger.recordOutput("EndEffector/wheelControl", getWheelControl());
 
         //if (getPivotVelocity() < EndEffectorConstants.rotationThreshold.getRotations() && pivotEncoder.isConnected()) {
         //    pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
         //}
 
+
+        if(secondCoralSensorTripped() && !firstCoralSensorTripped() && getWheelControl().equals("StaticBrake")) {
+            EndEffectorComponents.reverseCoral(this).schedule();
+        }
+        
         encoderAlert.set(!pivotEncoder.isConnected());
     }
 }
