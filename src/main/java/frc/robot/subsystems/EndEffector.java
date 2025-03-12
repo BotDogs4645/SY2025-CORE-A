@@ -71,6 +71,7 @@ public class EndEffector extends SubsystemBase {
                 .withKP(EndEffectorConstants.KP)
                 .withKI(EndEffectorConstants.KI)
                 .withKD(EndEffectorConstants.KD)
+                .withKG(EndEffectorConstants.KG)
             ).withMotionMagic(new MotionMagicConfigs()
                 .withMotionMagicCruiseVelocity(80 / EndEffectorConstants.gearRatio)
                 .withMotionMagicAcceleration(160 / EndEffectorConstants.gearRatio)

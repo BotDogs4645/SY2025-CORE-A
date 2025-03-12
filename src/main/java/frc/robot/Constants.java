@@ -25,7 +25,7 @@ public class Constants {
     public static class ClimberConstants {
       public static int motorID = 19;
 
-      public static int encoderDioPort = 5;
+      public static int encoderDioPort = 4;
 
       public static double gearRatio = 100 * (70.0 / 30.0); // Gearbox reduction (x:1)
     }
@@ -39,7 +39,7 @@ public class Constants {
 
       public static Rotation2d intakePosition = Rotation2d.fromRotations(0.10);
       public static Rotation2d deployPosition = Rotation2d.fromRotations(0.20);
-      public static Rotation2d restPosition = Rotation2d.fromRotations(0.16);
+      public static Rotation2d restPosition = Rotation2d.fromRotations(0.18);
       public static Rotation2d climbPosition = Rotation2d.fromRotations(0.42);
 
       public static Rotation2d rotationThreshold = Rotation2d.fromRotations(0.02);
@@ -63,8 +63,9 @@ public class Constants {
       public static AngularVelocity velocityThreshold = RadiansPerSecond.of(0.02);
 
       public static double KP = 50;
-      public static double KI = 0;
+      public static double KI = 1;
       public static double KD = 0;
+      public static double KG = 0;
 
       public static double gearRatio = 36;
       
@@ -153,7 +154,7 @@ public class Constants {
       DEALGAE_LOW(0.43318651082966275, 0.6242426120057397),
       DEALGAE_HIGH(0.43318651082966275, 0.9883323959661989),
       PROCESSOR(0.48, 0.3),
-      INTAKE(0.422, 0),
+      INTAKE(0.4716, 0),
       REST(0.48, 0),
       DEPLOY(0.48, 0),
       CLIMB(0.48, 0);

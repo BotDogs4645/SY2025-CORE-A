@@ -135,14 +135,13 @@ public class RobotContainer {
              CommandBuilder.intakeSequence(chute, endEffector, elevator)
          );
 
-        //operatorPanel.button(9).onTrue(
-        //    CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.INTAKE)
-        //    .andThen(EndEffectorComponents.intakeCoral(endEffector))
-        //);
-
         operatorPanel.button(9).onTrue(
-            CommandBuilder.intakeAlgaeLow(endEffector, elevator)
+            EndEffectorComponents.intakeCoral(endEffector)
         );
+
+        // operatorPanel.button(9).onTrue(
+        //     CommandBuilder.intakeAlgaeLow(endEffector, elevator)
+        // );
 
         operatorPanel.button(10).whileTrue(
             EndEffectorComponents.spit(endEffector)
