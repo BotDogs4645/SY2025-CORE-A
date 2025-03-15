@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -15,6 +16,8 @@ import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.ReverseLimitSourceValue;
+import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,17 +42,21 @@ public class Elevator extends SubsystemBase {
                 .withInverted(InvertedValue.CounterClockwise_Positive)
             );
 
-        leftMotor.getConfigurator().apply(config);
+        var leftConfig = config.withHardwareLimitSwitch(
+            new HardwareLimitSwitchConfigs()
+                .withReverseLimitEnable(true)
+                .withReverseLimitAutosetPositionEnable(true)
+                .withReverseLimitAutosetPositionValue(0)
+                .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+                .withReverseLimitSource(ReverseLimitSourceValue.LimitSwitchPin)
+        );
+
+        leftMotor.getConfigurator().apply(leftConfig);
         rightMotor.getConfigurator().apply(config);
 
         positionControl = new PositionDutyCycle(0);
         rightMotor.setControl(new Follower(ElevatorConstants.leftMotorCANId, true));
         leftMotor.setControl(positionControl);
-    }
-
-    public void resetEncoders() {
-        leftMotor.setPosition(0);
-        rightMotor.setPosition(0);
     }
 
     public double getPosition() {
@@ -92,5 +99,7 @@ public class Elevator extends SubsystemBase {
         Logger.recordOutput("Elevator/velocity", getVelocity());
         Logger.recordOutput("Elevator/control", leftMotor.getAppliedControl().getName());
         Logger.recordOutput("Elevator/done", hasReachedTarget());
+        Logger.recordOutput("Elevator/limitSwitch", leftMotor.getReverseLimit().getValue());
+        Logger.recordOutput("Elevator/voltageOut", leftMotor.getMotorVoltage().getValueAsDouble());
     }
 }
