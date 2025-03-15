@@ -70,6 +70,7 @@ public class Limelight {
       
       poseObservations.add(
 
+      
           new PoseObservation(
               // Timestamp, based on server timestamp of publish and latency
               rawSample.timestamp * 1.0e-3 - rawSample.value[6],
@@ -115,7 +116,7 @@ public class Limelight {
               rawSample.value[9],
 
               // Observation type
-              PoseObservationType.MEGATAG_1));
+              PoseObservationType.MEGATAG_2));
     }
 
     // Save pose observations to inputs object

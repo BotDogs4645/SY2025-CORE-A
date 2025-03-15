@@ -84,7 +84,7 @@ public class Constants {
           }
         }
     
-        public static final PIDConstants translationPID = new PIDConstants(5, 0, 0);
+        public static final PIDConstants translationPID = new PIDConstants(1, 1, 0);
         public static final PIDConstants rotationPID = new PIDConstants(5, 0, 0);
     
         // Speed and acceleration limits for on the fly path generation
@@ -147,7 +147,7 @@ public class Constants {
     }
 
     public enum MechanismPosition {
-      SCORE_L1(0.48, 0.3),
+      SCORE_L1(0.48, 0.1),
       SCORE_L2(0.47616563690414093, 0.3802631995376275),
       SCORE_L3(0.47616563690414093, 0.8088684570312499),
       SCORE_L4(0.46149188653729717, 1.4074546695631376),

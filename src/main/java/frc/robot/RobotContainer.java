@@ -12,11 +12,12 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.CommandBuilder;
-import frc.robot.commands.components.ChuteToPosition;
+import frc.robot.commands.DriverAssist;
 import frc.robot.commands.components.EndEffectorComponents;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Chute;
@@ -33,7 +34,7 @@ public class RobotContainer {
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -92,11 +93,11 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
 
 
-        // joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
+        joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
 
-        joystick.button(6).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.button(7).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.button(7).onTrue(
+        joystick.button(8).onTrue(
             CommandBuilder.deploy(chute, endEffector, elevator)
         );
 
@@ -116,28 +117,29 @@ public class RobotContainer {
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L4)
         );
 
+        /* 
         operatorPanel.button(5).onTrue(
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.PROCESSOR)
-            //new ChuteToPosition(chute, MechanismPosition.INTAKE)
         );
+        */
         
         operatorPanel.button(6).onTrue(
-           CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_LOW)
-           //new ChuteToPosition(chute, MechanismPosition.REST)
+           //CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_LOW)
+           new InstantCommand(endEffector::decreaseOffset)
         );
         
         operatorPanel.button(7).onTrue(
-            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_HIGH)
-            //new ChuteToPosition(chute, MechanismPosition.DEPLOY)
+            new InstantCommand(endEffector::increaseOffset)
+            //CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_HIGH)
         );
 
-         operatorPanel.button(8).toggleOnTrue(
+         operatorPanel.button(9).toggleOnTrue(
              CommandBuilder.intakeSequence(chute, endEffector, elevator)
          );
 
-        operatorPanel.button(9).onTrue(
-            EndEffectorComponents.intakeCoral(endEffector)
-        );
+        //operatorPanel.button(9).onTrue(
+        //    EndEffectorComponents.intakeCoral(endEffector)
+        //);
 
         // operatorPanel.button(9).onTrue(
         //     CommandBuilder.intakeAlgaeLow(endEffector, elevator)

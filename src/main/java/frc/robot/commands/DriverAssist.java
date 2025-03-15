@@ -16,6 +16,6 @@ public class DriverAssist {
     }
 
     public static Command reefPathfindCommand(Subsystem drivetrain) {
-        return generatePathfindCommand(drivetrain, new Pose2d(0, 0, new Rotation2d(0)));
+        return generatePathfindCommand(drivetrain, new Pose2d(2.78, 4.09, new Rotation2d(0)));
     }
 }

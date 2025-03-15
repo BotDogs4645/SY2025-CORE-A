@@ -44,6 +44,9 @@ public class EndEffector extends SubsystemBase {
     private final Alert algaeSensorAlert;
     private final Alert encoderAlert;
 
+    public double offset = 0.0;
+    public double setpoint = 0.0;
+
     public EndEffector() {
         firstCoralSensor = new LaserCan(EndEffectorConstants.firstCoralSensorID);
         secondCoralSensor = new LaserCan(EndEffectorConstants.secondCoralSensorID);
@@ -107,7 +110,13 @@ public class EndEffector extends SubsystemBase {
     }
 
     public void setPivotPosition(Rotation2d position) {
-        pivotControl.Position = position.getRotations();
+        setpoint = position.getRotations();
+        pivotControl.Position = setpoint + offset;
+        pivotMotor.setControl(pivotControl);
+    }
+
+    public void updatePivotPosition() {
+        pivotControl.Position = setpoint + offset;
         pivotMotor.setControl(pivotControl);
     }
 
@@ -121,6 +130,16 @@ public class EndEffector extends SubsystemBase {
 
     public double getPivotTargetPosition() {
         return pivotControl.Position;
+    }
+
+    public void increaseOffset() {
+        offset -= 0.01;
+        updatePivotPosition();
+    }
+    
+    public void decreaseOffset() {
+        offset += 0.01;
+        updatePivotPosition();
     }
 
     public boolean hasReachedTarget() {
