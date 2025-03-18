@@ -70,7 +70,7 @@ public class Constants {
       public static double gearRatio = 36;
       
       public static Distance coralThreshold = Millimeters.of(50);
-      public static Distance algaeThreshold = Millimeters.of(50);
+      public static Distance algaeThreshold = Millimeters.of(30);
     }
 
     public static class PathPlannerConstants {
@@ -89,7 +89,7 @@ public class Constants {
     
         // Speed and acceleration limits for on the fly path generation
         public static final PathConstraints pathConstraints = new PathConstraints(
-          MetersPerSecond.of(5),
+          MetersPerSecond.of(1),
           MetersPerSecondPerSecond.of(10),
           RotationsPerSecond.of(0.75),
           RotationsPerSecondPerSecond.of(5)
@@ -122,7 +122,7 @@ public class Constants {
         public static String[] limelightNames = {"limelight"};
 
         // Basic filtering thresholds
-        public static double maxAmbiguity = 0.3;
+        public static double maxAmbiguity = 0.2;
         public static double maxZError = 0.75;
 
         // Ignore MT2 readings when robot is rotationg too fast
@@ -148,13 +148,13 @@ public class Constants {
 
     public enum MechanismPosition {
       SCORE_L1(0.48, 0.1),
-      SCORE_L2(0.47616563690414093, 0.3802631995376275),
-      SCORE_L3(0.47616563690414093, 0.8088684570312499),
-      SCORE_L4(0.46149188653729717, 1.4074546695631376),
-      DEALGAE_LOW(0.43318651082966275, 0.6242426120057397),
+      SCORE_L2(0.419, 0.3802631995376275),
+      SCORE_L3(0.419, 0.8088684570312499),
+      SCORE_L4(0.380, 1.4074546695631376),
+      DEALGAE_LOW(0.356, 0.6242426120057397),
       DEALGAE_HIGH(0.43318651082966275, 0.9883323959661989),
       PROCESSOR(0.48, 0.3),
-      INTAKE(0.4716, 0),
+      INTAKE(0.29, 0),
       REST(0.48, 0),
       DEPLOY(0.48, 0),
       CLIMB(0.48, 0);

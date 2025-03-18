@@ -11,7 +11,11 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -41,6 +45,7 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandJoystick operatorPanel = new CommandJoystick(1); 
+    private final CommandXboxController secondJoystick = new CommandXboxController(2);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Localization visionSubsustem = new Localization(
@@ -94,6 +99,11 @@ public class RobotContainer {
 
 
         joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain));
+        joystick.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        secondJoystick.x().onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L1)
+        );
+        // joystick.leftTrigger().whileTrue(new AutoAlignCommand(drivetrain, new Pose2d(3.38, 4.09, new Rotation2d(0))));
 
         joystick.button(7).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
@@ -117,11 +127,13 @@ public class RobotContainer {
             CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L4)
         );
 
-        /* 
         operatorPanel.button(5).onTrue(
-            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.PROCESSOR)
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_LOW)
+            .andThen(
+                CommandBuilder.intakeAlgaeLow(endEffector, elevator)
+            )
         );
-        */
+
         
         operatorPanel.button(6).onTrue(
            //CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_LOW)
@@ -131,6 +143,12 @@ public class RobotContainer {
         operatorPanel.button(7).onTrue(
             new InstantCommand(endEffector::increaseOffset)
             //CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_HIGH)
+        );
+
+        operatorPanel.button(8).onTrue(
+            CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.PROCESSOR)
+            .andThen(Commands.waitSeconds(2))
+            .andThen(new InstantCommand(() -> endEffector.setWheelCoast()))
         );
 
          operatorPanel.button(9).toggleOnTrue(

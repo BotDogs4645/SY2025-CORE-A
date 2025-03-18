@@ -181,12 +181,12 @@ public class EndEffector extends SubsystemBase {
     @Override
     public void periodic() {
         Logger.recordOutput("EndEffector/pivotPosition", getPivotPosition());
+        Logger.recordOutput("EndEffector/encoderPosition", pivotEncoder.get());
         Logger.recordOutput("EndEffector/pivotSetpoint", getPivotTargetPosition());
         Logger.recordOutput("EndEffector/pivotVelocity", getPivotVelocity());
         Logger.recordOutput("EndEffector/voltageOut", pivotMotor.getMotorVoltage().getValueAsDouble());
         Logger.recordOutput("EndEffector/pivotControl", pivotMotor.getAppliedControl().getName());
         Logger.recordOutput("EndEffector/pivotDone", hasReachedTarget());
-        Logger.recordOutput("EndEffector/encoderPosition", pivotEncoder.get());
         Logger.recordOutput("EndEffector/firstSensor", firstCoralSensorTripped());
         Logger.recordOutput("EndEffector/secondSensor", secondCoralSensorTripped());
         Logger.recordOutput("EndEffector/algaeSensor", algaeSensorTripped());

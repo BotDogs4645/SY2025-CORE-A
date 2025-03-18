@@ -45,12 +45,6 @@ public class EndEffectorComponents {
 
             @Override
             public void end(boolean interrupted) {
-                endEffector.setWheelDutyCycle(0);
-            }
-
-            @Override 
-            public boolean isFinished() {
-                return endEffector.algaeSensorTripped();
             }
         };
     }
