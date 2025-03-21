@@ -9,11 +9,13 @@ public class EndEffectorToPosition extends Command {
 
   private EndEffector endEffector;
   Rotation2d targetPosition;
+  MechanismPosition mechanismPosition;
 
   public EndEffectorToPosition(EndEffector endEffector, MechanismPosition position) {
     this.endEffector = endEffector;
     addRequirements(endEffector);
     targetPosition = position.pivotPosition;
+    mechanismPosition = position;
   }
 
   @Override

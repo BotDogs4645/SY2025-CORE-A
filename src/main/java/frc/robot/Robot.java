@@ -29,7 +29,9 @@ public class Robot extends LoggedRobot {
 
   public Robot() {
     DriverStation.silenceJoystickConnectionWarning(true);
+
     CanBridge.runTCP();
+    
     Pathfinding.setPathfinder(new LocalADStarAK());
 
     Logger.recordMetadata("ProjectName", "SY2025-Core-A");

@@ -19,6 +19,7 @@ public class ChuteToPosition extends Command {
         case DEPLOY: targetPosition = ChuteConstants.deployPosition; break;
         case CLIMB: targetPosition = ChuteConstants.climbPosition; break;
         case REST: targetPosition = ChuteConstants.restPosition; break;
+        case STOW: targetPosition = ChuteConstants.stowPosition; break;
         default: targetPosition = null;
     }
   }

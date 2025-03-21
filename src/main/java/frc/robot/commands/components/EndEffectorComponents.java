@@ -53,7 +53,11 @@ public class EndEffectorComponents {
         return new Command() {
             @Override
             public void initialize() {
-                endEffector.setWheelDutyCycle(0.2);
+                if (endEffector.algaeSensorTripped()) {
+                    endEffector.setWheelDutyCycle(-0.2);
+                } else {
+                    endEffector.setWheelDutyCycle(0.2);
+                }
             }
 
             @Override
@@ -62,7 +66,7 @@ public class EndEffectorComponents {
 
             @Override
             public void end(boolean interrupted) {
-                endEffector.setWheelCoast();
+                endEffector.setWheelBrake();
             }
 
             @Override 

@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -18,7 +19,29 @@ public class CommandBuilder {
     public static Command deploy(Chute chute, EndEffector endEffector, Elevator elevator) {
         return new ChuteToPosition(chute, MechanismPosition.DEPLOY)
             .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.DEPLOY))
-            .andThen(new ChuteToPosition(chute, MechanismPosition.REST));
+            .andThen(new ChuteToPosition(chute, MechanismPosition.REST))
+            .andThen(new InstantCommand(() -> {endEffector.deployed = true;}));
+    }
+
+    public static Command toggleDeploy(Chute chute, EndEffector endEffector, Elevator elevator) {
+        return new ConditionalCommand(
+            new ChuteToPosition(chute, MechanismPosition.DEPLOY)
+            .andThen(new ElevatorToPosition(elevator, MechanismPosition.STOW))
+            .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.STOW))
+            .andThen(new ChuteToPosition(chute, MechanismPosition.STOW))
+            .andThen(new InstantCommand(() -> {endEffector.deployed = false;})),
+            deploy(chute, endEffector, elevator),
+            endEffector::isDeployed
+        );
+    }
+
+    public static Command intakeOrRest(Chute chute, EndEffector endEffector, Elevator elevator) {
+        return new ConditionalCommand(
+            new ElevatorToPosition(elevator, MechanismPosition.REST)
+            .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.REST)),
+            intakeSequence(chute, endEffector, elevator),
+            endEffector::algaeSensorTripped
+        );
     }
 
     public static Command toMechanismPosition(EndEffector endEffector, Elevator elevator, MechanismPosition position) {
@@ -39,28 +62,12 @@ public class CommandBuilder {
         );
     }
 
-    public static Command intakeAlgaeLow(EndEffector endEffector, Elevator elevator) {
-        return new ParallelCommandGroup(
-            new ElevatorToPosition(elevator, MechanismPosition.DEALGAE_LOW),
-            new EndEffectorToPosition(endEffector, MechanismPosition.DEALGAE_LOW)
-        ).andThen(
+    public static Command intakeAlgae(EndEffector endEffector) {
+        return 
             EndEffectorComponents.intakeAlgae(endEffector)
             .until(() -> endEffector.algaeSensorTripped())
             .andThen(Commands.waitSeconds(1))
-            .andThen(new InstantCommand(() -> endEffector.setWheelDutyCycle(0.05)))
-        );
-    }
-    
-
-    public static Command intakeAlgaeHigh(EndEffector endEffector, Elevator elevator) {
-        return new ParallelCommandGroup(
-            new ElevatorToPosition(elevator, MechanismPosition.DEALGAE_HIGH),
-            new EndEffectorToPosition(endEffector, MechanismPosition.DEALGAE_HIGH)
-        ).andThen(
-            EndEffectorComponents.intakeAlgae(endEffector)
-        ).andThen(
-            toMechanismPosition(endEffector, elevator, MechanismPosition.REST)
-        );
+            .andThen(new InstantCommand(() -> endEffector.setWheelDutyCycle(0.1)));
     }
 
     public static Command score(EndEffector endEffector, Elevator elevator) {

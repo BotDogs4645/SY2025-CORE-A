@@ -92,32 +92,32 @@ public class Limelight {
     }
    
     // Read MegaTag2 observations
-    for (var rawSample : megatag2Subscriber.readQueue()) {
-      if (rawSample.value.length == 0)
-        continue;
-      for (int i = 11; i < rawSample.value.length; i += 7) {
-        tagIds.add((int) rawSample.value[i]);
-      }
-      poseObservations.add(
-          new PoseObservation(
-              // Timestamp, based on server timestamp of publish and latency
-              rawSample.timestamp * 1.0e-3 - rawSample.value[6],
+    // for (var rawSample : megatag2Subscriber.readQueue()) {
+    //   if (rawSample.value.length == 0)
+    //     continue;
+    //   for (int i = 11; i < rawSample.value.length; i += 7) {
+    //     tagIds.add((int) rawSample.value[i]);
+    //   }
+    //   poseObservations.add(
+    //       new PoseObservation(
+    //           // Timestamp, based on server timestamp of publish and latency
+    //           rawSample.timestamp * 1.0e-3 - rawSample.value[6],
 
-              // 3D pose estimate
-              parsePose(rawSample.value),
+    //           // 3D pose estimate
+    //           parsePose(rawSample.value),
 
-              // Ambiguity, zeroed because the pose is already disambiguated
-              0.0,
+    //           // Ambiguity, zeroed because the pose is already disambiguated
+    //           0.0,
 
-              // Tag count
-              (int) rawSample.value[7],
+    //           // Tag count
+    //           (int) rawSample.value[7],
 
-              // Average tag distance
-              rawSample.value[9],
+    //           // Average tag distance
+    //           rawSample.value[9],
 
-              // Observation type
-              PoseObservationType.MEGATAG_2));
-    }
+    //           // Observation type
+    //           PoseObservationType.MEGATAG_2));
+    // }
 
     // Save pose observations to inputs object
     inputs.poseObservations = new PoseObservation[poseObservations.size()];

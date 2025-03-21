@@ -88,7 +88,7 @@ public class Localization extends SubsystemBase {
 				boolean rejectPose = 
 					observation.tagCount() == 0 || 
 					// Ambiguity is only applicable to single tag MT1 observations.
-					observation.ambiguity() > VisionConstants.maxAmbiguity ||
+					(observation.tagCount() == 1 && observation.ambiguity() > VisionConstants.maxAmbiguity) ||
 					Math.abs(observation.pose().getZ()) > VisionConstants.maxZError || 
 					// Pose must be within field.
 					observation.pose().getX() < 0.0 ||
@@ -131,7 +131,7 @@ public class Localization extends SubsystemBase {
 				visionConsumer.accept(
 					observation.pose().toPose2d(),
 					observation.timestamp(),
-					VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev)
+					VecBuilder.fill(0, 0, 0)
 				);
 			}
 

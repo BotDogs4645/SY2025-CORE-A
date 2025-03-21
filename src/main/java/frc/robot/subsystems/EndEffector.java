@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.commands.components.EndEffectorComponents;
 
@@ -46,6 +47,8 @@ public class EndEffector extends SubsystemBase {
 
     public double offset = 0.0;
     public double setpoint = 0.0;
+
+    public boolean deployed = false;
 
     public EndEffector() {
         firstCoralSensor = new LaserCan(EndEffectorConstants.firstCoralSensorID);
@@ -105,6 +108,10 @@ public class EndEffector extends SubsystemBase {
         manipulateMotor.setControl(new CoastOut());
     }
 
+    public void setPivotCoast() {
+        pivotMotor.setControl(new CoastOut());
+    }
+
     public String getWheelControl() {
         return manipulateMotor.getAppliedControl().getName();
     }
@@ -130,6 +137,10 @@ public class EndEffector extends SubsystemBase {
 
     public double getPivotTargetPosition() {
         return pivotControl.Position;
+    }
+
+    public boolean isDeployed() {
+        return deployed;
     }
 
     public void increaseOffset() {
@@ -178,6 +189,12 @@ public class EndEffector extends SubsystemBase {
         return measurement.distance_mm <= EndEffectorConstants.algaeThreshold.in(Millimeters);
     }
 
+    public boolean isSafeToElevate() {
+        return getPivotPosition() >= EndEffectorConstants.safetyAngle.getRotations();
+    }
+
+    private int x = 0;
+
     @Override
     public void periodic() {
         Logger.recordOutput("EndEffector/pivotPosition", getPivotPosition());
@@ -192,9 +209,10 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/algaeSensor", algaeSensorTripped());
         Logger.recordOutput("EndEffector/wheelControl", getWheelControl());
 
-        //if (getPivotVelocity() < EndEffectorConstants.rotationThreshold.getRotations() && pivotEncoder.isConnected()) {
-        //    pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
-        //}
+        if (Math.abs(getPivotVelocity()) < 0.005 && pivotEncoder.isConnected() && x++>5) {
+            pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
+            x = 10;
+        }
 
 
         if(secondCoralSensorTripped() && !firstCoralSensorTripped() && getWheelControl().equals("StaticBrake")) {

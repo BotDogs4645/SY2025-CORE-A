@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
@@ -26,10 +28,11 @@ import frc.robot.Constants.ElevatorConstants;
 public class Elevator extends SubsystemBase {
     private final TalonFX leftMotor;
     private final TalonFX rightMotor;
+    private Supplier<Boolean> safetySupplier;
 
     private final PositionDutyCycle positionControl;
 
-    public Elevator() {
+    public Elevator(Supplier<Boolean> safetySupplier) {
         leftMotor = new TalonFX(ElevatorConstants.leftMotorCANId, "*");
         rightMotor = new TalonFX(ElevatorConstants.rightMotorCANId, "*");
 
@@ -57,6 +60,8 @@ public class Elevator extends SubsystemBase {
         positionControl = new PositionDutyCycle(0);
         rightMotor.setControl(new Follower(ElevatorConstants.leftMotorCANId, true));
         leftMotor.setControl(positionControl);
+
+        this.safetySupplier = safetySupplier;
     }
 
     public double getPosition() {
@@ -83,12 +88,18 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setTarget(Distance distance) {
+        if(!safetySupplier.get()) {
+            return;
+        }
         positionControl.Position = distance.in(Meters) / ElevatorConstants.metersPerRotation;
         leftMotor.setControl(positionControl);
     }
 
     // TODO: add manual teleop controls for operator 
     public void setDutyCycle(double dutyCycle) {
+        if(!safetySupplier.get()) {
+            return;
+        }
         leftMotor.setControl(new DutyCycleOut(dutyCycle));
     }
 
@@ -101,5 +112,7 @@ public class Elevator extends SubsystemBase {
         Logger.recordOutput("Elevator/done", hasReachedTarget());
         Logger.recordOutput("Elevator/limitSwitch", leftMotor.getReverseLimit().getValue());
         Logger.recordOutput("Elevator/voltageOut", leftMotor.getMotorVoltage().getValueAsDouble());
+        Logger.recordOutput("Elevator/safeToMove", safetySupplier.get());
     }
 }
+
