@@ -5,6 +5,7 @@
 
 package frc.robot.subsystems.vision;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -62,6 +63,8 @@ public class Localization extends SubsystemBase {
 		List<Pose3d> allRobotPoses = new LinkedList<>();
 		List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
 		List<Pose3d> allRobotPosesRejected = new LinkedList<>();
+		List<Double> allLinearStds = new ArrayList<Double>();
+		List<Double> allAngularStds = new ArrayList<Double>();
 
 		for (int i = 0; i < limelights.length; i++) {
 			limelights[i].updateInputs(inputs[i], rotation);
@@ -127,13 +130,20 @@ public class Localization extends SubsystemBase {
 					angularStdDev *= VisionConstants.angularStdDevMegatag2Factor;
 				}
 
+				allLinearStds.add(linearStdDev);
+				allAngularStds.add(angularStdDev);
+
 				// Send vision observation to the consumer
 				visionConsumer.accept(
 					observation.pose().toPose2d(),
 					observation.timestamp(),
-					VecBuilder.fill(0, 0, 0)
+					//TODO: Test on Saturday
+					VecBuilder.fill(0.9, 0.9, 0.9)
+					//VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev)
 				);
 			}
+
+			
 
 			// Log camera data
 			Logger.recordOutput(
@@ -152,7 +162,16 @@ public class Localization extends SubsystemBase {
 				"Vision/" + VisionConstants.limelightNames[i] + "/RobotPosesRejected",
 				robotPosesRejected.toArray(new Pose3d[0])
 			);
-
+			
+			Logger.recordOutput(
+				"Vision/allLinearStds",
+				allLinearStds.stream().mapToDouble(Double::doubleValue).toArray()
+			);
+			Logger.recordOutput(
+				"Vision/allAngularStds",
+				allAngularStds.stream().mapToDouble(Double::doubleValue).toArray()
+			);
+			
 			// Aggregate data for final summary
 			allTagPoses.addAll(tagPoses);
 			allRobotPoses.addAll(robotPoses);

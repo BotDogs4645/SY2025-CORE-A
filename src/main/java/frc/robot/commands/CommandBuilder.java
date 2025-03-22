@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.MechanismPosition;
+import frc.robot.commands.components.AutoElevatorToPosition;
 import frc.robot.commands.components.ChuteToPosition;
 import frc.robot.commands.components.ElevatorToPosition;
 import frc.robot.commands.components.EndEffectorComponents;
@@ -20,10 +21,9 @@ import frc.robot.subsystems.EndEffector;
 public class CommandBuilder {
     public static Command deploy(Chute chute, EndEffector endEffector, Elevator elevator) {
         return new ChuteToPosition(chute, MechanismPosition.DEPLOY)
-            .andThen(new InstantCommand(() -> {Logger.recordOutput("Deploy", "called");})
             .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.DEPLOY))
             .andThen(new ChuteToPosition(chute, MechanismPosition.REST))
-            .andThen(new InstantCommand(() -> {endEffector.deployed = true;})));
+            .andThen(new InstantCommand(() -> {endEffector.deployed = true;}));
             
     }
 
@@ -51,6 +51,12 @@ public class CommandBuilder {
     public static Command toMechanismPosition(EndEffector endEffector, Elevator elevator, MechanismPosition position) {
         return new ParallelCommandGroup(
             new ElevatorToPosition(elevator, position),
+            new EndEffectorToPosition(endEffector, position)
+        );
+    }
+    public static Command toAutoMechanismPosition(EndEffector endEffector, Elevator elevator, MechanismPosition position) {
+        return new ParallelCommandGroup(
+            new AutoElevatorToPosition(elevator, position),
             new EndEffectorToPosition(endEffector, position)
         );
     }
