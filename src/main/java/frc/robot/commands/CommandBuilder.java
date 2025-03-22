@@ -79,12 +79,4 @@ public class CommandBuilder {
             .andThen(Commands.waitSeconds(1))
             .andThen(new InstantCommand(() -> endEffector.setWheelDutyCycle(0.1)));
     }
-
-    public static Command score(EndEffector endEffector, Elevator elevator) {
-        return EndEffectorComponents.score(endEffector)
-        .andThen(new WaitCommand(0.5))
-        .andThen(
-            toMechanismPosition(endEffector, elevator, MechanismPosition.REST)
-        );
-    }
 }

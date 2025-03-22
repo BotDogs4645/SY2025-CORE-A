@@ -199,9 +199,6 @@ public class TunerConstants {
     public static CommandSwerveDrivetrain createDrivetrain() {
         return new CommandSwerveDrivetrain(
             DrivetrainConstants, 
-            0, 
-            VecBuilder.fill(0.2, 0.2 ,1),
-            VecBuilder.fill(999, 999, 999), //not used
             FrontLeft, FrontRight, BackLeft, BackRight
         );
     }
