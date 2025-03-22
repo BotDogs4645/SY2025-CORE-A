@@ -16,6 +16,7 @@ import com.pathplanner.lib.path.Waypoint;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -58,6 +59,8 @@ public class DriverAssist {
                           : curPose.nearest(Constants.ReefPoses.blueRightReefPoses))
                 : (isLeft ? curPose.nearest(Constants.ReefPoses.redLeftReefPoses)
                           : curPose.nearest(Constants.ReefPoses.redRightReefPoses));
+
+        Logger.recordOutput("Vision/driverAssist/poses", Constants.ReefPoses.blueLeftReefPoses.toArray(new Pose2d[0]));
 
         return new DeferredCommand(() -> generatePathfindCommandPathFinder(drivetrain, goalPose), Set.of(drivetrain));
     }

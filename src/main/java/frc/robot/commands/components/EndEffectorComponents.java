@@ -76,6 +76,33 @@ public class EndEffectorComponents {
         };
     }
 
+    public static Command sigmasSpit(EndEffector endEffector) {
+        return new Command() {
+            @Override
+            public void initialize() {
+                if (endEffector.algaeSensorTripped()) {
+                    endEffector.setWheelDutyCycle(-0.2);
+                } else {
+                    endEffector.setWheelDutyCycle(0.2);
+                }
+            }
+
+            @Override
+            public void execute() {
+            }
+
+            @Override
+            public void end(boolean interrupted) {
+                endEffector.setWheelBrake();
+            }
+
+            @Override 
+            public boolean isFinished() {
+                return !endEffector.algaeSensorTripped();
+            }
+        };
+    }
+
     public static Command reverseCoral(EndEffector endEffector) {
         return new Command() {
             @Override
@@ -125,7 +152,7 @@ public class EndEffectorComponents {
 
             @Override 
             public boolean isFinished() {
-                return sensorProvider.get();
+                return !sensorProvider.get();
             }
         };
     }

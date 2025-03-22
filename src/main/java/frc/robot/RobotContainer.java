@@ -67,8 +67,6 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
-        drivetrain.createAutoBuilder();
-        autoChooser = AutoBuilder.buildAutoChooser();
 
         NamedCommands.registerCommand("deploy", CommandBuilder.deploy(chute, endEffector, elevator));
         NamedCommands.registerCommand("toMechanismPositionL1",
@@ -80,7 +78,11 @@ public class RobotContainer {
         NamedCommands.registerCommand("toMechanismPositionL4",
                 CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L4));
         NamedCommands.registerCommand("spit", EndEffectorComponents.spit(endEffector));
+        NamedCommands.registerCommand("score", EndEffectorComponents.score(endEffector));
         NamedCommands.registerCommand("intakeSequence", CommandBuilder.intakeSequence(chute, endEffector, elevator));
+
+        drivetrain.createAutoBuilder();
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         configureBindings();
 
@@ -123,8 +125,8 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         
 
-        joystick.leftTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain, true, isBlueAlliance()));
-        joystick.rightTrigger().whileTrue(DriverAssist.reefPathfindCommand(drivetrain, false, isBlueAlliance()));
+        joystick.leftTrigger().whileTrue(drivetrain.defer(() -> DriverAssist.reefPathfindCommand(drivetrain, true, isBlueAlliance())));
+        joystick.rightTrigger().whileTrue(drivetrain.defer(() -> DriverAssist.reefPathfindCommand(drivetrain, false, isBlueAlliance())));
 
         // joystick.leftTrigger().whileTrue(new AutoAlignCommand(drivetrain, new
         // Pose2d(3.38, 4.09, new Rotation2d(0))));
@@ -134,7 +136,7 @@ public class RobotContainer {
         joystick.button(8).onTrue(
                 CommandBuilder.deploy(chute, endEffector, elevator));
 
-        joystick.leftBumper().onTrue(CommandBuilder.intakeOrRest(chute, endEffector, elevator));
+        joystick.leftBumper().onTrue(CommandBuilder.intakeOrProcessor(chute, endEffector, elevator));
         joystick.rightBumper().whileTrue(EndEffectorComponents.spit(endEffector));
 
         operatorPanel.button(1).onTrue(

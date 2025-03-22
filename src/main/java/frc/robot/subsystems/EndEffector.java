@@ -186,7 +186,11 @@ public class EndEffector extends SubsystemBase {
             return false;
         }
         algaeSensorAlert.set(false);
-        return measurement.distance_mm <= EndEffectorConstants.algaeThreshold.in(Millimeters);
+        Logger.recordOutput("EndEffector/algaeDistancemm", measurement.distance_mm);
+        Logger.recordOutput("EndEffector/algaeAmbient", measurement.ambient);
+        Logger.recordOutput("EndEffector/algaeStatus", measurement.status);
+        return measurement.distance_mm <= EndEffectorConstants.algaeThreshold.in(Millimeters)
+            && measurement.status == 0;
     }
 
     public boolean isSafeToElevate() {

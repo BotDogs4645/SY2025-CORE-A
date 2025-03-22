@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -18,9 +20,11 @@ import frc.robot.subsystems.EndEffector;
 public class CommandBuilder {
     public static Command deploy(Chute chute, EndEffector endEffector, Elevator elevator) {
         return new ChuteToPosition(chute, MechanismPosition.DEPLOY)
+            .andThen(new InstantCommand(() -> {Logger.recordOutput("Deploy", "called");})
             .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.DEPLOY))
             .andThen(new ChuteToPosition(chute, MechanismPosition.REST))
-            .andThen(new InstantCommand(() -> {endEffector.deployed = true;}));
+            .andThen(new InstantCommand(() -> {endEffector.deployed = true;})));
+            
     }
 
     public static Command toggleDeploy(Chute chute, EndEffector endEffector, Elevator elevator) {
@@ -35,10 +39,10 @@ public class CommandBuilder {
         );
     }
 
-    public static Command intakeOrRest(Chute chute, EndEffector endEffector, Elevator elevator) {
+    public static Command intakeOrProcessor(Chute chute, EndEffector endEffector, Elevator elevator) {
         return new ConditionalCommand(
-            new ElevatorToPosition(elevator, MechanismPosition.REST)
-            .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.REST)),
+            new ElevatorToPosition(elevator, MechanismPosition.PROCESSOR)
+            .andThen(new EndEffectorToPosition(endEffector, MechanismPosition.PROCESSOR)),
             intakeSequence(chute, endEffector, elevator),
             endEffector::algaeSensorTripped
         );
@@ -52,13 +56,13 @@ public class CommandBuilder {
     }
 
     public static Command intakeSequence(Chute chute, EndEffector endEffector, Elevator elevator) {
-        return toMechanismPosition(endEffector, elevator, MechanismPosition.INTAKE)
+        return (toMechanismPosition(endEffector, elevator, MechanismPosition.INTAKE)
         .andThen(
             new ChuteToPosition(chute, MechanismPosition.INTAKE)
         ).andThen(
             EndEffectorComponents.intakeCoral(endEffector)
-        ).andThen(
-            new ChuteToPosition(chute, MechanismPosition.REST)
+        )).finallyDo(
+            new ChuteToPosition(chute, MechanismPosition.REST)::schedule
         );
     }
 

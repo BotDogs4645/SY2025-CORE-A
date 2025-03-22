@@ -49,6 +49,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
     private final SwerveRequest.ApplyFieldSpeeds m_pathApplyFieldSpeeds = new SwerveRequest.ApplyFieldSpeeds();
 
+    private final SwerveRequest.ApplyChassisSpeeds autoRequest = new SwerveRequest.ApplyChassisSpeeds();
+
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -260,13 +262,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             () -> this.getState().Pose,
             this::resetPose,
             () -> this.getState().Speeds,
-            (speeds, feedforwards) -> {
-                this.setControl(
-                    m_pathApplyFieldSpeeds
-                    .withSpeeds(speeds)
-                    .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesX())
-                    .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesY())
-                );
+            (speeds) -> {
+                this.setControl(autoRequest.withSpeeds(speeds));
             },
             new PPHolonomicDriveController(
                 Constants.PathPlannerConstants.translationPID,
@@ -274,10 +271,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             ), 
             Constants.PathPlannerConstants.config, 
             () -> {
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-                }
                 return false;
             }, 
             this

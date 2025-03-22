@@ -7,43 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "DA3 to F"
+            "pathName": "50 blue"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "toMechanismPositionL4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "F to human12"
+            "name": "deploy"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "intakeSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "human12 to E"
+            "name": "toMechanismPositionL2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "toMechanismPositionL4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "E to human12"
+            "name": "spit"
           }
         }
       ]

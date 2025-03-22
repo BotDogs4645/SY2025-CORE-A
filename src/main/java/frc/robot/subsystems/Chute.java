@@ -83,6 +83,7 @@ public class Chute extends SubsystemBase {
         Logger.recordOutput("Chute/velocity", getVelocity());
         Logger.recordOutput("Chute/voltageOut", chuteMotor.getMotorVoltage().getValueAsDouble());
         Logger.recordOutput("Chute/done", hasReachedTarget());
+        Logger.recordOutput("Chute/hasReachedTarget", hasReachedTarget());
         
         encoderAlert.set(!chuteEncoder.isConnected());
     }    

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.357000000002452,
-        "y": 1.2267500000027391
+        "x": 5.87925,
+        "y": 1.9482499999999994
       },
       "isLocked": false,
       "linkedName": "Fscore"
@@ -20,8 +20,8 @@
         "y": 1.0415000000027408
       },
       "prevControl": {
-        "x": 2.96400000000245,
-        "y": 0.4955000000027394
+        "x": 2.83725,
+        "y": 0.8367499999999995
       },
       "nextControl": null,
       "isLocked": false,
