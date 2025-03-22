@@ -10,6 +10,8 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import java.util.logging.Logger;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -64,7 +66,7 @@ public class RobotContainer {
     public static boolean hasBeenDeployed = false;
     public final Chute chute = new Chute();
 
-    private final SendableChooser<Command> autoChooser;
+    private final LoggedDashboardChooser<Command> autoChooser;
 
     public RobotContainer() {
 
@@ -82,11 +84,12 @@ public class RobotContainer {
         NamedCommands.registerCommand("intakeSequence", CommandBuilder.intakeSequence(chute, endEffector, elevator));
 
         drivetrain.createAutoBuilder();
-        autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
 
         configureBindings();
 
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Auto Chooser", autoChooser.getSendableChooser());
+        
     }
 
     private void configureBindings() {
