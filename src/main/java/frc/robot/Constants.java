@@ -71,7 +71,7 @@ public class Constants {
     public static double KD = 0;
     public static double KG = 0;
 
-    public static double gearRatio = 36;
+    public static double gearRatio = 72;
 
     public static Distance coralThreshold = Millimeters.of(50);
     public static Distance algaeThreshold = Millimeters.of(30);

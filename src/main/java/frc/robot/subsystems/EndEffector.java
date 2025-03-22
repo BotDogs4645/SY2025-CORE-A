@@ -214,7 +214,7 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/wheelControl", getWheelControl());
 
         if (Math.abs(getPivotVelocity()) < 0.005 && pivotEncoder.isConnected() && x++>5) {
-            pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
+        //    pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
             x = 10;
         }
 

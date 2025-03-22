@@ -172,13 +172,6 @@ public class RobotContainer {
         // new InstantCommand(endEffector::increaseOffset)
         );
 
-        operatorPanel.button(8).onTrue(
-                new InstantCommand(() -> {visionSubsystem.seedLL(true);})
-        );
-        operatorPanel.button(8).onFalse(
-                new InstantCommand(() -> {visionSubsystem.seedLL(false);})
-        );
-
         operatorPanel.button(9).toggleOnTrue(
                 CommandBuilder.intakeSequence(chute, endEffector, elevator));
 
