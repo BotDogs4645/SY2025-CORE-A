@@ -35,6 +35,12 @@ public class Localization extends SubsystemBase {
 	private final LimelightInputsAutoLogged[] inputs;
   	private final Alert[] disconnectedAlerts;
 
+	private boolean da = false;
+
+	public void seedLL(boolean da) {
+		this.da = da;
+	}
+
 	public Localization(VisionConsumer visionConsumer, Supplier<SwerveDriveState> stateSupplier) {
 		this.visionConsumer = visionConsumer;
 		this.stateSupplier = stateSupplier;
@@ -137,9 +143,9 @@ public class Localization extends SubsystemBase {
 				visionConsumer.accept(
 					observation.pose().toPose2d(),
 					observation.timestamp(),
-					//TODO: Test on Saturday
-					VecBuilder.fill(0.9, 0.9, 0.9)
-					//VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev)
+					//VecBuilder.fill(0, 0, 0)
+					//VecBuilder.fill(0.9, 0.9, 0.9)
+					da ? VecBuilder.fill(0, 0, 0) : VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev)
 				);
 			}
 

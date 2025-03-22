@@ -158,7 +158,7 @@ public class Constants {
     DEALGAE_HIGH(0.44520938613023464, 1.001),
     DEALGAE_GROUND(0.49749486243737157, 0),
     PROCESSOR(0.48, 0.3),
-    INTAKE(0.44485016112125403, 0),
+    INTAKE(0.42709901067747524, 0),
     REST(0.40, 0),
     DEPLOY(0.48, 0),
     CLIMB(0.48, 0),
@@ -176,7 +176,7 @@ public class Constants {
 
   public class ReefPoses {
     public static final List<Pose2d> blueLeftReefPoses = List.of(
-        new Pose2d(2.0, 4.180, new Rotation2d(0)), // 18-2
+        new Pose2d(3.0, 4.180, new Rotation2d(0)), // 18-2
         new Pose2d(3.895, 5.388, new Rotation2d(Math.toRadians(-60))), // 19-2
         new Pose2d(5.317, 5.227, new Rotation2d(Math.toRadians(-120))), // 20-2
         new Pose2d(5.971, 3.865, new Rotation2d(Math.toRadians(180))), // 21-2
@@ -185,7 +185,7 @@ public class Constants {
     );
 
     public static final List<Pose2d> blueRightReefPoses = List.of(
-        new Pose2d(2.0, 3.855, new Rotation2d(0)), // 18-1
+        new Pose2d(3.0, 3.855, new Rotation2d(0)), // 18-1
         new Pose2d(3.613, 5.226, new Rotation2d(Math.toRadians(-60))), // 19-1
         new Pose2d(5.095, 5.370, new Rotation2d(Math.toRadians(-120))), // 20-1
         new Pose2d(5.971, 4.185, new Rotation2d(Math.toRadians(180))), // 21-1
@@ -205,7 +205,7 @@ public class Constants {
     public static final List<Pose2d> redRightReefPoses = List.of(
         new Pose2d(11.576, 3.862, new Rotation2d(0)), // 10-1
         new Pose2d(12.178, 5.229, new Rotation2d(Math.toRadians(-60))), // 9-1
-        new Pose2d(13.666, 4.401, new Rotation2d(Math.toRadians(-120))), // 8-1
+        new Pose2d(13.666, 5.401, new Rotation2d(Math.toRadians(-120))), // 8-1
         new Pose2d(14.547, 4.199, new Rotation2d(Math.toRadians(180))), // 7-1
         new Pose2d(13.951, 2.818, new Rotation2d(Math.toRadians(120))), // 6-1
         new Pose2d(12.466, 2.643, new Rotation2d(Math.toRadians(60))) // 11-1

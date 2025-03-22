@@ -58,7 +58,7 @@ public class RobotContainer {
     private final CommandXboxController secondJoystick = new CommandXboxController(2);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Localization visionSubsustem = new Localization(
+    public final Localization visionSubsystem = new Localization(
             drivetrain::addVisionMeasurement,
             drivetrain::getState);
     public final EndEffector endEffector = new EndEffector();
@@ -172,12 +172,12 @@ public class RobotContainer {
         // new InstantCommand(endEffector::increaseOffset)
         );
 
-        // operatorPanel.button(8).onTrue(
-        // CommandBuilder.toMechanismPosition(endEffector, elevator,
-        // MechanismPosition.PROCESSOR)
-        // .andThen(Commands.waitSeconds(2))
-        // .andThen(new InstantCommand(() -> endEffector.setWheelCoast()))
-        // );
+        operatorPanel.button(8).onTrue(
+                new InstantCommand(() -> {visionSubsystem.seedLL(true);})
+        );
+        operatorPanel.button(8).onFalse(
+                new InstantCommand(() -> {visionSubsystem.seedLL(false);})
+        );
 
         operatorPanel.button(9).toggleOnTrue(
                 CommandBuilder.intakeSequence(chute, endEffector, elevator));

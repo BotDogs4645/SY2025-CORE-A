@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 1.2160112359550563,
+        "y": 7.048595505617977
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 2.0703413826108594,
+        "y": 6.7014893037487715
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "IntakeHuman13"
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 4.18
+        "x": 5.095,
+        "y": 5.37
       },
       "prevControl": {
-        "x": 1.0,
-        "y": 4.18
+        "x": 5.504915730337078,
+        "y": 5.857233146067416
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ScoreJ"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.5,
+    "maxVelocity": 1.6,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -54.0
   },
   "useDefaultConstraints": false
 }
