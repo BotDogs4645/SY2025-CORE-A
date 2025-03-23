@@ -19,11 +19,15 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.DoubleArrayPublisher;
 import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.networktables.IntegerPublisher;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 
 public class Limelight {
   private final DoubleArrayPublisher orientationPublisher;
+  private final IntegerPublisher imuModePublisher;
+  private final IntegerPublisher throttlePublisher;
 
   private final DoubleSubscriber latencySubscriber;
   private final DoubleSubscriber txSubscriber;
@@ -34,6 +38,8 @@ public class Limelight {
   public Limelight(String name) {
     var table = NetworkTableInstance.getDefault().getTable(name);
     orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
+    imuModePublisher = table.getIntegerTopic("imumode_set").publish();
+    throttlePublisher = table.getIntegerTopic("throttle_set").publish();
     latencySubscriber = table.getDoubleTopic("tl").subscribe(0.0);
     txSubscriber = table.getDoubleTopic("tx").subscribe(0.0);
     tySubscriber = table.getDoubleTopic("ty").subscribe(0.0);
@@ -51,9 +57,21 @@ public class Limelight {
         Rotation2d.fromDegrees(txSubscriber.get()),
         Rotation2d.fromDegrees(tySubscriber.get()));
 
+    // Update enabled status
+    imuModePublisher.accept(
+      // https://docs.limelightvision.io/docs/docs-limelight/apis/complete-networktables-api#imu-controls
+      // seed from external IMU while disabled
+      // use internal IMU with MT1 convergence while enabled
+      DriverStation.isEnabled() ? 3 : 1
+    );
+    throttlePublisher.accept(
+      //Skip 100 frames while disabled to prevent temperature rise
+      DriverStation.isEnabled() ? 0 : 100
+    );
+
     // Update orientation for MegaTag 2
     orientationPublisher.accept(
-        new double[] {rotation, 0.0, 0.0, 0.0, 0.0, 0.0 });
+        new double[] { rotation, 0.0, 0.0, 0.0, 0.0, 0.0 });
     NetworkTableInstance.getDefault()
         .flush(); // Increases network traffic but recommended by Limelight
 
