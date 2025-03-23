@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -14,6 +15,7 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -278,6 +280,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             }, 
             this
         );
+
+        
+        PathPlannerLogging.setLogActivePathCallback((List<Pose2d> path) -> {
+            Logger.recordOutput("Drive/PP/ActivePath", path.toArray(new Pose2d[0]));
+        });
+
+        PathPlannerLogging.setLogTargetPoseCallback((Pose2d pose) -> {
+            Logger.recordOutput("Drive/PP/TargetPose", pose);
+        });
     }
 
     /**
