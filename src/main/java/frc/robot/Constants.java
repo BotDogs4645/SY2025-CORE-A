@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -19,6 +20,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -175,40 +177,36 @@ public class Constants {
   }
 
   public class ReefPoses {
-    public static final List<Pose2d> blueLeftReefPoses = List.of(
-        new Pose2d(3.0, 4.180, new Rotation2d(0)), // 18-2
-        new Pose2d(3.895, 5.388, new Rotation2d(Math.toRadians(-60))), // 19-2
-        new Pose2d(5.317, 5.227, new Rotation2d(Math.toRadians(-120))), // 20-2
-        new Pose2d(5.971, 3.865, new Rotation2d(Math.toRadians(180))), // 21-2
-        new Pose2d(5.079, 2.678, new Rotation2d(Math.toRadians(120))), // 22-2
-        new Pose2d(3.619, 2.819, new Rotation2d(Math.toRadians(60))) // 17-2
-    );
+    public static final Transform2d leftReefOffset = new Transform2d(0.66, -0.15, Rotation2d.kZero);
+    public static final Transform2d rightReefOffset = new Transform2d(0.66, 0.15, Rotation2d.kZero);
 
-    public static final List<Pose2d> blueRightReefPoses = List.of(
-        new Pose2d(3.0, 3.855, new Rotation2d(0)), // 18-1
-        new Pose2d(3.613, 5.226, new Rotation2d(Math.toRadians(-60))), // 19-1
-        new Pose2d(5.095, 5.370, new Rotation2d(Math.toRadians(-120))), // 20-1
-        new Pose2d(5.971, 4.185, new Rotation2d(Math.toRadians(180))), // 21-1
-        new Pose2d(5.370, 2.833, new Rotation2d(Math.toRadians(120))), // 22-1
-        new Pose2d(3.9, 2.652, new Rotation2d(Math.toRadians(60))) // 17-1
-    );
+    private static final Transform2d flip180 = new Transform2d(0, 0, Rotation2d.k180deg); 
 
-    public static final List<Pose2d> redLeftReefPoses = List.of(
-        new Pose2d(11.576, 4.192, new Rotation2d(0)), // 10-2
-        new Pose2d(12.488, 5.358, new Rotation2d(Math.toRadians(-60))), // 9-2
-        new Pose2d(13.950, 5.222, new Rotation2d(Math.toRadians(-120))), // 8-2
-        new Pose2d(14.542, 3.864, new Rotation2d(Math.toRadians(180))), // 7-2
-        new Pose2d(13.661, 2.660, new Rotation2d(Math.toRadians(120))), // 6-2
-        new Pose2d(12.174, 2.803, new Rotation2d(Math.toRadians(60))) // 11-2
-    );
+    private static final AprilTagFieldLayout aprilTagLayout = 
+      AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
-    public static final List<Pose2d> redRightReefPoses = List.of(
-        new Pose2d(11.576, 3.862, new Rotation2d(0)), // 10-1
-        new Pose2d(12.178, 5.229, new Rotation2d(Math.toRadians(-60))), // 9-1
-        new Pose2d(13.666, 5.401, new Rotation2d(Math.toRadians(-120))), // 8-1
-        new Pose2d(14.547, 4.199, new Rotation2d(Math.toRadians(180))), // 7-1
-        new Pose2d(13.951, 2.818, new Rotation2d(Math.toRadians(120))), // 6-1
-        new Pose2d(12.466, 2.643, new Rotation2d(Math.toRadians(60))) // 11-1
-    );
+    public static final int[] blueReefTags = {18, 19, 20, 21, 22, 17};
+    public static final int[] redReefTags = {10, 9, 8, 7, 6, 11};
+
+    private static List<Pose2d> getTagPoses(int[] tags) {
+      return IntStream.of(tags)
+        .mapToObj(
+          id -> aprilTagLayout.getTagPose(id).get().toPose2d()
+        ).toList();
+    }
+
+    private static List<Pose2d> getReefPoses(List<Pose2d> tagPoses, Transform2d transform) {
+      return tagPoses.stream().map(
+        pose -> pose.transformBy(transform).plus(flip180)
+      ).toList();
+    }
+
+    public static final List<Pose2d> blueTagPoses = getTagPoses(blueReefTags);
+    public static final List<Pose2d> redTagPoses = getTagPoses(redReefTags);
+
+    public static final List<Pose2d> redLeftReefPoses = getReefPoses(redTagPoses, leftReefOffset);
+    public static final List<Pose2d> redRightReefPoses = getReefPoses(redTagPoses, rightReefOffset);
+    public static final List<Pose2d> blueLeftReefPoses = getReefPoses(blueTagPoses, leftReefOffset);
+    public static final List<Pose2d> blueRightReefPoses = getReefPoses(blueTagPoses, rightReefOffset);
   }
 }
