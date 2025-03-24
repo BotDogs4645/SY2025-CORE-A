@@ -172,18 +172,18 @@ public class Limelight {
   }
 
   /** Represents the angle to a simple target, not used for pose estimation. */
-  public static record TargetObservation(
+  public record TargetObservation(
     Rotation2d tx,
     Rotation2d ty) {
   }
 
-  public static enum PoseObservationType {
+  public enum PoseObservationType {
     MEGATAG_1,
     MEGATAG_2,
   }
 
   /** Represents a robot pose sample used for pose estimation. */
-  public static record PoseObservation(
+  public record PoseObservation(
     double timestamp,
     Pose3d pose,
     double ambiguity,

@@ -7,9 +7,9 @@ import frc.robot.subsystems.EndEffector;
 
 public class EndEffectorToPosition extends Command {
 
-  private EndEffector endEffector;
-  Rotation2d targetPosition;
-  MechanismPosition mechanismPosition;
+  private final EndEffector endEffector;
+  final Rotation2d targetPosition;
+  final MechanismPosition mechanismPosition;
 
   public EndEffectorToPosition(EndEffector endEffector, MechanismPosition position) {
     this.endEffector = endEffector;

@@ -8,8 +8,8 @@ import frc.robot.Constants.ChuteConstants;
 
 public class ChuteToPosition extends Command {
 
-  private Chute chute;
-  Rotation2d targetPosition;
+  private final Chute chute;
+  final Rotation2d targetPosition;
 
   public ChuteToPosition(Chute chute, MechanismPosition position) {
     this.chute = chute;

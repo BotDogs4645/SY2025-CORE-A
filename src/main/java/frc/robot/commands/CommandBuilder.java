@@ -1,13 +1,10 @@
 package frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.MechanismPosition;
 import frc.robot.commands.components.AutoElevatorToPosition;
 import frc.robot.commands.components.ChuteToPosition;
@@ -75,7 +72,7 @@ public class CommandBuilder {
     public static Command intakeAlgae(EndEffector endEffector) {
         return 
             EndEffectorComponents.intakeAlgae(endEffector)
-            .until(() -> endEffector.algaeSensorTripped())
+            .until(endEffector::algaeSensorTripped)
             .andThen(Commands.waitSeconds(1))
             .andThen(new InstantCommand(() -> endEffector.setWheelDutyCycle(0.1)));
     }

@@ -28,7 +28,7 @@ import frc.robot.Constants.ElevatorConstants;
 public class Elevator extends SubsystemBase {
     private final TalonFX leftMotor;
     private final TalonFX rightMotor;
-    private Supplier<Boolean> safetySupplier;
+    private final Supplier<Boolean> safetySupplier;
 
     private final PositionDutyCycle positionControl;
 

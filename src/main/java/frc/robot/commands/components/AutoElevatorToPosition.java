@@ -7,8 +7,8 @@ import frc.robot.subsystems.Elevator;
 
 public class AutoElevatorToPosition extends Command {
 
-  private Elevator elevator;
-  Distance targetPosition;
+  private final Elevator elevator;
+  final Distance targetPosition;
 
   public AutoElevatorToPosition(Elevator elevator, MechanismPosition position) {
     this.elevator = elevator;

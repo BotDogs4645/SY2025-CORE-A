@@ -44,7 +44,8 @@ public class Robot extends LoggedRobot {
       case 0:
         Logger.recordMetadata("GitDirty", "Clean");
         break;
-      case 1:
+        //noinspection DataFlowIssue BuildConstants is generated at compile time
+        case 1:
         Logger.recordMetadata("GitDirty", "Dirty");
         break;
       default:
@@ -63,8 +64,7 @@ public class Robot extends LoggedRobot {
       Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
     }
 
-    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
-                    // be added.
+    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
 
     m_robotContainer = new RobotContainer();
   }

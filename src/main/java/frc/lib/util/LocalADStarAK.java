@@ -99,7 +99,7 @@ public class LocalADStarAK implements Pathfinder {
   }
 
   private static class ADStarIO implements LoggableInputs {
-    public LocalADStar adStar = new LocalADStar();
+    public final LocalADStar adStar = new LocalADStar();
     public boolean isNewPathAvailable = false;
     public List<PathPoint> currentPathPoints = Collections.emptyList();
 

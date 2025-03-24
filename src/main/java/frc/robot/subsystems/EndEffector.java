@@ -23,9 +23,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.EndEffectorConstants;
 import frc.robot.commands.components.EndEffectorComponents;
 
@@ -159,25 +157,19 @@ public class EndEffector extends SubsystemBase {
             && Math.abs(getPivotVelocity()) <= EndEffectorConstants.velocityThreshold.in(RadiansPerSecond);
     }
 
-    public boolean firstCoralSensorTripped() {
-        Measurement measurement = firstCoralSensor.getMeasurement();
+    private boolean sensorTripped(LaserCan sensor, Alert alert, double threshold) {
+        Measurement measurement = sensor.getMeasurement();
         if (measurement == null) {
-            firstCoralSensorAlert.set(true);
+            alert.set(true);
             return false;
         }
-        firstCoralSensorAlert.set(false);
-        return measurement.distance_mm <= EndEffectorConstants.coralThreshold.in(Millimeters);
+        alert.set(false);
+        return measurement.distance_mm <= threshold;
     }
 
-    public boolean secondCoralSensorTripped() {
-        Measurement measurement = secondCoralSensor.getMeasurement();
-        if (measurement == null) {
-            secondCoralSensorAlert.set(true);
-            return false;
-        }
-        secondCoralSensorAlert.set(false);
-        return measurement.distance_mm <= EndEffectorConstants.coralThreshold.in(Millimeters);
-    }
+    public boolean firstCoralSensorTripped() { return sensorTripped(firstCoralSensor, firstCoralSensorAlert, EndEffectorConstants.coralThreshold.in(Millimeters)); }
+    public boolean secondCoralSensorTripped() { return sensorTripped(secondCoralSensor, secondCoralSensorAlert, EndEffectorConstants.coralThreshold.in(Millimeters)); }
+
 
     public boolean algaeSensorTripped() {
         Measurement measurement = algaeSensor.getMeasurement();
@@ -197,8 +189,6 @@ public class EndEffector extends SubsystemBase {
         return getPivotPosition() >= EndEffectorConstants.safetyAngle.getRotations();
     }
 
-    private int x = 0;
-
     @Override
     public void periodic() {
         Logger.recordOutput("EndEffector/pivotPosition", getPivotPosition());
@@ -213,16 +203,9 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/algaeSensor", algaeSensorTripped());
         Logger.recordOutput("EndEffector/wheelControl", getWheelControl());
 
-        if (Math.abs(getPivotVelocity()) < 0.005 && pivotEncoder.isConnected() && x++>5) {
-        //    pivotMotor.setPosition(pivotEncoder.get(), 0); // 0 second timeout (do not wait for status)
-            x = 10;
-        }
-
-
-        if(secondCoralSensorTripped() && !firstCoralSensorTripped() && getWheelControl().equals("StaticBrake")) {
+        encoderAlert.set(!pivotEncoder.isConnected());
+        if (secondCoralSensorTripped() && !firstCoralSensorTripped() && getWheelControl().equals("StaticBrake")) {
             EndEffectorComponents.reverseCoral(this).schedule();
         }
-        
-        encoderAlert.set(!pivotEncoder.isConnected());
     }
 }

@@ -8,8 +8,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import java.util.logging.Logger;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -17,16 +15,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.DeferredCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
@@ -35,16 +26,14 @@ import frc.robot.commands.DriverAssist;
 import frc.robot.commands.components.EndEffectorComponents;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Chute;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
 import frc.robot.subsystems.vision.Localization;
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
-                                                                                      // max angular velocity
+    private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private final double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -55,7 +44,6 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandJoystick operatorPanel = new CommandJoystick(1);
-    private final CommandXboxController secondJoystick = new CommandXboxController(2);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Localization visionSubsystem = new Localization(
@@ -63,7 +51,6 @@ public class RobotContainer {
             drivetrain::getState);
     public final EndEffector endEffector = new EndEffector();
     public final Elevator elevator = new Elevator(endEffector::isSafeToElevate);
-    public static boolean hasBeenDeployed = false;
     public final Chute chute = new Chute();
 
     private final LoggedDashboardChooser<Command> autoChooser;
@@ -131,10 +118,7 @@ public class RobotContainer {
         joystick.leftTrigger().whileTrue(drivetrain.defer(() -> DriverAssist.reefPathfindCommand(drivetrain, true, isBlueAlliance())));
         joystick.rightTrigger().whileTrue(drivetrain.defer(() -> DriverAssist.reefPathfindCommand(drivetrain, false, isBlueAlliance())));
 
-        // joystick.leftTrigger().whileTrue(new AutoAlignCommand(drivetrain, new
-        // Pose2d(3.38, 4.09, new Rotation2d(0))));
-
-        joystick.button(7).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.button(7).onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         joystick.button(8).onTrue(
                 CommandBuilder.deploy(chute, endEffector, elevator));
@@ -157,31 +141,20 @@ public class RobotContainer {
         operatorPanel.button(5).onTrue(
                 CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_GROUND)
                         .andThen(CommandBuilder.intakeAlgae(endEffector))
-        // new InstantCommand(endEffector::decreaseOffset)
         );
 
         operatorPanel.button(6).onTrue(
                 CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_LOW)
                         .andThen(CommandBuilder.intakeAlgae(endEffector))
-        // new InstantCommand(endEffector::decreaseOffset)
         );
 
         operatorPanel.button(7).onTrue(
                 CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_HIGH)
                         .andThen(CommandBuilder.intakeAlgae(endEffector))
-        // new InstantCommand(endEffector::increaseOffset)
         );
 
         operatorPanel.button(9).toggleOnTrue(
                 CommandBuilder.intakeSequence(chute, endEffector, elevator));
-
-        // operatorPanel.button(9).onTrue(
-        // EndEffectorComponents.intakeCoral(endEffector)
-        // );
-
-        // operatorPanel.button(9).onTrue(
-        // CommandBuilder.intakeAlgaeLow(endEffector, elevator)
-        // );
 
         operatorPanel.button(10).onTrue(
                 CommandBuilder.toggleDeploy(chute, endEffector, elevator));
@@ -189,10 +162,7 @@ public class RobotContainer {
 
     public boolean isBlueAlliance() {
         var alliance = DriverStation.getAlliance();
-        if(alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Blue;
-        }
-        return true;
+        return alliance.map(value -> value == DriverStation.Alliance.Blue).orElse(true);
     }
 
     public Command getAutonomousCommand() {

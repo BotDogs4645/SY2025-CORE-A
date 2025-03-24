@@ -80,9 +80,7 @@ public class Localization extends SubsystemBase {
 			// Process each detected tag ID
 			for (int tagId : inputs[i].tagIds) {
 				var tagPose = VisionConstants.aprilTagLayout.getTagPose(tagId);
-				if (tagPose.isPresent()) {
-					tagPoses.add(tagPose.get());
-				}
+                tagPose.ifPresent(tagPoses::add);
 			}
 
 			// Loop over pose observations
