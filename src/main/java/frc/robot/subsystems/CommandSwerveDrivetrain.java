@@ -294,7 +294,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /**
      * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
      * while still accounting for measurement noise.
-     *
+     * <p>
+     * Takes an FPGA timestamp whereas super.addVisionMeasurement takes system time in milliseconds.
+     * </p>
      * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
      * @param timestampSeconds The timestamp of the vision measurement in seconds.
      */
@@ -306,6 +308,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /**
      * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
      * while still accounting for measurement noise.
+     * <p>
+     * Takes an FPGA timestamp whereas super.addVisionMeasurement takes system time in milliseconds.
+     * </p>
      * <p>
      * Note that the vision measurement standard deviations passed into this method
      * will continue to apply to future measurements until a subsequent call to
