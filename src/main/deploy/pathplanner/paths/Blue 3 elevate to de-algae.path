@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 9.362397540983606,
-        "y": 0.722387295081968
+        "x": 5.713499999999999,
+        "y": 5.975
       },
       "prevControl": null,
       "nextControl": {
-        "x": 10.362397540983604,
-        "y": 0.722387295081968
+        "x": 5.570134413909168,
+        "y": 5.770192019870239
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue 3 elevate"
     },
     {
       "anchor": {
-        "x": 18.14938524590164,
-        "y": 0.6144979508196718
+        "x": 5.19675,
+        "y": 5.2925
       },
       "prevControl": {
-        "x": 17.14938524590164,
-        "y": 0.6144979508196717
+        "x": 5.430750000000001,
+        "y": 5.59475
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue 3 de-algae"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -118.92642583525355
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Elevate to de-algae",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -121.10880882854507
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

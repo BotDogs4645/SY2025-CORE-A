@@ -153,14 +153,14 @@ public class Constants {
 
   public enum MechanismPosition {
     SCORE_L1(0.48325876208146906, 0.1),
-    SCORE_L2(0.48325876208146906, 0.3802631995376275),
-    SCORE_L3(0.48325876208146906, 0.8088684570312499),
-    SCORE_L4(0.48325876208146906, 1.4074546695631376),
+    SCORE_L2(0.48325876208146906, 0.3802),
+    SCORE_L3(0.48325876208146906, 0.765),
+    SCORE_L4(0.45573938639348466, 1.325),
     DEALGAE_LOW(0.44520938613023464, 0.6145452447385203),
     DEALGAE_HIGH(0.44520938613023464, 1.001),
     DEALGAE_GROUND(0.49749486243737157, 0),
     PROCESSOR(0.48, 0.3),
-    INTAKE(0.42709901067747524, 0),
+    INTAKE(0.4205, 0),
     REST(0.40, 0),
     DEPLOY(0.48, 0),
     CLIMB(0.48, 0),
@@ -177,8 +177,8 @@ public class Constants {
   }
 
   public static class ReefPoses {
-    public static final Transform2d leftReefOffset = new Transform2d(0.66, -0.15, Rotation2d.kZero);
-    public static final Transform2d rightReefOffset = new Transform2d(0.66, 0.15, Rotation2d.kZero);
+    public static final Transform2d leftReefOffset = new Transform2d(0.79, -0.12, Rotation2d.kZero);
+    public static final Transform2d rightReefOffset = new Transform2d(0.79, 0.195, Rotation2d.kZero);
 
     private static final Transform2d flip180 = new Transform2d(0, 0, Rotation2d.k180deg); 
 
@@ -209,5 +209,6 @@ public class Constants {
     public static final List<Pose2d> redRightReefPoses = getReefPoses(redTagPoses, rightReefOffset);
     public static final List<Pose2d> blueLeftReefPoses = getReefPoses(blueTagPoses, leftReefOffset);
     public static final List<Pose2d> blueRightReefPoses = getReefPoses(blueTagPoses, rightReefOffset);
+    
   }
 }

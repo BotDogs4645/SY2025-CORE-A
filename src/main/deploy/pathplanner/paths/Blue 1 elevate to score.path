@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.566,
-        "y": 0.8075
+        "x": 5.3625,
+        "y": 2.2504999999999997
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.80873597094204,
-        "y": 1.5004837804582403
+        "x": 5.242786967329858,
+        "y": 2.4699738932285964
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue 1 elevate"
     },
     {
       "anchor": {
-        "x": 5.382000000000001,
-        "y": 2.7769999999999992
+        "x": 5.0992500000000005,
+        "y": 2.669749999999999
       },
       "prevControl": {
-        "x": 6.10384477228668,
-        "y": 1.5267281792214829
+        "x": 5.2455,
+        "y": 2.2992499999999993
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Fscore"
+      "linkedName": "Blue 1 score"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.56657550477712
+    "rotation": 120.52970589993404
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Elevate to score",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.56594936786058
+    "rotation": 123.11134196037196
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

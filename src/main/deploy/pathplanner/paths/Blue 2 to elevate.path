@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.429500000000001,
-        "y": 6.94025
+        "x": 7.5855,
+        "y": 4.0445
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.814013150018623,
-        "y": 6.94025
+        "x": 6.357,
+        "y": 3.8104999999999993
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.5185,
-        "y": 6.94025
+        "x": 5.713499999999999,
+        "y": 5.975
       },
       "prevControl": {
-        "x": 6.5185,
-        "y": 6.94025
+        "x": 6.4155,
+        "y": 5.86775
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue 3 elevate"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.8,
-    "maxAcceleration": 0.8,
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -121.10880882854507
   },
   "reversed": false,
-  "folder": null,
+  "folder": "To elevate",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

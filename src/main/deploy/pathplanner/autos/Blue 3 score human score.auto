@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "blue1 to da1"
+            "pathName": "Blue 3 to elevate"
           }
         },
         {
@@ -31,19 +31,49 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "da1 to I"
+            "pathName": "Blue 3 elevate to score"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "score"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 3 score to elevate"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue 3 elevate to human player"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Blue top human player to elevate"
           }
         }
       ]

@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -15,6 +16,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -74,6 +76,13 @@ public class RobotContainer {
         autoChooser = new LoggedDashboardChooser<Command>("Auto Chooser", AutoBuilder.buildAutoChooser());
 
         configureBindings();
+
+        Logger.recordOutput("Vision/poses/redLeftReefPoses", Constants.ReefPoses.redLeftReefPoses.toArray(new Pose2d[0]));
+        Logger.recordOutput("Vision/poses/redRightReefPoses", Constants.ReefPoses.redRightReefPoses.toArray(new Pose2d[0]));
+        Logger.recordOutput("Vision/poses/blueLeftReefPoses", Constants.ReefPoses.blueLeftReefPoses.toArray(new Pose2d[0]));
+        Logger.recordOutput("Vision/poses/blueRightReefPoses", Constants.ReefPoses.blueRightReefPoses.toArray(new Pose2d[0]));
+
+
 
         SmartDashboard.putData("Auto Chooser", autoChooser.getSendableChooser());
         
