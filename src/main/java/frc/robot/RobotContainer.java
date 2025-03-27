@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
@@ -89,6 +90,7 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Chooser", autoChooser.getSendableChooser());
         SmartDashboard.putData("Field", drivetrain.getField());
+        SmartDashboard.putData(CommandScheduler.getInstance());
         
     }
 
