@@ -162,7 +162,7 @@ public class Constants {
     DEALGAE_GROUND(0.49749486243737157, 0),
     PROCESSOR(0.475830078125, 0.22),
     INTAKE(0.415, 0),
-    AUTO_INTAKE(0.402, 0),
+    AUTO_INTAKE(0.39, 0),
     REST(0.40, 0),
     DEPLOY(0.48, 0),
     CLIMB(0.48, 0),
