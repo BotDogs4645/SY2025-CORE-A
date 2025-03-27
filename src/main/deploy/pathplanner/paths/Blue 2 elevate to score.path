@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5855,
-        "y": 4.0445
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 7.3355,
-        "y": 4.0445
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 6.77625,
         "y": 3.911
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.526591311598163,
+        "y": 3.8979409301451344
+      },
+      "isLocked": false,
+      "linkedName": "Blue 2 elevate"
+    },
+    {
+      "anchor": {
+        "x": 6.11,
+        "y": 3.911
+      },
       "prevControl": {
-        "x": 7.026033268273088,
-        "y": 3.900592363821954
+        "x": 6.35987997039566,
+        "y": 3.918745992193665
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Blue 2 elevate"
+      "linkedName": "Blue 2 score"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "To elevate",
+  "folder": "Elevate to score",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

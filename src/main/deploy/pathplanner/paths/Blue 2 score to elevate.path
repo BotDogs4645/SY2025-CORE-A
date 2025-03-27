@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.5855,
-        "y": 4.0445
+        "x": 6.11,
+        "y": 3.911
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.3355,
-        "y": 4.0445
+        "x": 6.359821942083438,
+        "y": 3.920433835575178
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Blue 2 score"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 3.911
       },
       "prevControl": {
-        "x": 7.026033268273088,
-        "y": 3.900592363821954
+        "x": 6.526483700187836,
+        "y": 3.9218071956649485
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "To elevate",
+  "folder": "Score to elevate",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
