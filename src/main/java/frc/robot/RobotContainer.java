@@ -60,6 +60,8 @@ public class RobotContainer {
     public RobotContainer() {
 
         NamedCommands.registerCommand("deploy", CommandBuilder.deploy(chute, endEffector, elevator));
+        NamedCommands.registerCommand("toMechanismPositionRest",
+                CommandBuilder.toAutoMechanismPosition(endEffector, elevator, MechanismPosition.REST));
         NamedCommands.registerCommand("toMechanismPositionL1",
                 CommandBuilder.toAutoMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L1));
         NamedCommands.registerCommand("toMechanismPositionL2",
@@ -70,7 +72,7 @@ public class RobotContainer {
                 CommandBuilder.toAutoMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L4));
         NamedCommands.registerCommand("spit", EndEffectorComponents.spit(endEffector));
         NamedCommands.registerCommand("score", EndEffectorComponents.score(endEffector));
-        NamedCommands.registerCommand("intakeSequence", CommandBuilder.intakeSequence(chute, endEffector, elevator));
+        NamedCommands.registerCommand("intakeSequence", CommandBuilder.autoIntakeSequence(chute, endEffector, elevator));
 
         drivetrain.createAutoBuilder();
         autoChooser = new LoggedDashboardChooser<Command>("Auto Chooser", AutoBuilder.buildAutoChooser());
@@ -160,6 +162,9 @@ public class RobotContainer {
         operatorPanel.button(7).onTrue(
                 CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.DEALGAE_HIGH)
                         .andThen(CommandBuilder.intakeAlgae(endEffector))
+        );
+        operatorPanel.button(8).onTrue(
+                CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.PROCESSOR)
         );
 
         operatorPanel.button(9).toggleOnTrue(

@@ -68,6 +68,16 @@ public class CommandBuilder {
             new ChuteToPosition(chute, MechanismPosition.REST)::schedule
         );
     }
+    public static Command autoIntakeSequence(Chute chute, EndEffector endEffector, Elevator elevator) {
+        return (toMechanismPosition(endEffector, elevator, MechanismPosition.INTAKE)
+                .andThen(
+                        new ChuteToPosition(chute, MechanismPosition.INTAKE)
+                ).andThen(
+                        EndEffectorComponents.intakeCoral(endEffector)
+                )).andThen(
+                new ChuteToPosition(chute, MechanismPosition.REST)
+        );
+    }
 
     public static Command intakeAlgae(EndEffector endEffector) {
         return 

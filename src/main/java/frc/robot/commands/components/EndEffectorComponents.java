@@ -128,17 +128,14 @@ public class EndEffectorComponents {
 
     public static Command score(EndEffector endEffector) {
         return new Command() {
-            private Supplier<Boolean> sensorProvider;
+            private Supplier<Boolean> firstSensorProvider;
+            private Supplier<Boolean> secondSensorProvider;
 
             @Override
             public void initialize() {
-                if (endEffector.algaeSensorTripped()) {
-                    endEffector.setWheelDutyCycle(-0.2);
-                    sensorProvider = endEffector::algaeSensorTripped;
-                } else {
-                    endEffector.setWheelDutyCycle(0.2);
-                    sensorProvider = endEffector::secondCoralSensorTripped;
-                }
+                endEffector.setWheelDutyCycle(0.2);
+                firstSensorProvider = endEffector::firstCoralSensorTripped;
+                secondSensorProvider = endEffector::secondCoralSensorTripped;
             }
 
             @Override
@@ -152,7 +149,7 @@ public class EndEffectorComponents {
 
             @Override 
             public boolean isFinished() {
-                return !sensorProvider.get();
+                return !firstSensorProvider.get() && !secondSensorProvider.get();
             }
         };
     }
