@@ -164,7 +164,7 @@ public class RobotContainer {
                         .andThen(CommandBuilder.intakeAlgae(endEffector))
         );
         operatorPanel.button(8).onTrue(
-                CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.PROCESSOR)
+                CommandBuilder.toMechanismPosition(endEffector, elevator, MechanismPosition.REST)
         );
 
         operatorPanel.button(9).toggleOnTrue(
