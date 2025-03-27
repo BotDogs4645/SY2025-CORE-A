@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.0992500000000005,
-        "y": 2.669749999999999
+        "x": 5.2,
+        "y": 2.56
       },
       "prevControl": {
-        "x": 5.2455,
-        "y": 2.2992499999999993
+        "x": 5.3462499999999995,
+        "y": 2.1895000000000002
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 120.52970589993404
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "Elevate to score",

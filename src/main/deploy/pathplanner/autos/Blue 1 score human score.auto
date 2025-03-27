@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 to elevate"
+            "pathName": "Blue 1 to elevate"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 elevate to score"
+            "pathName": "Blue 1 elevate to score"
           }
         },
         {
@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 score to elevate"
+            "pathName": "Blue 1 score to elevate"
           }
         },
         {
@@ -67,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 elevate to human player"
+            "pathName": "Blue 1 elevate to human player"
           }
         },
         {
@@ -79,7 +79,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue top human player to elevate"
+            "pathName": "Blue bottom human player to elevate"
           }
         },
         {
@@ -91,7 +91,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 elevate to score"
+            "pathName": "Blue 1 elevate to score"
           }
         },
         {
@@ -109,7 +109,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Blue 3 score to elevate"
+            "pathName": "Blue 1 score to elevate"
           }
         }
       ]

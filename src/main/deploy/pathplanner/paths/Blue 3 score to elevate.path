@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.421,
-        "y": 5.22425
+        "x": 5.4,
+        "y": 5.37
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.519479824644792,
-        "y": 5.454036257504514
+        "x": 5.498479824644792,
+        "y": 5.5997862575045145
       },
       "isLocked": false,
       "linkedName": "Blue 3 score"
@@ -48,7 +48,7 @@
   "folder": "Score to elevate",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.1676133795778
+    "rotation": -119.99999999999999
   },
   "useDefaultConstraints": true
 }
