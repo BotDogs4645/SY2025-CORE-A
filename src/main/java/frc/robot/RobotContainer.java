@@ -90,7 +90,6 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto Chooser", autoChooser.getSendableChooser());
         SmartDashboard.putData("Field", drivetrain.getField());
-        SmartDashboard.putData(CommandScheduler.getInstance());
         
     }
 
