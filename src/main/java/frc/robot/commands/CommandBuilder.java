@@ -69,7 +69,7 @@ public class CommandBuilder {
         );
     }
     public static Command autoIntakeSequence(Chute chute, EndEffector endEffector, Elevator elevator) {
-        return (toMechanismPosition(endEffector, elevator, MechanismPosition.INTAKE)
+        return (toMechanismPosition(endEffector, elevator, MechanismPosition.AUTO_INTAKE)
                 .andThen(
                         new ChuteToPosition(chute, MechanismPosition.INTAKE)
                 ).andThen(
