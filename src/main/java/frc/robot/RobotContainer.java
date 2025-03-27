@@ -71,7 +71,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("toMechanismPositionL3",
                 CommandBuilder.toAutoMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L3));
         NamedCommands.registerCommand("toMechanismPositionL4",
-                CommandBuilder.toAutoMechanismPosition(endEffector, elevator, MechanismPosition.SCORE_L4));
+                CommandBuilder.toAutoMechanismPosition(endEffector, elevator, MechanismPosition.AUTO_SCORE_L4));
         NamedCommands.registerCommand("spit", EndEffectorComponents.spit(endEffector));
         NamedCommands.registerCommand("score", EndEffectorComponents.score(endEffector));
         NamedCommands.registerCommand("intakeSequence", CommandBuilder.autoIntakeSequence(chute, endEffector, elevator));
