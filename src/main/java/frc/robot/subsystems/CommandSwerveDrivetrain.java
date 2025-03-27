@@ -339,6 +339,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             this
         );
 
+        PathPlannerLogging.setLogCurrentPoseCallback((pose) -> {
+            // Do whatever you want with the pose here
+            m_field.setRobotPose(pose);
+        });
         
         PathPlannerLogging.setLogActivePathCallback((List<Pose2d> path) -> {
             Logger.recordOutput("Drive/PP/ActivePath", path.toArray(new Pose2d[0]));
@@ -347,7 +351,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
         PathPlannerLogging.setLogTargetPoseCallback((Pose2d pose) -> {
             Logger.recordOutput("Drive/PP/TargetPose", pose);
-            m_field.getObject("target pose").setPose(pose);
         });
     }
 }
