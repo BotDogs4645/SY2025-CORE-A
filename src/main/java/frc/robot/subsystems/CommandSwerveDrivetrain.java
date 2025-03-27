@@ -162,10 +162,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
         super(drivetrainConstants, odometryUpdateFrequency, modules);
-        SmartDashboard.putData("Field", m_field);
         if (Utils.isSimulation()) {
             startSimThread();
         }
+    }
+
+    public Field2d getField() {
+        return m_field;
     }
 
     /**

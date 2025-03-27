@@ -57,7 +57,6 @@ public class RobotContainer {
     public final Chute chute = new Chute();
 
     private final LoggedDashboardChooser<Command> autoChooser;
-    private final Field2d m_field = new Field2d();
 
     public RobotContainer() {
 
@@ -89,6 +88,7 @@ public class RobotContainer {
 
 
         SmartDashboard.putData("Auto Chooser", autoChooser.getSendableChooser());
+        SmartDashboard.putData("Field", drivetrain.getField());
         
     }
 
