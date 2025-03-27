@@ -21,6 +21,7 @@ import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.Measurement;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -204,7 +205,7 @@ public class EndEffector extends SubsystemBase {
         Logger.recordOutput("EndEffector/wheelControl", getWheelControl());
 
         encoderAlert.set(!pivotEncoder.isConnected());
-        if (secondCoralSensorTripped() && !firstCoralSensorTripped() && getWheelControl().equals("StaticBrake")) {
+        if (secondCoralSensorTripped() && !firstCoralSensorTripped() && getWheelControl().equals("StaticBrake") && !DriverStation.isAutonomous()) {
             EndEffectorComponents.reverseCoral(this).schedule();
         }
     }
