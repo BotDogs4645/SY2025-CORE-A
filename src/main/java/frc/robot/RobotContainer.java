@@ -138,7 +138,7 @@ public class RobotContainer {
         joystick.button(8).onTrue(
                 CommandBuilder.deploy(chute, endEffector, elevator));
 
-        joystick.leftBumper().onTrue(CommandBuilder.intakeOrProcessor(chute, endEffector, elevator));
+        joystick.leftBumper().onTrue(CommandBuilder.intakeSequence(chute, endEffector, elevator));
         joystick.rightBumper().whileTrue(EndEffectorComponents.spit(endEffector));
 
         operatorPanel.button(1).onTrue(
