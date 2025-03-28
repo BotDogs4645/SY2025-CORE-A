@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Millimeters;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
@@ -139,6 +140,7 @@ public class EndEffector extends SubsystemBase {
         return pivotControl.Position;
     }
 
+    @AutoLogOutput
     public boolean isDeployed() {
         return deployed;
     }
