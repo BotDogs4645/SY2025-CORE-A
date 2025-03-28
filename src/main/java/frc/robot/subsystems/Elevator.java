@@ -113,6 +113,7 @@ public class Elevator extends SubsystemBase {
         Logger.recordOutput("Elevator/limitSwitch", leftMotor.getReverseLimit().getValue());
         Logger.recordOutput("Elevator/voltageOut", leftMotor.getMotorVoltage().getValueAsDouble());
         Logger.recordOutput("Elevator/safeToMove", safetySupplier.get());
+        Logger.recordOutput("Elevator/hasReachedTarget", hasReachedTarget());
     }
 }
 
