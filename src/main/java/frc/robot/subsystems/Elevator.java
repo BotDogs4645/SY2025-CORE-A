@@ -48,7 +48,7 @@ public class Elevator extends SubsystemBase {
         var leftConfig = config.withHardwareLimitSwitch(
             new HardwareLimitSwitchConfigs()
                 .withReverseLimitEnable(true)
-                .withReverseLimitAutosetPositionEnable(true)
+                .withReverseLimitAutosetPositionEnable(false)
                 .withReverseLimitAutosetPositionValue(0)
                 .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
                 .withReverseLimitSource(ReverseLimitSourceValue.LimitSwitchPin)
