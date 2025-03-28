@@ -97,6 +97,7 @@ public class EndEffector extends SubsystemBase {
     }
 
     public void setWheelDutyCycle(double speed) {
+        Logger.recordOutput("EndEffector/wheelSpeed", speed);
         manipulateMotor.set(speed);
     }
     public void setWheelBrake() {
