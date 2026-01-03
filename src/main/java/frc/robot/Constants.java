@@ -24,8 +24,33 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.wpilibj.RobotBase;
 
 public class Constants {
+
+  /**
+   * Robot type enumeration for switching between real hardware, simulation, and replay.
+   * Change currentRobotType to switch modes.
+   */
+  public enum RobotType {
+    /** Running on a real robot with real hardware */
+    REAL,
+    /** Running in physics simulation */
+    SIM,
+    /** Replaying from a log file */
+    REPLAY
+  }
+
+  /**
+   * Determines the current robot type based on whether the code is running on real hardware
+   * or in simulation. During replay, this is overridden in Robot.java.
+   */
+  public static RobotType getRobotType() {
+    return RobotBase.isReal() ? RobotType.REAL : RobotType.SIM;
+  }
+
+  /** Enable tuning mode to allow live-tuning of constants via NetworkTables */
+  public static final boolean tuningMode = true;
 
   public static class ClimberConstants {
     public static final int motorID = 19;

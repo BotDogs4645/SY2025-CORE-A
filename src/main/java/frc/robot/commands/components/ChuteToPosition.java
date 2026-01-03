@@ -3,7 +3,7 @@ package frc.robot.commands.components;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.MechanismPosition;
-import frc.robot.subsystems.Chute;
+import frc.robot.subsystems.chute.Chute;
 import frc.robot.Constants.ChuteConstants;
 
 public class ChuteToPosition extends Command {

@@ -3,7 +3,7 @@ package frc.robot.commands.components;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.endeffector.EndEffector;
 
 public class EndEffectorComponents {
     public static Command intakeCoral(EndEffector endEffector) {

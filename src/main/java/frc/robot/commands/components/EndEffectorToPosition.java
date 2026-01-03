@@ -3,7 +3,7 @@ package frc.robot.commands.components;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.MechanismPosition;
-import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.endeffector.EndEffector;
 
 public class EndEffectorToPosition extends Command {
 

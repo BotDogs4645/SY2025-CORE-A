@@ -3,7 +3,7 @@ package frc.robot.commands.components;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.MechanismPosition;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.elevator.Elevator;
 
 public class ElevatorToPosition extends Command {
 

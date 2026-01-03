@@ -11,9 +11,9 @@ import frc.robot.commands.components.ChuteToPosition;
 import frc.robot.commands.components.ElevatorToPosition;
 import frc.robot.commands.components.EndEffectorComponents;
 import frc.robot.commands.components.EndEffectorToPosition;
-import frc.robot.subsystems.Chute;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.chute.Chute;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.endeffector.EndEffector;
 
 public class CommandBuilder {
     public static Command deploy(Chute chute, EndEffector endEffector, Elevator elevator) {

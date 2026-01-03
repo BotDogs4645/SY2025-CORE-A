@@ -18,22 +18,33 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.MechanismPosition;
+import frc.robot.Constants.RobotType;
 import frc.robot.commands.CommandBuilder;
 import frc.robot.commands.DriverAssist;
 import frc.robot.commands.components.EndEffectorComponents;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.EndEffector;
-import frc.robot.subsystems.vision.Localization;
+import frc.robot.subsystems.chute.Chute;
+import frc.robot.subsystems.chute.ChuteIO;
+import frc.robot.subsystems.chute.ChuteIOTalonFX;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.ClimberIO;
+import frc.robot.subsystems.climber.ClimberIOTalonFX;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOTalonFX;
+import frc.robot.subsystems.endeffector.EndEffector;
+import frc.robot.subsystems.endeffector.EndEffectorIO;
+import frc.robot.subsystems.endeffector.EndEffectorIOTalonFX;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOLimelight;
 
 public class RobotContainer {
     private final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -49,17 +60,64 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
     private final CommandJoystick operatorPanel = new CommandJoystick(1);
 
+    // Subsystems
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Localization visionSubsystem = new Localization(
-            drivetrain::addVisionMeasurement,
-            drivetrain::getState);
-    public final EndEffector endEffector = new EndEffector();
-    public final Elevator elevator = new Elevator(endEffector::isSafeToElevate);
-    public final Chute chute = new Chute();
+    public final EndEffector endEffector;
+    public final Elevator elevator;
+    public final Chute chute;
+    public final Climber climber;
+    public final Vision vision;
 
     private final LoggedDashboardChooser<Command> autoChooser;
 
     public RobotContainer() {
+        // create subsystems with appropriate IO implementations based on robot type
+        RobotType robotType = Constants.getRobotType();
+
+        switch (robotType) {
+            case REAL:
+                // use real hardware IO
+                endEffector = new EndEffector(new EndEffectorIOTalonFX());
+                elevator = new Elevator(new ElevatorIOTalonFX(), endEffector::isSafeToElevate);
+                chute = new Chute(new ChuteIOTalonFX());
+                climber = new Climber(new ClimberIOTalonFX());
+                vision = new Vision(
+                    drivetrain::addVisionMeasurement,
+                    drivetrain::getState,
+                    Constants.VisionConstants.limelightNames,
+                    createLimelightIOs()
+                );
+                break;
+
+            case SIM:
+                // I might add physics later so use empty IOs for now
+                endEffector = new EndEffector(new EndEffectorIO() {});
+                elevator = new Elevator(new ElevatorIO() {}, endEffector::isSafeToElevate);
+                chute = new Chute(new ChuteIO() {});
+                climber = new Climber(new ClimberIO() {});
+                vision = new Vision(
+                    drivetrain::addVisionMeasurement,
+                    drivetrain::getState,
+                    Constants.VisionConstants.limelightNames,
+                    createEmptyVisionIOs()
+                );
+                break;
+
+            case REPLAY:
+            default:
+                // for replay you use empty IOs and data comes from log
+                endEffector = new EndEffector(new EndEffectorIO() {});
+                elevator = new Elevator(new ElevatorIO() {}, endEffector::isSafeToElevate);
+                chute = new Chute(new ChuteIO() {});
+                climber = new Climber(new ClimberIO() {});
+                vision = new Vision(
+                    drivetrain::addVisionMeasurement,
+                    drivetrain::getState,
+                    Constants.VisionConstants.limelightNames,
+                    createEmptyVisionIOs()
+                );
+                break;
+        }
 
         NamedCommands.registerCommand("deploy", CommandBuilder.deploy(chute, endEffector, elevator));
         NamedCommands.registerCommand("toMechanismPositionRest",
@@ -86,12 +144,27 @@ public class RobotContainer {
         Logger.recordOutput("Vision/poses/blueLeftReefPoses", Constants.ReefPoses.blueLeftReefPoses.toArray(new Pose2d[0]));
         Logger.recordOutput("Vision/poses/blueRightReefPoses", Constants.ReefPoses.blueRightReefPoses.toArray(new Pose2d[0]));
 
-
-
         SmartDashboard.putData("Auto Chooser", autoChooser.getSendableChooser());
         SmartDashboard.putData("Field", drivetrain.getField());
         SmartDashboard.putData(CommandScheduler.getInstance());
-        
+    }
+
+    /** create Limelight VisionIO instances for each configured camera */
+    private VisionIO[] createLimelightIOs() {
+        VisionIO[] ios = new VisionIO[Constants.VisionConstants.limelightNames.length];
+        for (int i = 0; i < ios.length; i++) {
+            ios[i] = new VisionIOLimelight(Constants.VisionConstants.limelightNames[i]);
+        }
+        return ios;
+    }
+
+    /** create empty VisionIO instances for simulation/replay */
+    private VisionIO[] createEmptyVisionIOs() {
+        VisionIO[] ios = new VisionIO[Constants.VisionConstants.limelightNames.length];
+        for (int i = 0; i < ios.length; i++) {
+            ios[i] = new VisionIO() {};
+        }
+        return ios;
     }
 
     private void configureBindings() {
@@ -128,7 +201,6 @@ public class RobotContainer {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        
 
         joystick.leftTrigger().whileTrue(drivetrain.defer(() -> DriverAssist.reefPathfindCommand(drivetrain, true, isBlueAlliance())));
         joystick.rightTrigger().whileTrue(drivetrain.defer(() -> DriverAssist.reefPathfindCommand(drivetrain, false, isBlueAlliance())));
