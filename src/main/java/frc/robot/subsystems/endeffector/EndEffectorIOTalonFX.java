@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants.EndEffectorConstants;
 
 /**
- * Real hardware implementation of EndEffectorIO using TalonFX motors and LaserCAN sensors.
+dadadadadada
  */
 public class EndEffectorIOTalonFX implements EndEffectorIO {
     private final TalonFX manipulateMotor;
